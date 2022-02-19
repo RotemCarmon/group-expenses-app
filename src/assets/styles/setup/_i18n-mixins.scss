@@ -1,0 +1,130 @@
+/*
+---------------------------------
+    I18n MIXIN
+---------------------------------
+*/
+
+/*
+  - all i18 mixins lead to "i18n-mirror"
+  - $imp: option for adding "!important" to the rull
+    - the value to path is: "!"
+*/
+
+// $imp indicate for adding '!important'
+@mixin i18n-mirror($prop, $value, $rtl-reset-value, $rtl-prop: null, $imp: null) {
+  // @if $imp == '!' {
+  //   $imp: !important;
+  // } @else {
+  //   $imp: null;
+  // }
+
+  #{$prop}: #{$value} #{$imp};
+
+  body[dir="rtl"] & {
+
+    @if $rtl-prop == null {
+      #{$prop}: #{$rtl-reset-value} #{$imp};
+    } @else {
+      #{$prop}: #{$rtl-reset-value} #{$imp};
+      #{$rtl-prop}: #{$value} #{$imp};
+    }
+  }
+}
+
+@mixin i-float($side: left, $imp: null) {
+  $mirror: right;
+
+  @if $side == 'right' {
+    $mirror: left;
+  }
+
+  @include i18n-mirror(float, $side, $mirror, null, $imp);
+}
+
+@mixin i-text-align($side: left, $imp: null) {
+  $mirror: right;
+
+  @if $side == 'right' {
+    $mirror: left;
+  }
+
+  @include i18n-mirror(text-align, $side, $mirror, null, $imp);
+}
+
+@mixin i-margin($top: 0, $right: 0, $bottom: 0, $left: 0, $imp: null) {
+  $ltr: #{$top} #{$right} #{$bottom} #{$left};
+  $rtl: #{$top} #{$left} #{$bottom} #{$right};
+
+  @include i18n-mirror(margin, $ltr, $rtl, null, $imp);
+}
+
+@mixin i-margin-mirror($left, $right, $imp: null) {
+  @include i18n-mirror(margin-left, $left, $right, null, $imp);
+  @include i18n-mirror(margin-right, $right, $left, null, $imp);
+}
+
+@mixin i-padding($top: 0, $right: 0, $bottom: 0, $left: 0, $imp: null) {
+  $ltr: #{$top} #{$right} #{$bottom} #{$left};
+  $rtl: #{$top} #{$left} #{$bottom} #{$right};
+
+  @include i18n-mirror(padding, $ltr, $rtl, null, $imp);
+}
+
+@mixin i-padding-mirror($left, $right, $imp: null) {
+  @include i18n-mirror(padding-left, $left, $right, null, $imp);
+  @include i18n-mirror(padding-right, $right, $left, null, $imp);
+}
+
+@mixin i-position-mirror($dir, $val, $imp: null) {
+  $rtl-prop: null;
+
+  @if $dir == 'left' {
+    $rtl-prop: 'right';
+  }
+  @else {
+    $rtl-prop: 'left';
+  }
+
+  @include i18n-mirror($dir, $val, auto, $rtl-prop, $imp);
+}
+
+@mixin i-border-left($value, $imp: null) {
+  @include i18n-mirror(border-left, $value, none, border-right, $imp);
+}
+
+@mixin i-border-right($value, $imp: null) {
+  @include i18n-mirror(border-right, $value, none, border-left, $imp);
+}
+
+@mixin i-position-mirror($dir, $val, $imp: null) {
+  $rtl-prop: null;
+
+  @if $dir == 'left' {
+    $rtl-prop: 'right';
+  }
+  @else {
+    $rtl-prop: 'left';
+  }
+
+  @include i18n-mirror($dir, $val, auto, $rtl-prop, $imp);
+}
+
+@mixin i-translate-x($value, $imp: null) {
+  @include i18n-mirror(transform, translateX($value), translateX(-$value));
+}
+
+@mixin i-translate-x-with-y($x, $y, $imp: null) {
+  @include i18n-mirror(transform, translate($x, $y), translate(-1 * $x, $y));
+}
+
+@mixin i-rotate($val, $imp: null) {
+  @include i18n-mirror(transform, rotate($val), rotate(-$val));
+}
+
+@mixin i-flipped() {
+  @include i18n-mirror(transform, scaleX(1), scaleX(-1));
+}
+
+@mixin i-animation($name) {
+  @include i18n-mirror(animation-name, $name, '#{$name}-right');
+}

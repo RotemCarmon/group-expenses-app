@@ -1,0 +1,15 @@
+.form-control {
+    display: flex;
+    flex-direction: column;
+
+    .valid-feedback {
+        color: $success;
+    }
+    .invalid-feedback {
+        color: $danger;
+    }
+}
+
+.form-label {
+    margin-bottom: 10px;
+}

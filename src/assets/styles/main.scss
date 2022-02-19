@@ -1,0 +1,27 @@
+// Vendors
+@import 'vendors/reset';
+
+// Setup
+@import 'setup/variables';
+@import 'setup/functions';
+@import 'setup/mixins';
+@import 'setup/typography';
+@import 'setup/i18n-mixins';
+@import 'setup/helpers';
+@import 'setup/fonts';
+
+// Basics
+@import 'basics/helpers';
+@import 'basics/layout';
+@import 'basics/app';
+@import 'basics/base';
+@import 'basics/animations';
+@import 'basics/form/form';
+
+
+
+// Modules
+@import './modules/common/main.scss';
+@import './modules/auth/main.scss';
+@import './modules/group/main.scss';
+@import './modules/expense/main.scss';

@@ -1,0 +1,48 @@
+.btn {
+    background-color: rgba(255, 255, 255, 0.79);
+    padding: 0 25px;
+    border-radius: 4px;
+    transition: 0.2s;
+    height: 35px;
+    white-space: nowrap;
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.light {
+        font-weight: 500;
+        border: 2px solid $darkGray;
+    }
+
+    &.dark {
+        background-color: $pop;
+        color: white;
+        font-weight: 500;
+    }
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.7;
+    }
+}
+
+.btn-dashed {
+    @include flex-center;
+    margin: auto;
+    padding: 12px 0;
+    border-radius: 8px;
+    width: 100%;
+    background-image: url("data:image/svg+xml,%3csvg  xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='4' ry='4' stroke='%23333' stroke-width='2' stroke-dasharray='8' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+}
+
+.buttom-btn {
+    width: 100%;
+    margin-bottom: rem(43px);
+    font-size: $fontSizeBig;
+}
+
+.close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}

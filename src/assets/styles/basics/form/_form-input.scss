@@ -1,0 +1,51 @@
+.form-item {
+  &.show-error {
+    .input.empty {
+      input {
+        border: 1px solid red !important;
+      }
+    }
+  }
+  label {
+    display: flex;
+    align-items: center;
+
+    .require-span {
+      color: red;
+      width: 7.5px;
+      span {
+        position: relative;
+        top: 2px;
+      }
+    }
+    p {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+  }
+  .input {
+    width: 100%;
+    padding: 0;
+    position: relative;
+    .icon-img {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      bottom: 50%;
+      right: 10px;
+      transform: translate(0, 50%);
+    }
+    &.icon-left {
+      padding-inline-start: 30px;
+      .icon-img {
+        right: unset;
+        left: 10px;
+      }
+    }
+    input {
+        height: 100%;
+        width: 100%;
+    }
+  }
+}

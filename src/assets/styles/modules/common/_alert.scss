@@ -1,0 +1,102 @@
+.alert-container {
+    position: fixed;
+    left: 100px;
+    bottom: 20px;
+    z-index: 4;
+
+    .alert {
+        opacity: 0;
+        margin: 5px 0;
+        min-height: 60px;
+        min-width: 300px;
+        color: $gray-400;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 13px;
+        .close-btn {
+            margin: 0 5px;
+        }
+        p {
+            margin: 0 5px;
+            line-height: 1.4
+        }
+        animation: alertEnter 0.5s;
+        animation-fill-mode: forwards;
+        &.leave {
+            animation: alertLeave 0.5s;
+            animation-fill-mode: forwards;
+        }
+    }
+    &.full-screen {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .success {
+        background-color: $success;
+    }
+    .error {
+        background-color: $danger;
+    }
+    .confirm {
+        background-color: white;
+        color: $regGray;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        p {
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.125rem;
+        }
+    }
+    .action-btns {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        > * {
+            text-transform: capitalize;
+            height: 30px;
+            min-width: 90px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            @include flex-center;
+        }
+
+        .approve-btn {
+            background-color: black;
+            color: white;
+        }
+        .cancel-btn {
+            background-color: $gray-300;
+        }
+    }
+}
+
+@keyframes alertEnter {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes alertLeave {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

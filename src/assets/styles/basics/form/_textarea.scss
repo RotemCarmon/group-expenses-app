@@ -1,0 +1,20 @@
+.form-textarea {
+    padding: 10px 8px;
+    border: 1px solid $gray-400;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+    font-family: $font-family-arial;
+    resize: none;
+    width: 100%;
+    min-height: 100px;
+    font-size: $fontSizeNormal;
+
+    &::placeholder {
+        font-family: $font-family-secular-one;
+    }
+
+    &:focus {
+        outline: transparent;
+        border-color: $gray-700;
+    }
+}

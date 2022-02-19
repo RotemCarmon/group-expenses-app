@@ -1,0 +1,17 @@
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.hide-nr {
+    @include for-narrow-layout {
+        display: none;
+    }
+}
+
+.hide-mb {
+    @include for-mobile-layout {
+        display: none;
+    }
+}

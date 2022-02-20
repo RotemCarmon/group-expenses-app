@@ -1,5 +1,5 @@
 import groupPage from '../views/group-page'
-import { groupList, groupEdit, groupDetails } from '../cmps'
+import { groupList, groupEdit, groupDetails, expenseEdit } from '../cmps'
 
 
 export const groupRoutes = [
@@ -18,6 +18,13 @@ export const groupRoutes = [
         component: groupEdit,
         name: 'group-edit'
       },
+      
+      {
+        path: 'expense/:expenseId?',
+        component: expenseEdit,
+        name: 'expense-edit'
+      },
+
       {
         path: ':groupId',
         component: groupDetails,

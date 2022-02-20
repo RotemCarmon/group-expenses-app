@@ -1,5 +1,5 @@
 <template>
-  <section class="group-preview-container">
+  <section class="group-preview-container preview-grid" @click.stop="goToGroupDetails">
     <div class="group-name">{{group.name}}</div>
     <action-buttons @edit="editGroup" @remove="removeGroup" />
   </section>
@@ -19,6 +19,10 @@ methods: {
   },
   removeGroup() {
     console.log('Removing group', this.group.name);
+  },
+  goToGroupDetails(){
+    this.$router.push(this.group._id)
+    
   }
 },
 components: {

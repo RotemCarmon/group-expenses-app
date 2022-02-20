@@ -4,14 +4,6 @@
     }
 }
 
-.group-preview-container {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    border-bottom: 1px solid $gray-600;
-    padding: 5px 0;
-}
-
 .group-edit-container {
     flex: 1;
     display: flex;
@@ -30,12 +22,6 @@
         }
 
         .member-preview-container {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
-            border-bottom: 1px solid $gray-600;
-            padding: 5px 0;
-
             .group-owner {
                 font-size: $fontStizeXSmall;
                 color: $gray-500;
@@ -65,5 +51,52 @@
 
     input:not(:last-child) {
         margin-bottom: 20px;
+    }
+}
+
+.group-details-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    
+    .add-expense-btn {
+        height:30px;
+        padding: 0 12px;
+    }
+    }
+    main {
+        flex: 1;
+    }
+    .member {
+        padding: 12px 0;
+        display: flex;
+        justify-content: space-between;
+
+        align-items: center;
+        border-bottom: 1px solid $gray-400;
+
+
+        .break-down {
+            &.pos {
+                color: green;
+            }
+            &.neg {
+                color: red;
+            }
+        }
+    }
+    .total-spent {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        font-size: $fontSizeBig;
+        background-color: $gray-300;
+        padding: 7px 12px;
+        border-radius: 4px;
     }
 }

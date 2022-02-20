@@ -1,5 +1,5 @@
 <template>
-  <section class="group-details-container" v-if="group">
+  <section class="group-details-container container" v-if="group">
     <main>
       <div class="page-header">
         <div class="title">{{ group.name }}</div>

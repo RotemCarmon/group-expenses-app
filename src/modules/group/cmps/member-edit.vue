@@ -1,5 +1,5 @@
 <template>
-  <section class="member-edit-container">
+  <section class="member-edit-container container">
     <main>
       <button @click="$emit('close')" class="close-btn">
         <img :src="require('@/assets/icons/close.svg')" />

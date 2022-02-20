@@ -1,5 +1,5 @@
 <template>
-  <section class="group-edit-container" v-if="groupToEdit">
+  <section class="group-edit-container container" v-if="groupToEdit">
     <main>
       <div class="page-header">
         <div class="title">{{ edit ? 'Edit' : 'Add' }} Group</div>

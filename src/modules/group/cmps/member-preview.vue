@@ -1,5 +1,5 @@
 <template>
-  <section class="member-preview-container">
+  <section class="member-preview-container preview-grid">
     <div class="name">{{ member.name }}
       <span class="group-owner" v-if="member.isOwner">Owner</span>
     </div>

@@ -1,0 +1,39 @@
+.group-details-container {
+  .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+  .add-expense-btn {
+      height:30px;
+      padding: 0 12px;
+  }
+  }
+  .member {
+      padding: 12px 0;
+      display: flex;
+      justify-content: space-between;
+
+      align-items: center;
+      border-bottom: 1px solid $gray-400;
+
+
+      .break-down {
+          &.pos {
+              color: green;
+          }
+          &.neg {
+              color: red;
+          }
+      }
+  }
+  .total-spent {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      font-size: $fontSizeBig;
+      background-color: $gray-300;
+      padding: 7px 12px;
+      border-radius: 4px;
+  }
+}

@@ -1,0 +1,39 @@
+.group-edit-container {
+    .group-form {
+        display: flex;
+        flex-direction: column;
+        gap: rem(24px);
+        margin-bottom: rem(44px);
+    }
+
+    .members-list-container {
+        .members-title {
+            font-size: $fontSizeBig;
+            font-weight: 500;
+        }
+
+        .member-preview-container {
+            .group-owner {
+                font-size: $fontStizeXSmall;
+                color: $gray-500;
+                padding-left: 20px;
+            }
+        }
+        .members-list {
+            margin-bottom: rem(35px);
+        }
+    }
+}
+
+.member-edit-container {
+    padding: 20px 20px 0;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    position: fixed;
+    inset: 0;
+    background-color: white;
+
+    input:not(:last-child) {
+        margin-bottom: 20px;
+    }
+}

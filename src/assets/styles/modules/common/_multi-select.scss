@@ -1,0 +1,64 @@
+.multi-select-container {
+    position: relative;
+    .box {
+        position: relative;
+        height: 40px;
+        width: 100%;
+        border-radius: 4px;
+        border: 1px solid $gray-400;
+        display: flex;
+        padding-inline-start: 6px;
+        align-items: center;
+
+        img {
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            right: 10px;
+
+            transition: transform 0.4s;
+            &.open {
+                transform: rotate(180deg);
+            }
+        }
+        .placeholder {
+          color: $gray-600;
+        }
+    }
+    .drop-down-select {
+        position: absolute;
+        background-color: white;
+        width: 100%;
+        padding: 6px;
+        border-radius: 4px;
+        border: 1px solid $gray-400;
+        transform: translateY(6px);
+
+        .drop-down-item {
+            font-size: 18px;
+            padding: 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            input[type='checkbox'] {
+                height: 20px;
+                width: 20px;
+            }
+
+            &:hover {
+                background-color: #f3f3f3;
+            }
+        }
+    }
+}
+
+
+// FADE
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.4s;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}

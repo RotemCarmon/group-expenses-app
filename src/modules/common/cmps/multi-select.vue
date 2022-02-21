@@ -1,8 +1,8 @@
 <template>
   <section class="multi-select-container">
     <div class="box" @click="toggleMenu">
-      <span class="placeholder">
-        {{ placeholder }}
+      <span class="placeholder" :class="{ multi: isMulti }">
+        {{ isMulti ? placeholder : val }}
       </span>
       <img
         :src="require('@/assets/icons/angle-down.svg')"
@@ -11,11 +11,16 @@
     </div>
     <transition name="fade" mode="out-in">
       <div v-if="isOpen" class="drop-down-select">
-        <label class="drop-down-item" v-for="item in items" :key="item">
+        <label
+          class="drop-down-item"
+          v-for="item in items"
+          :key="item"
+          :class="{ multi: isMulti }"
+        >
           <input
             type="checkbox"
             @change="toggleCheck(item)"
-            :checked="checked.includes(item)"
+            :checked="val.includes(item)"
           />
           {{ item }}
         </label>
@@ -30,11 +35,13 @@ export default {
   props: {
     items: { type: Array },
     placeholder: { type: String },
+    isMulti: { type: Boolean, default: true },
+    value: { type: Array | String },
   },
   data() {
     return {
       isOpen: false,
-      checked: [],
+      val: [],
     };
   },
   methods: {
@@ -42,14 +49,21 @@ export default {
       this.isOpen = !this.isOpen;
     },
     toggleCheck(item) {
-      const idx = this.checked.findIndex((c) => c === item);
-      if (idx === -1) {
-        this.checked.push(item);
+      if (!this.isMulti) {
+        this.val = item;
       } else {
-        this.checked.splice(idx, 1);
+        const idx = this.val.findIndex((c) => c === item);
+        if (idx === -1) {
+          this.val.push(item);
+        } else {
+          this.val.splice(idx, 1);
+        }
       }
-      this.$emit('change', this.checked);
+      this.$emit('input', this.val);
     },
+  },
+  created() {
+    this.val = this.isMulti ? [] : '';
   },
 };
 </script>

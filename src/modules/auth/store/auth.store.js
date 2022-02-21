@@ -6,7 +6,7 @@ import { router } from '@/router'
 export default {
   namespaced: true,
   state: {
-    loggedInUser: null
+    loggedInUser: authService.getLoggedinUser()
   },
   getters: {
     loggedInUser({ loggedInUser }) { return loggedInUser }

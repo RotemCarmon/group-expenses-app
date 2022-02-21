@@ -1,5 +1,4 @@
 import { utilService } from "./util.service";
-import { $t } from '@/plugins/i18n.js';
 import { loggerService } from './logger.service';
 
 const elAlertContainer = document.createElement('div');
@@ -15,11 +14,8 @@ export const popupService = {
     confirm
 };
 
-function confirm(key, approveTxt = 'ok', cancelTxt = 'cancel') {
+function confirm(txt, approveTxt = 'ok', cancelTxt = 'cancel') {
     return new Promise((resolve) => {
-        let txt = $t(key);
-        approveTxt = $t(approveTxt);
-        cancelTxt = $t(cancelTxt);
 
         const msg = { status: 'confirm', txt, approveTxt, cancelTxt };
         elAlertContainer.classList.add('full-screen');
@@ -27,14 +23,12 @@ function confirm(key, approveTxt = 'ok', cancelTxt = 'cancel') {
     })
 }
 
-function success(key, time) {
-    let txt = $t(key);
+function success(txt, time) {
     const msg = { status: 'success', txt };
     _showAlert(msg, time);
 }
 
-function error(key, err) {
-    let txt = $t(key);
+function error(txt, err) {
     loggerService.error(err);
     const msg = { status: 'error', txt };
     _showAlert(msg);

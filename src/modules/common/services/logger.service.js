@@ -15,32 +15,12 @@ const logPostMinLevel = 4;
 const ERR_STORAGE_KEY = 'app_frontend_errors';
 
 async function _handleLog(level = 'info', log) {
+  const logMsg = log.message || log;
 
   if (config.env.isDev) {
     console.log(level.toUpperCase() + ':', logMsg);
   }
-
-  if (legsLevelMap[level] < logPostMinLevel) return;
-  try {
-    await httpService.post('logger', { level, message: logMsg });
-  } catch (e) {
-    if (level === 'error') {
-      const localErrs = localStorage[ERR_STORAGE_KEY] && JSON.parse(localStorage[ERR_STORAGE_KEY]) || [];
-      localErrs.push(logMsg);
-      localStorage[ERR_STORAGE_KEY] = JSON.stringify(localErrs); ``
-    }
-  }
 }
-
-// async function _postOldErrs() {
-//   const oldErrs = localStorage[ERR_STORAGE_KEY] && JSON.parse(localStorage[ERR_STORAGE_KEY]) || [];
-//   await httpService.post('logger', oldErrs.map(err => ({ level: 'error', message: err.message || err })));
-//   localStorage[ERR_STORAGE_KEY] = '[]';
-// }
-// _postOldErrs();
-
-
-
 
 
 
@@ -53,8 +33,6 @@ function getTime() {
 function doLog(level, ...args) {
   const strs = args.map(arg => {
     if (typeof arg === 'string') return arg
-    // else if (arg instanceof Error) return arg.stack
-    // else if (arg instanceof Error) return arg.message
     else if (arg instanceof Error) return arg.stack || arg.message
     return JSON.stringify(arg)
   });

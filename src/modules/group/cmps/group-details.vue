@@ -3,7 +3,7 @@
     <main>
       <div class="page-header">
         <div class="title">{{ group.name }}</div>
-        <button class="add-expense-btn btn dark">+ Add Expense</button>
+        <button class="add-expense-btn btn dark" @click="goToAddExpense">+ Add Expense</button>
       </div>
       <template v-if="summary">
         <div class="member" v-for="(amount, member) in summary" :key="member">
@@ -58,6 +58,9 @@ export default {
     getTotalExpenses(expenses) {
       this.totalSpent = expenseService.getTotalExpenses(expenses);
     },
+    goToAddExpense() {
+      this.$router.push(`${this.$route.fullPath}/expense`)
+    }
   },
   async created() {
     const group = await this.getGroup();

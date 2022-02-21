@@ -16,7 +16,7 @@ export default {
   name: 'group-list',
   methods: {
     goToAddGroup(){
-      this.$router.push('edit')
+      this.$router.push('/group/edit')
     }
   },
   computed: {

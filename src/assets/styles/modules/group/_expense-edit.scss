@@ -1,0 +1,30 @@
+.expense-edit-container {
+    .group-name {
+        font-size: $fontSizeNormal;
+        color: $gray-500;
+        span {
+            font-weight: 500;
+        }
+        margin-bottom: 16px;
+    }
+    .currency-select {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-weight: 500;
+
+      .multi-select-container {
+        flex: 1;
+      }
+    }
+
+    .form-row {
+        margin-bottom: 20px;
+    }
+
+    .sub-title {
+      font-size: $fontSizeBig;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+}

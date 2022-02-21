@@ -9,7 +9,7 @@ export const groupRoutes = [
     component: groupPage,
     children: [
       {
-        path: 'list',
+        path: '/',
         component: groupList,
         name: 'group-list'
       },
@@ -18,18 +18,18 @@ export const groupRoutes = [
         component: groupEdit,
         name: 'group-edit'
       },
-      
-      {
-        path: 'expense/:expenseId?',
-        component: expenseEdit,
-        name: 'expense-edit'
-      },
 
+      
       {
         path: ':groupId',
         component: groupDetails,
         name: 'group-details'
-      }
+      },
+      {
+        path: ':groupId/expense/:expenseId?',
+        component: expenseEdit,
+        name: 'expense-edit'
+      },
     ]
   }
 ]

@@ -12,7 +12,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: 'group/list'
+    redirect: 'group'
   },
   ...authRoutes,
   ...commonRoutes,

@@ -12,6 +12,11 @@
 import { appHeader } from '@/modules/common/cmps';
 export default {
   name: 'App',
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading 
+    }
+  },
   components: {
     appHeader,
   },

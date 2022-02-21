@@ -2,6 +2,9 @@
   <section class="main-app-container">
     <app-header />
     <router-view class="main-container" />
+    <div v-if="isLoading" class="loader-container screen">
+      <div class="app-loader"></div>
+    </div>
   </section>
 </template>
 

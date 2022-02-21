@@ -26,3 +26,19 @@ export const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+
+// let _store;
+// export const initStore = store => _store = store;
+
+
+// router.beforeEach(async (to, from, next) => {
+//   if (['auth'].includes(to.name)) return next();
+
+//   let loggedInUser = _store.getters['authStore/loggedInUser'];
+//   console.log('loggedInUser:', loggedInUser)
+//   if(!loggedInUser) {
+//     // get loggedInUser from sessionStorage
+//   }
+//   next()
+// })

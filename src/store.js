@@ -10,9 +10,17 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   strict: process.env.NODE_ENV === "development",
-  state: {},
-  getters: {},
-  mutations: {},
+  state: {
+    isLoading: false
+  },
+  getters: {
+    isLoading({ isLoading }) { return isLoading }
+  },
+  mutations: {
+    setLoading(state, { isLoading }) {
+      state.isLoading = isLoading
+    }
+  },
   modules: {
     ...authStore,
     ...commonStore,

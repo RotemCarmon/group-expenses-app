@@ -1,0 +1,29 @@
+.login-signup-container {
+    .page-header {
+        margin-bottom: 35px;
+    }
+    .form-row {
+        margin-bottom: 26px;
+    }
+    label {
+        font-size: $fontSizeMedium;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .no-account {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 6px;
+
+        span {
+            color: $darkBlue;
+            cursor: pointer;
+        }
+    }
+
+    .error {
+        color: $red;
+    }
+}

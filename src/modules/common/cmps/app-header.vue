@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     hasBack() {
-      const noBackCmps = ['group-list'];
+      const noBackCmps = ['group-list', 'login-signup'];
       return !noBackCmps.includes(this.$route.name);
     },
   }

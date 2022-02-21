@@ -11,10 +11,13 @@
   &.small {
       transform: scale(0.4);
   }
+  &.screen {
+    background-color: rgba(0, 0, 0, 0.212);
+  }
 }
 
 .app-loader {
-  border:16px solid $gray-400;
+  border:16px solid $gray-200;
   border-top:16px solid $pop;
   border-radius: 50%;
   width: 120px;

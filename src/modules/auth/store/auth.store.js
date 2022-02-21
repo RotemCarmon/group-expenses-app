@@ -18,7 +18,8 @@ export default {
 
   },
   actions: {
-    async login({commit }, { userCreds }) {
+    async login({ commit }, { userCreds }) {
+      commit({ type: 'setLoading', isLoading: true }, { root: true })
       try {
         const user = await authService.login(userCreds)
         console.log('user:', user)
@@ -26,9 +27,12 @@ export default {
         router.push('/')
       } catch (err) {
         loggerService.error(err)
+      } finally {
+        commit({ type: 'setLoading', isLoading: false }, { root: true })
       }
     },
     async signup({ commit }, { userCreds }) {
+      commit({ type: 'setLoading', isLoading: true }, { root: true })
       try {
         const user = await authService.signup(userCreds)
         console.log('user:', user)
@@ -38,9 +42,11 @@ export default {
 
       } catch (err) {
         loggerService.error(err)
+      } finally {
+        commit({ type: 'setLoading', isLoading: false }, { root: true })
       }
     },
-    async signout({ commit }, ) {
+    async signout({ commit },) {
       try {
         await authService.signout()
         commit({ type: 'setLoggedInUser', loggedInUser: null })

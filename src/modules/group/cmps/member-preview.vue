@@ -1,9 +1,10 @@
 <template>
   <section class="member-preview-container preview-grid">
-    <div class="name">{{ member.name }}
+    <div class="name">
+      {{ member.name }}
       <span class="group-owner" v-if="member.isOwner">Owner</span>
     </div>
-    <action-buttons />
+    <action-buttons @edit="editMember" />
   </section>
 </template>
 
@@ -13,6 +14,11 @@ export default {
   name: 'member-preview',
   props: {
     member: { type: Object },
+  },
+  methods: {
+    editMember() {
+      this.$emit('edit', this.member);
+    },
   },
   components: {
     actionButtons,

@@ -18,6 +18,15 @@ export default {
     setGroups(state, { groups }) {
       state.groups = groups
     },
+    addGroup(state, { group }) {
+      state.groups.push(group)
+    },
+    updateGroup(state, { group }) {
+      const idx = state.groups.findIndex(g => g.id === group.id)
+      if (idx === -1) return
+      state.groups.splice(idx, 1, group)
+    },
+
     resetState(state) {
       state = initState()
     }

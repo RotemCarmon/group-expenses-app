@@ -43,6 +43,7 @@ function getLoggedinUser() {
 }
 
 function _saveLocalUser(user) {
+  if (!user) return
   sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify(user));
   return user;
 }

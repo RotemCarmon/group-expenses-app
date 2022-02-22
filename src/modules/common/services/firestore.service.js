@@ -40,7 +40,8 @@ async function post(collectionName, data) {
 }
 async function put(collectionName, data) {
   try {
-
+    await setDoc(doc(db, collectionName, data.id), data);
+    return data
   } catch (err) {
     loggerService.error(`Had issue updating document in ${collectionName} collection with data: ${data}`)
     throw err

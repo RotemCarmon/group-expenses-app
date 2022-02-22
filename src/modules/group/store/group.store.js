@@ -24,18 +24,27 @@ export default {
   },
   actions: {
     async loadGroups({ commit }, { filterBy }) {
+      commit({ type: 'setLoading', isLoading: true }, { root: true })
       try {
+        // set filterBy 
         const groups = await groupService.getGroups()
         commit({ type: 'setGroups', groups })
       } catch (err) {
         loggerService.error(err)
+      } finally {
+        commit({ type: 'setLoading', isLoading: false }, { root: true })
       }
     },
-    async getGroupById({ }, {groupId}) {
+    async getGroupById({commit }, { groupId }) {
+      commit({ type: 'setLoading', isLoading: true }, { root: true })
       try {
         return await groupService.getGroupById(groupId)
       } catch (err) {
         loggerService.error(err)
+      } finally {
+        commit({ type: 'setLoading', isLoading: false }, { root: true })
+      }
+    },
     async saveGroup({ commit }, { group }) {
       commit({ type: 'setLoading', isLoading: true }, { root: true })
       try {

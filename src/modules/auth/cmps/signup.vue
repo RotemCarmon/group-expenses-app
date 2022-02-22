@@ -59,7 +59,10 @@ export default {
     async doSignup() {
       const isValid = this.validate();
       if (!isValid) return;
-      this.$store.dispatch({ type: 'authStore/signup', userCreds: this.creds });
+      this.$store.dispatch({
+        type: 'authStore/signup',
+        userCreds: this.creds,
+      });
     },
     validate() {
       this.usernameError = '';
@@ -78,6 +81,10 @@ export default {
       if (!this.creds.password) {
         this.passwordError = 'Must enter password';
         isValid = false;
+      } else if(this.creds.password.length < 6) {
+        this.passwordError = 'Password should be at least 6 characters';
+        isValid = false;
+
       }
       if (this.passwordConfirm !== this.creds.password) {
         this.passwordConfirmError = "Passwords don't match";

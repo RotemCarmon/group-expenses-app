@@ -11,19 +11,25 @@ async function getGroups(filterBy = {}) {
   // Build criteria
   return await firebaseService.query(COLLECTION_NAME, filterBy)
 }
-
-
 async function getGroupById(groupId) {
-  console.log('groupId:', groupId)
-  // return await httpService.get(`${BASE_ID}/${groupId})
+  return await firebaseService.get(COLLECTION_NAME, groupId)
+}
 
-  return await storageService.get(COLLECTION_NAME, groupId)
+async function saveGroup(group) {
+  if(group.id) {
+    return await firebaseService.put(COLLECTION_NAME, group)
+  } else {
+    return await firebaseService.post(COLLECTION_NAME, group)
+    
+  }
 }
 
 export const groupService = {
   getGroups,
   getGroupById,
-  getEmptyGroup
+  getEmptyGroup,
+  getEmptyMember,
+  saveGroup
 }
 
 function getEmptyGroup() {

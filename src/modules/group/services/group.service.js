@@ -35,10 +35,18 @@ function getEmptyGroup() {
   }
 }
 
+function getEmptyMember() {
+  return {
+    name: '',
+    email:'',
+    id: makeId(8)
+  }
+}
+
 function _getDefaultGroups() {
   return [
     {
-      _id: makeId(8),
+      id: makeId(8),
       name: 'Bansko 2022',
       description: 'Bansko trip calculating money to split',
       members: [
@@ -53,7 +61,7 @@ function _getDefaultGroups() {
       }
     },
     {
-      _id: makeId(8),
+      id: makeId(8),
       name: 'BBQ at Yogev\'s',
       description: 'Spliting money for meat and drinks',
       members: [

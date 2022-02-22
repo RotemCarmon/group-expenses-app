@@ -1,19 +1,15 @@
 import { httpService } from '@/modules/common/services/http.service.js'
 import { storageService } from '@/modules/common/services/async-storage.service.js'
 
+import { firebaseService } from '@/modules/common/services/firestore.service.js';
+
 import { makeId } from '@/modules/common/services/util.service.js'
 
-const BASE_URL = 'group'
+const COLLECTION_NAME = 'group'
 
 async function getGroups(filterBy = {}) {
-  // return await httpService.get(BASE_URL, { ...filterBy })
-
-  let groups = await storageService.query(BASE_URL)
-  if (!groups || !groups.length) {
-    groups = _getDefaultGroups()
-    storageService.postMany(BASE_URL, groups)
-  }
-  return groups
+  // Build criteria
+  return await firebaseService.query(COLLECTION_NAME, filterBy)
 }
 
 
@@ -21,7 +17,7 @@ async function getGroupById(groupId) {
   console.log('groupId:', groupId)
   // return await httpService.get(`${BASE_ID}/${groupId})
 
-  return await storageService.get(BASE_URL, groupId)
+  return await storageService.get(COLLECTION_NAME, groupId)
 }
 
 export const groupService = {

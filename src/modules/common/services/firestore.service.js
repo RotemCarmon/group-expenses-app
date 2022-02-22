@@ -1,20 +1,49 @@
-import { getFirestore, collection, addDoc } from "firebase/firestore"
+import { getFirestore, collection, getDoc, setDoc, doc } from "firebase/firestore"
+import { loggerService } from '@/modules/common/services/logger.service.js'
 const db = getFirestore()
 
 async function query(collectionName, filterBy) {
+  try {
 
+  } catch (err) {
+    loggerService.error(`Had issue quering documents from ${collectionName} collection`)
+    throw err
+  }
 }
-async function get(collectionName, filterBy) {
-
+async function get(collectionName, id) {
+  try {
+    const docRef = doc(db, collectionName, id);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data()
+  } catch (err) {
+    loggerService.error(`Had issue getting document from ${collectionName} collection with id: ${id}`)
+    throw err
+  }
 }
 async function post(collectionName, data) {
-  return await addDoc(collection(db, collectionName), data);
+  try {
+    return await setDoc(doc(db, collectionName, data.id), data);
+  } catch (err) {
+    loggerService.error(`Had issue saving document to ${collectionName} collection with data: ${data}`)
+    throw err
+  }
 }
 async function put(collectionName, data) {
+  try {
+
+  } catch (err) {
+    loggerService.error(`Had issue updating document in ${collectionName} collection with data: ${data}`)
+    throw err
+  }
 
 }
-async function remove(collectionName, filterBy) {
+async function remove(collectionName, id) {
+  try {
 
+  } catch (err) {
+    loggerService.error(`Had issue removing document from ${collectionName} collection with id: ${id}`)
+    throw err
+  }
 }
 
 export const firebaseService = {

@@ -58,6 +58,7 @@ function calcSummary(sumPerMember, equalExpense) {
 }
 
 function getSummary(expenses) {
+  if(!expenses) return 
   const sumPerMember = getSumPerMember(expenses)
   const equalExpense = getEqualExpense(expenses)
   return calcSummary(sumPerMember, equalExpense)

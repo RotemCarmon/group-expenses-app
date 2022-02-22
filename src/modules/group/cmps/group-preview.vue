@@ -14,14 +14,13 @@ props: {
 },
 methods: {
   editGroup() {
-    console.log('Editing group', this.group.name);
-    this.$router.replace(`group/edit/${this.group._id}`)
+    this.$router.replace(`group/edit/${this.group.id}`)
   },
   removeGroup() {
     console.log('Removing group', this.group.name);
   },
   goToGroupDetails(){
-    this.$router.push('group/'+this.group._id)
+    this.$router.push('group/'+this.group.id)
     
   }
 },

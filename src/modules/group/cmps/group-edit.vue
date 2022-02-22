@@ -24,19 +24,25 @@
             v-for="member in groupToEdit.members"
             :key="member.id"
             :member="member"
+            @edit="editMember"
           />
         </div>
-        <button
-          @click="isAddMember = !isAddMember"
-          class="add-member btn-dashed"
-        >
+        <button @click="editMember()" class="add-member btn-dashed">
           + Add Member
         </button>
       </div>
     </main>
-    <button class="btn dark buttom-btn create-btn">Save</button>
+    <button @click="saveGroup" class="btn dark buttom-btn create-btn">
+      Save
+    </button>
+
     <transition name="slide-down" mode="out-in">
-      <memberEdit v-if="isAddMember" @close="isAddMember = false" />
+      <memberEdit
+        v-if="isAddMember"
+        @close="isAddMember = false"
+        @save="saveMember"
+        :member="memberToEdit"
+      />
     </transition>
   </section>
 </template>
@@ -52,12 +58,28 @@ export default {
       edit: false,
       groupToEdit: null,
       isAddMember: false,
+      memberToEdit: null,
     };
   },
   methods: {
-    addMember() {},
+    editMember(member) {
+      if (!member) member = groupService.getEmptyMember();
+      this.memberToEdit = { ...member };
+      this.isAddMember = true;
+    },
+    saveMember(member) {
+      const idx = this.groupToEdit.members.findIndex((m) => m.id === member.id);
+      if (idx === -1) {
+        this.groupToEdit.members.push(member);
+      } else {
+        this.groupToEdit.members.splice(idx, 1, member);
+      }
+      this.isAddMember = false;
+      this.memberToEdit = null;
+    },
     async getGroup() {
       const { groupId } = this.$route.params;
+
       this.edit = !!groupId;
       if (groupId) {
         const group = await this.$store.dispatch({
@@ -66,8 +88,26 @@ export default {
         });
         this.groupToEdit = JSON.parse(JSON.stringify(group));
       } else {
-        this.groupToEdit = groupService.getEmptyGroup();
+        const { username, email, id } =
+          this.$store.getters['authStore/loggedInUser'];
+        const group = groupService.getEmptyGroup();
+        group.members.push({ id, email, name: username, isOwner: true });
+        this.groupToEdit = group;
       }
+    },
+    async saveGroup() {
+      const members = this.groupToEdit.members.map((m) => m.name);
+      members.forEach((member) => {
+        if (!this.groupToEdit.expenses[member]) {
+          this.groupToEdit.expenses[member] = [];
+        }
+      });
+
+      const { id } = await this.$store.dispatch({
+        type: 'groupStore/saveGroup',
+        group: this.groupToEdit,
+      });
+      this.$router.push('/group/' + id);
     },
   },
   created() {

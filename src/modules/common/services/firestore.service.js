@@ -1,9 +1,16 @@
-import { getFirestore, collection, getDoc, setDoc, doc } from "firebase/firestore"
+import { getFirestore, collection, getDoc, setDoc, doc, query as _query, where, getDocs } from "firebase/firestore"
 import { loggerService } from '@/modules/common/services/logger.service.js'
 const db = getFirestore()
 
 async function query(collectionName, filterBy) {
   try {
+    const q = _query(collection(db, collectionName));
+    const querySnapshot = await getDocs(q);
+    const data = []
+    querySnapshot.forEach((doc) => {
+      data.push(doc.data())
+    });
+    return data
 
   } catch (err) {
     loggerService.error(`Had issue quering documents from ${collectionName} collection`)

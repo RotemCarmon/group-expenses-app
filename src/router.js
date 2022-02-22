@@ -28,17 +28,16 @@ export const router = new VueRouter({
 });
 
 
-// let _store;
-// export const initStore = store => _store = store;
+let _store;
+export const initStore = store => _store = store;
 
 
-// router.beforeEach(async (to, from, next) => {
-//   if (['auth'].includes(to.name)) return next();
-
-//   let loggedInUser = _store.getters['authStore/loggedInUser'];
-//   console.log('loggedInUser:', loggedInUser)
-//   if(!loggedInUser) {
-//     // get loggedInUser from sessionStorage
-//   }
-//   next()
-// })
+router.beforeEach(async (to, from, next) => {
+  let loggedInUser = _store.getters['authStore/loggedInUser'];
+  console.log('loggedInUser:', loggedInUser)
+  if (!loggedInUser) {
+    if (['login-signup'].includes(to.name)) return next();
+    return router.push('/auth').catch(() => { });
+  }
+  next()
+})

@@ -24,6 +24,7 @@
     }
 
     .error {
-        color: $red;
+        color: $statusMaroon;
+        font-size: $fontSizeNormal;
     }
 }

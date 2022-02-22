@@ -36,6 +36,18 @@ export default {
         return await groupService.getGroupById(groupId)
       } catch (err) {
         loggerService.error(err)
+    async saveGroup({ commit }, { group }) {
+      commit({ type: 'setLoading', isLoading: true }, { root: true })
+      try {
+        const type = (!!group.id) ? 'updateGroup' : 'addGroup'
+
+        const savedGroup = await groupService.saveGroup(group)
+        commit({ type, group: savedGroup })
+        return savedGroup
+      } catch (err) {
+        loggerService.error(err)
+      } finally {
+        commit({ type: 'setLoading', isLoading: false }, { root: true })
       }
     }
   },

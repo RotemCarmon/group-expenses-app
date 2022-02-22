@@ -1,7 +1,18 @@
 <template>
   <section class="app-header-container">
-    <div class="back" @click="back" v-if="hasBack">
-      <img :src="require('@/assets/icons/arrow-left.svg')" />
+    <div class="left-container">
+      <div class="back" @click="back" v-if="hasBack">
+        <img :src="require('@/assets/icons/arrow-left.svg')" />
+      </div>
+    </div>
+    <div class="avatar-container">
+      <img
+        v-if="!loggedInUser"
+        :src="require('@/assets/icons/avatar.svg')"
+        class="default-avatar"
+      />
+      <img v-else-if="loggedInUser.imgUrl" :src="loggedInUser.imgUrl" />
+      <div v-else class="avatar">{{ avatarCapital }}</div>
     </div>
   </section>
 </template>
@@ -12,9 +23,8 @@ export default {
   methods: {
     back() {
       let homeRoute = '/';
-      if(this.$route.name === 'expense-edit') {
+      if (this.$route.name === 'expense-edit') {
         homeRoute = `/group/${this.$route.params.groupId}`;
-
       } else if (this.$route.path.includes('group')) {
         homeRoute = '/group';
       }
@@ -27,6 +37,12 @@ export default {
       const noBackCmps = ['group-list', 'login-signup'];
       return !noBackCmps.includes(this.$route.name);
     },
-  }
+    loggedInUser() {
+      return this.$store.getters['authStore/loggedInUser'];
+    },
+    avatarCapital() {
+      return this.loggedInUser.username.charAt(0).toUpperCase();
+    },
+  },
 };
 </script>

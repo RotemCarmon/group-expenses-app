@@ -5,7 +5,7 @@
         <img :src="require('@/assets/icons/arrow-left.svg')" />
       </div>
     </div>
-    <div class="avatar-container">
+    <div class="avatar-container" @click="isMenuOpen = true">
       <img
         v-if="!loggedInUser"
         :src="require('@/assets/icons/avatar.svg')"
@@ -14,12 +14,24 @@
       <img v-else-if="loggedInUser.imgUrl" :src="loggedInUser.imgUrl" />
       <div v-else class="avatar">{{ avatarCapital }}</div>
     </div>
+
+    <div class="screen" :class="{open:isMenuOpen}" ></div>
+    <transition name="slide-right" mode="out-in">
+      <user-menu v-if="isMenuOpen" @close="isMenuOpen = false" />
+    </transition>
+
   </section>
 </template>
 
 <script>
+import userMenu from './user-menu';
 export default {
   name: 'app-header',
+  data() {
+    return {
+      isMenuOpen: false,
+    };
+  },
   methods: {
     back() {
       let homeRoute = '/';
@@ -43,6 +55,9 @@ export default {
     avatarCapital() {
       return this.loggedInUser.username.charAt(0).toUpperCase();
     },
+  },
+  components: {
+    userMenu,
   },
 };
 </script>

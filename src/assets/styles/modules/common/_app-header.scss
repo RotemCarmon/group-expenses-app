@@ -42,4 +42,15 @@
     .left-container {
         min-width: 1px;
     }
+
+    .screen {
+        position: fixed;
+        inset: 0;
+        transition: background-color 0.3s;
+        z-index: -100;
+        &.open {
+            background-color: rgba(0, 0, 0, 0.438);
+            z-index: 98;
+        }
+    }
 }

@@ -1,4 +1,4 @@
-import { getFirestore, collection, getDoc, setDoc, doc, query as _query, where, getDocs } from "firebase/firestore"
+import { getFirestore, collection, getDoc, setDoc, addDoc, doc, query as _query, where, getDocs } from "firebase/firestore"
 import { loggerService } from '@/modules/common/services/logger.service.js'
 const db = getFirestore()
 
@@ -29,7 +29,10 @@ async function get(collectionName, id) {
 }
 async function post(collectionName, data) {
   try {
-    return await setDoc(doc(db, collectionName, data.id), data);
+    const docRef = doc(collection(db, collectionName));
+    data.id = docRef.id
+    await setDoc(docRef, data);
+    return data
   } catch (err) {
     loggerService.error(`Had issue saving document to ${collectionName} collection with data: ${data}`)
     throw err

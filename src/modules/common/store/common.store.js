@@ -18,7 +18,7 @@ export default {
   actions: {
     async loadCurrencies({ commit }) {
       try {
-        const currencies = await currencyService.getCurrencyCodes();
+        const currencies = await currencyService.getCurrencyData();
         commit({ type: 'setCurrencies', currencies })
       } catch (err) {
         loggerService.error(err)

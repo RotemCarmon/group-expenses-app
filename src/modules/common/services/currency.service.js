@@ -3,7 +3,7 @@ import { storageService } from './storage.service'
 
 const API_KEY = '50f13780-964b-11ec-9134-29068c847baf'
 
-async function getCurrencyCodes() {
+async function getCurrencyData() {
   const expTime = 1000 * 60 * 60 * 24 * 5 // 24h
   try {
     let currencyData = storageService.load('currency')
@@ -14,7 +14,6 @@ async function getCurrencyCodes() {
       currencyData = {
         exp: Date.now() + expTime,
         data: res.data.data
-
       }
       let currencyData = storageService.save('currency', currencyData)
     }
@@ -27,5 +26,5 @@ async function getCurrencyCodes() {
 }
 
 export const currencyService = {
-  getCurrencyCodes
+  getCurrencyData
 }

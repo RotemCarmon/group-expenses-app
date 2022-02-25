@@ -7,7 +7,11 @@
 <script>
 export default {
   created() {
-    this.$store.dispatch({type: 'groupStore/loadGroups'})
+    const loggedInUser = this.$store.getters['authStore/loggedInUser'];
+    this.$store.dispatch({
+      type: 'groupStore/loadGroups',
+      filterBy: { array: [ 'memberEmails', loggedInUser.email ] },
+    });
   },
-}
+};
 </script>

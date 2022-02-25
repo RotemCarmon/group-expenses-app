@@ -20,8 +20,9 @@ async function signup(creds) {
     creds.password
   );
   creds.id = user.uid
+  creds.createdAt = Date.now()
   delete creds.password
-  const loggedInUser = await userService.addUser(creds)
+  const loggedInUser = await userService.updateUser(creds)
   _saveLocalUser(loggedInUser)
   return loggedInUser
 }

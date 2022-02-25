@@ -14,8 +14,11 @@ export default {
   name: 'App',
   computed: {
     isLoading() {
-      return this.$store.getters.isLoading 
-    }
+      return this.$store.getters.isLoading;
+    },
+  },
+  created() {
+    this.$store.dispatch({ type: 'commonStore/loadCurrencies' });
   },
   components: {
     appHeader,

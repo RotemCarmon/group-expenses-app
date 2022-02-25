@@ -4,7 +4,7 @@ import { loggerService } from '@/modules/common/services/logger.service.js'
 
 const initialState = () => {
   return {
-    groups: null
+    groups: []
   }
 }
 

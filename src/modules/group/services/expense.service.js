@@ -1,3 +1,4 @@
+import { makeId } from '@/modules/common/services/util.service.js'
 
 function getTotalExpenses(expenses) {
   let sum = 0
@@ -58,7 +59,7 @@ function calcSummary(sumPerMember, equalExpense) {
 }
 
 function getSummary(expenses) {
-  if(!expenses) return 
+  if (!expenses) return
   const sumPerMember = getSumPerMember(expenses)
   const equalExpense = getEqualExpense(expenses)
   return calcSummary(sumPerMember, equalExpense)
@@ -68,5 +69,16 @@ export const expenseService = {
   getSumPerMember,
   getEqualExpense,
   getSummary,
-  getTotalExpenses
+  getTotalExpenses,
+  getEmptyExpense
+}
+
+function getEmptyExpense() {
+  return {
+    id: makeId(),
+    amount: 0,
+    excludes: [],
+    description: '',
+    currency: ''
+  }
 }

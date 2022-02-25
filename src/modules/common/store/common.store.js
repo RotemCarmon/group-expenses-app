@@ -8,7 +8,7 @@ export default {
   },
   getters: {
     currencies({ currencies }) { return currencies },
-    currencyCodes({ currencies }) { return Object.keys(currencies) }
+    currencyCodes({ currencies }) { return Object.keys(currencies).sort() }
   },
   mutations: {
     setCurrencies(state, { currencies }) {

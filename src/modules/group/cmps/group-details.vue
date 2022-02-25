@@ -14,7 +14,7 @@
             class="break-down"
             :class="{ pos: amount >= 0, neg: amount < 0 }"
           >
-            {{ amount.toFixed(1) }}
+            {{ parseFloat(amount.toFixed(2)) }}
           </div>
         </div>
       </template>

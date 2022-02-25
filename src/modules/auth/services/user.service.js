@@ -7,7 +7,7 @@ async function addUser(user) {
   return user
 }
 async function updateUser(user) {
-  await firebaseService.post(COLLECTION_NAME, user)
+  await firebaseService.put(COLLECTION_NAME, user)
   return user
 }
 

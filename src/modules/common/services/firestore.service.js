@@ -2,9 +2,10 @@ import { getFirestore, collection, getDoc, setDoc, addDoc, doc, query as _query,
 import { loggerService } from '@/modules/common/services/logger.service.js'
 const db = getFirestore()
 
-async function query(collectionName, filterBy) {
+async function query(collectionName, filterBy = {}) {
+  const { key, value, operator } = _buildCriteria(filterBy)
   try {
-    const q = _query(collection(db, collectionName));
+    const q = _query(collection(db, collectionName), where(key, operator, value));
     const querySnapshot = await getDocs(q);
     const data = []
     querySnapshot.forEach((doc) => {
@@ -64,4 +65,16 @@ export const firebaseService = {
   post,
   put,
   remove
+}
+
+
+function _buildCriteria(filterBy) {
+  const criteria = {}
+  if (filterBy.array) {
+    criteria.operator = 'array-contains'
+    const [key, value] = filterBy.array
+    criteria.key = key
+    criteria.value = value
+  }
+  return criteria
 }

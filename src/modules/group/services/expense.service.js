@@ -77,7 +77,7 @@ function getEmptyExpense() {
   return {
     id: makeId(),
     amount: 0,
-    excludes: [],
+    exclude: [],
     description: '',
     currency: ''
   }

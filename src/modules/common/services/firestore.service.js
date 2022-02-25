@@ -31,6 +31,7 @@ async function post(collectionName, data) {
   try {
     const docRef = doc(collection(db, collectionName));
     data.id = docRef.id
+    data.createdAt = Date.now()
     await setDoc(docRef, data);
     return data
   } catch (err) {

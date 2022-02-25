@@ -19,10 +19,12 @@ async function signup(creds) {
     creds.email,
     creds.password
   );
-  creds.id = user.uid
-  creds.createdAt = Date.now()
-  delete creds.password
-  const loggedInUser = await userService.updateUser(creds)
+  const userTosave = { ...creds, prefs: {currency: 'USD'} }
+  userTosave.id = user.uid
+  userTosave.createdAt = Date.now()
+
+  delete userTosave.password
+  const loggedInUser = await userService.updateUser(userTosave)
   _saveLocalUser(loggedInUser)
   return loggedInUser
 }

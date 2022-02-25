@@ -1,5 +1,5 @@
 
-function store(key, any) {
+function save(key, any) {
     sessionStorage[key] = JSON.stringify(any);
 }
 
@@ -12,8 +12,8 @@ function clear(key) {
     sessionStorage.removeItem(key);
 }
 
-module.exports = {
-    store,
+export const storageService = {
+    save,
     load,
     clear
 }

@@ -1,6 +1,6 @@
 <template>
   <section class="multi-select-container">
-    <div class="box" @click="toggleMenu">
+    <div class="box" @click.self="toggleMenu">
       <span class="placeholder" :class="{ multi: isMulti }">
         {{ isMulti ? placeholder : val }}
       </span>
@@ -11,6 +11,21 @@
     </div>
     <transition name="fade" mode="out-in">
       <div v-if="isOpen" class="drop-down-select">
+        <div class="top-selection" v-if="topSelections">
+          <label
+            class="drop-down-item"
+            v-for="item in topSelections"
+            :key="item"
+            :class="{ multi: isMulti }"
+          >
+            <input
+              type="checkbox"
+              @change="toggleCheck(item)"
+              :checked="val.includes(item)"
+            />
+            {{ item }}
+          </label>
+        </div>
         <label
           class="drop-down-item"
           v-for="item in items"
@@ -37,6 +52,7 @@ export default {
     placeholder: { type: String },
     isMulti: { type: Boolean, default: true },
     value: { type: Array | String },
+    topSelections: { type: Array, required: false },
   },
   data() {
     return {
@@ -48,6 +64,7 @@ export default {
     toggleMenu() {
       this.isOpen = !this.isOpen;
     },
+
     toggleCheck(item) {
       if (!this.isMulti) {
         this.val = item;
@@ -60,6 +77,9 @@ export default {
         }
       }
       this.$emit('input', this.val);
+      if (!this.isMulti) {
+        this.toggleMenu();
+      }
     },
   },
   created() {

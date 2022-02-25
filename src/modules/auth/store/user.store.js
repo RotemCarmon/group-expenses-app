@@ -9,9 +9,10 @@ export default {
   getters: {},
   mutations: {},
   actions: {
-    async updateUser({ }, {user}) {
+    async updateUser({commit }, {user}) {
       try {
         const savedUser = await userService.updateUser(user)
+        commit({ type: 'authStore/setLoggedInUser', loggedInUser: savedUser }, {root:true})
       } catch (err) {
         loggerService.error(err)
       }

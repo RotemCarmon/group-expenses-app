@@ -1,15 +1,23 @@
+import { currencyService } from '@/modules/common/services/currency.service.js'
+import { loggerService } from '@/modules/common/services/logger.service.js'
 import { makeId } from '@/modules/common/services/util.service.js'
 
-function getTotalExpenses(expenses) {
+
+var gCurrencyData
+
+
+async function getTotalExpenses(expenses, userCurrency) {
+  gCurrencyData = await _getCurrencyRate()
   let sum = 0
   for (const member in expenses) {
     const memberExpenses = expenses[member]
     sum += memberExpenses.reduce((acc, expense) => {
-      acc += expense.amount
+      const amount = _convertToBase(expense.amount, expense.currency)
+      acc += amount
       return acc
     }, 0)
   }
-  return sum
+  return _convertFromBase(sum, userCurrency)
 }
 
 // This function get the amount each member HAVE paid
@@ -19,7 +27,9 @@ function getSumPerMember(expenses) {
   members.forEach(member => {
     const sum = expenses[member].reduce((acc, expense) => {
       if (!expense) return acc
-      acc += expense.amount
+      // convert to base currency
+      const amount = _convertToBase(expense.amount, expense.currency)
+      acc += amount
       return acc
     }, 0)
     membersSum[member] = sum
@@ -38,10 +48,14 @@ function getEqualExpense(expenses) {
   })
 
   members.forEach(member => {
+    if (!equalExpense[member]) equalExpense[member] = 0
     expenses[member].forEach(expense => {
       members.forEach(_member => {
         if (expense.exclude.includes(_member)) return
-        equalExpense[_member] += expense.amount / (members.length - expense.exclude.length)
+        if (!equalExpense[_member]) equalExpense[_member] = 0
+        // convert to base currency => expense.amount
+        const amount = _convertToBase(expense.amount, expense.currency)
+        equalExpense[_member] += amount / (members.length - expense.exclude.length)
       })
     })
   })
@@ -49,20 +63,28 @@ function getEqualExpense(expenses) {
 }
 
 // This function calculates the difference between each member paid and what he should've pay
-function calcSummary(sumPerMember, equalExpense) {
+function calcSummary(sumPerMember, equalExpense, userCurrency) {
   const members = Object.keys(sumPerMember)
   const summary = {}
   members.forEach(member => {
-    summary[member] = sumPerMember[member] - equalExpense[member]
+    // convert to user pref currency
+    const amountDiff = sumPerMember[member] - equalExpense[member]
+    const amount = _convertFromBase(amountDiff, userCurrency)
+    summary[member] = amount
   })
   return summary
 }
 
-function getSummary(expenses) {
-  if (!expenses) return
-  const sumPerMember = getSumPerMember(expenses)
-  const equalExpense = getEqualExpense(expenses)
-  return calcSummary(sumPerMember, equalExpense)
+async function getSummary(expenses, userCurrency) {
+  try {
+    if (!expenses) return
+    gCurrencyData = await _getCurrencyRate()
+    const sumPerMember = getSumPerMember(expenses)
+    const equalExpense = getEqualExpense(expenses)
+    return calcSummary(sumPerMember, equalExpense, userCurrency)
+  } catch (err) {
+    loggerService.error(err)
+  }
 }
 
 export const expenseService = {
@@ -81,4 +103,19 @@ function getEmptyExpense() {
     description: '',
     currency: ''
   }
+}
+
+
+function _convertToBase(amount = 0, currency) {
+  const rate = gCurrencyData[currency] || 1
+  return amount / rate
+}
+
+function _convertFromBase(amount = 0, currency) {
+  const rate = gCurrencyData[currency] || 1
+  return amount * rate
+}
+
+async function _getCurrencyRate() {
+  return await currencyService.getCurrencyData()
 }

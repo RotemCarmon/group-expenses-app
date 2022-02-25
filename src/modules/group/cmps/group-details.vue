@@ -3,7 +3,9 @@
     <main>
       <div class="page-header">
         <div class="title">{{ group.name }}</div>
-        <button class="add-expense-btn btn dark" @click="goToAddExpense">+ Add Expense</button>
+        <button class="add-expense-btn btn dark" @click="goToAddExpense">
+          + Add Expense
+        </button>
       </div>
       <template v-if="summary">
         <div class="member" v-for="(amount, member) in summary" :key="member">
@@ -24,7 +26,7 @@
     </main>
     <div class="total-spent">
       Total Spent
-      <span>{{ totalSpent }}</span>
+      <span>{{ parseFloat(totalSpent.toFixed(2)) }}{{currencySymble}}</span>
     </div>
   </section>
 </template>
@@ -36,13 +38,30 @@ export default {
   data() {
     return {
       group: null,
-      totalSpent: 120,
+      totalSpent: 0,
       summary: null,
     };
   },
+  computed: {
+    loggedInUser() {
+      return this.$store.getters['authStore/loggedInUser'];
+    },
+    userCurrency() {
+      return this.loggedInUser?.prefs?.currency
+    },
+    currencySymble(){
+      const res = new Intl.NumberFormat({}, { style: 'currency', currency: this.userCurrency }).format(this.totalSpent)
+      return res.charAt(0)
+    }
+
+  },
   methods: {
     async getExpenses(expenses) {
-      const summary = expenseService.getSummary(expenses);
+      const summary = await expenseService.getSummary(
+        expenses,
+        this.userCurrency
+      );
+      // make sure this value updates when user pref currency is updated
       this.summary = summary;
     },
     async getGroup() {
@@ -55,12 +74,12 @@ export default {
       this.group = group;
       return group;
     },
-    getTotalExpenses(expenses) {
-      this.totalSpent = expenseService.getTotalExpenses(expenses);
+    async getTotalExpenses(expenses) {
+      this.totalSpent = await expenseService.getTotalExpenses(expenses, this.userCurrency);
     },
     goToAddExpense() {
-      this.$router.push(`${this.$route.fullPath}/expense`)
-    }
+      this.$router.push(`${this.$route.fullPath}/expense`);
+    },
   },
   async created() {
     const group = await this.getGroup();

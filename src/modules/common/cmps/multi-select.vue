@@ -63,7 +63,11 @@ export default {
     },
   },
   created() {
-    this.val = this.isMulti ? [] : '';
+    if (this.value) {
+      this.val = this.value;
+    } else {
+      this.val = this.isMulti ? [] : '';
+    }
   },
 };
 </script>

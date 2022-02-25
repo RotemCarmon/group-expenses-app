@@ -36,7 +36,7 @@ export default {
       commit({ type: 'setLoading', isLoading: true }, { root: true })
       try {
         // set filterBy 
-        const groups = await groupService.getGroups()
+        const groups = await groupService.getGroups(filterBy)
         commit({ type: 'setGroups', groups })
       } catch (err) {
         loggerService.error(err)

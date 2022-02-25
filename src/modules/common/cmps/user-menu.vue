@@ -22,7 +22,22 @@
     </ul>
     <div class="currency">
       <p>Set default currency</p>
-      <multi-select :items="currencies" :isMulti="false" />
+      <multi-select
+        :items="currencyCodes"
+        :isMulti="false"
+        :topSelections="topSelections"
+        v-model="currency"
+        class="currency-select"
+      />
+      <transition name="fade">
+        <button
+          v-if="isCurrencyChange"
+          @click="updateCurrency"
+          class="btn save-btn"
+        >
+          Save
+        </button>
+      </transition>
     </div>
   </section>
 </template>
@@ -33,7 +48,9 @@ export default {
   name: 'user-menu',
   data() {
     return {
-      currencies: ['USD', 'EUR', 'NIS'],
+      currency: this.loggedInUser && this.loggedInUser.prefs.currency,
+      topSelections: ['USD', 'EUR'],
+      isCurrencyChange: false,
     };
   },
   methods: {
@@ -45,14 +62,34 @@ export default {
       this.$emit('close');
       this.$store.dispatch({ type: 'authStore/signout' });
     },
+    updateCurrency() {
+      const newUser = {
+        ...this.loggedInUser,
+        prefs: { ...this.loggedInUser?.prefs, currency: this.currency },
+      };
+      this.$store.dispatch({ type: 'userStore/updateUser', user: newUser });
+      this.isCurrencyChange = false;
+    },
   },
   computed: {
     loggedInUser() {
       return this.$store.getters['authStore/loggedInUser'];
     },
+    currencyCodes() {
+      return this.$store.getters['commonStore/currencyCodes'];
+    },
+  },
+  created() {
+    this.currency = this.loggedInUser?.prefs?.currency;
   },
   components: {
     multiSelect,
+  },
+  watch: {
+    currency(val) {
+      if (val === this.loggedInUser?.prefs?.currency) return;
+      this.isCurrencyChange = true;
+    },
   },
 };
 </script>

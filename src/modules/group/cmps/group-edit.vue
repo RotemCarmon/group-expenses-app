@@ -71,6 +71,7 @@ export default {
       const idx = this.groupToEdit.members.findIndex((m) => m.id === member.id);
       if (idx === -1) {
         this.groupToEdit.members.push(member);
+        this.groupToEdit.memberEmails.push(member.email);
       } else {
         this.groupToEdit.members.splice(idx, 1, member);
       }
@@ -92,14 +93,16 @@ export default {
           this.$store.getters['authStore/loggedInUser'];
         const group = groupService.getEmptyGroup();
         group.members.push({ id, email, name: username, isOwner: true });
+        group.memberEmails = [email];
         this.groupToEdit = group;
       }
     },
     async saveGroup() {
       const members = this.groupToEdit.members.map((m) => m.name);
       members.forEach((member) => {
-        if (!this.groupToEdit.expenses[member]) {
-          this.groupToEdit.expenses[member] = [];
+        const lowCaseMember = member.toLowerCase()
+        if (!this.groupToEdit.expenses[lowCaseMember]) {
+          this.groupToEdit.expenses[lowCaseMember] = [];
         }
       });
 

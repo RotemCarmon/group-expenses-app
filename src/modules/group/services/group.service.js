@@ -7,8 +7,7 @@ import { makeId } from '@/modules/common/services/util.service.js'
 
 const COLLECTION_NAME = 'group'
 
-async function getGroups(filterBy = {}) {
-  // Build criteria
+async function getGroups(filterBy) {
   return await firebaseService.query(COLLECTION_NAME, filterBy)
 }
 async function getGroupById(groupId) {
@@ -37,7 +36,8 @@ function getEmptyGroup() {
     name: '',
     description: '',
     members: [],
-    expenses: {}
+    expenses: {},
+    memberEmails:[]
   }
 }
 

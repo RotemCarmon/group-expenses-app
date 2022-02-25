@@ -16,7 +16,7 @@
             class="break-down"
             :class="{ pos: amount >= 0, neg: amount < 0 }"
           >
-            {{ parseFloat(amount.toFixed(2)) }}
+            {{ parseFloat(amount.toFixed(2)) }} {{currencySymble}}
           </div>
         </div>
       </template>
@@ -26,7 +26,7 @@
     </main>
     <div class="total-spent">
       Total Spent
-      <span>{{ parseFloat(totalSpent.toFixed(2)) }}{{currencySymble}}</span>
+      <span>{{ parseFloat(totalSpent.toFixed(2)) }} {{currencySymble}}</span>
     </div>
   </section>
 </template>

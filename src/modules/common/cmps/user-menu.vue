@@ -1,10 +1,6 @@
 <template>
-  <section
-    ref="userMenu"
-    tabindex="0"
-    @blur="$emit('close')"
-    class="user-menu-container"
-  >
+  <!-- @blur="$emit('close')" -->
+  <section ref="userMenu" tabindex="0" class="user-menu-container">
     <div class="menu-header">
       <button @click="$emit('close')" class="close-btn">
         <img :src="require('@/assets/icons/close.svg')" />
@@ -31,6 +27,7 @@
         :items="currencyCodes"
         :isMulti="false"
         :topSelections="topSelections"
+        :hasSearch="true"
         v-model="currency"
         class="currency-select"
       />
@@ -76,7 +73,7 @@ export default {
       this.$store.dispatch({ type: 'userStore/updateUser', user: newUser });
       this.isCurrencyChange = false;
       eventBus.$emit('currency-updated', this.currency);
-    }
+    },
   },
   computed: {
     loggedInUser() {

@@ -24,6 +24,7 @@
         <multi-select
           :items="currencyCodes"
           :isMulti="false"
+          :hasSearch="true"
           :topSelections="['USD', 'EUR']"
           v-model="expenseToEdit.currency"
         />

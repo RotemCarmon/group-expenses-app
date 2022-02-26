@@ -1,7 +1,15 @@
 <template>
   <section class="multi-select-container">
-    <div class="box" @click.self="toggleMenu">
-      <span class="placeholder" :class="{ multi: isMulti }">
+    <div class="box" @click="toggleMenu">
+      <input
+        v-if="hasSearch"
+        type="search"
+        class="search-input"
+        :placeholder="isMulti ? placeholder : val"
+        v-model="searchTerm"
+        ref="search"
+      />
+      <span v-else class="placeholder" :class="{ multi: isMulti }">
         {{ isMulti ? placeholder : val }}
       </span>
       <img
@@ -11,7 +19,7 @@
     </div>
     <transition name="fade" mode="out-in">
       <div v-if="isOpen" class="drop-down-select">
-        <div class="top-selection" v-if="topSelections">
+        <div class="top-selection" v-if="topSelections && !searchTerm">
           <label
             class="drop-down-item"
             v-for="item in topSelections"
@@ -28,7 +36,7 @@
         </div>
         <label
           class="drop-down-item"
-          v-for="item in items"
+          v-for="item in itemsToShow"
           :key="item"
           :class="{ multi: isMulti }"
         >
@@ -48,7 +56,8 @@
 export default {
   name: 'multi-select',
   props: {
-    items: { type: Array },
+    hasSearch: { type: Boolean, default: false },
+    items: { type: Array, default: () => [] },
     placeholder: { type: String },
     isMulti: { type: Boolean, default: true },
     value: { type: Array | String },
@@ -58,11 +67,27 @@ export default {
     return {
       isOpen: false,
       val: [],
+      searchTerm: '',
     };
+  },
+  computed: {
+    itemsToShow() {
+      return this.items.filter((item) => {
+        if (!this.searchTerm) return item;
+        return item.includes(this.searchTerm.toUpperCase());
+      });
+    },
   },
   methods: {
     toggleMenu() {
+      if (this.$refs.search == document.activeElement) {
+        this.isOpen = true;
+        return;
+      }
       this.isOpen = !this.isOpen;
+      if (this.isOpen) {
+        this.searchTerm = '';
+      }
     },
 
     toggleCheck(item) {

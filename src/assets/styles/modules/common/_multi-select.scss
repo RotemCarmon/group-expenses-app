@@ -1,5 +1,19 @@
 .multi-select-container {
     position: relative;
+    .search-input {
+        border: none;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        text-transform: uppercase;
+
+        &::-webkit-search-decoration,
+        &::-webkit-search-cancel-button,
+        &::-webkit-search-results-button,
+        &::-webkit-search-results-decoration {
+            display: none;
+        }
+    }
     .box {
         position: relative;
         height: 40px;
@@ -72,6 +86,16 @@
             border-bottom: 1px solid $gray-400;
             margin-bottom: 10px;
             padding-bottom: 10px;
+        }
+
+        .search-box {
+            input {
+                width: 100%;
+                height: 35px;
+                margin-bottom: 10px;
+                border: 1px solid $gray-300;
+                border-radius: 3px;
+            }
         }
     }
 }

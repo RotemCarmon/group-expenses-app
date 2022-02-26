@@ -4,12 +4,13 @@
       {{ member.name }}
       <span class="group-owner" v-if="member.isOwner">Owner</span>
     </div>
-    <action-buttons @edit="editMember" />
+    <div class="ellipsis-icon" @click.stop="$emit('toggleMenu', member)">
+      <img :src="require('@/assets/icons/ellipsis.svg')" />
+    </div>
   </section>
 </template>
 
 <script>
-import { actionButtons } from '@/modules/common/cmps';
 export default {
   name: 'member-preview',
   props: {
@@ -19,9 +20,6 @@ export default {
     editMember() {
       this.$emit('edit', this.member);
     },
-  },
-  components: {
-    actionButtons,
   },
 };
 </script>

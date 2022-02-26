@@ -55,4 +55,11 @@ $header-height: 80px;
             z-index: 98;
         }
     }
+
+    &.load {
+        z-index: 98;
+        .avatar-container {
+            opacity: 0.7;
+        }
+    }
 }

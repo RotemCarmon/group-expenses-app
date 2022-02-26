@@ -1,6 +1,6 @@
 <template>
   <section class="main-app-container">
-    <app-header />
+    <app-header :class="{load: isLoading}" />
     <router-view class="main-container" />
     <div v-if="isLoading" class="loader-container screen">
       <div class="app-loader"></div>

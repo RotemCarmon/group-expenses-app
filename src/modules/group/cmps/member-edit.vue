@@ -5,7 +5,7 @@
         <img :src="require('@/assets/icons/close.svg')" />
       </button>
       <div class="page-header">
-        <div class="title">Add Member</div>
+        <div class="title">{{ isEdit ? 'Edit' : 'Add' }} Member</div>
       </div>
       <input
         type="text"
@@ -33,6 +33,7 @@ export default {
   data() {
     return {
       memberToEdit: null,
+      isEdit: false,
     };
   },
   methods: {
@@ -42,6 +43,7 @@ export default {
   },
   created() {
     this.memberToEdit = this.member;
+    this.isEdit = this.memberToEdit.name ? true : false;
   },
 };
 </script>

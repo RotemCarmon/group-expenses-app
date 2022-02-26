@@ -1,14 +1,16 @@
 <template>
   <section class="group-list-container">
     <div class="page-header">
-      <div class="title">My Groups</div>
+      <div class="list-header">
+        <div class="title">My Groups</div>
+        <button @click="goToAddGroup" class="add-group top-header-btn">
+          Add <img :src="require('@/assets/icons/plus-solid.svg')" />
+        </button>
+      </div>
     </div>
     <div class="group-list">
       <group-preview v-for="group in groups" :key="group.id" :group="group" />
     </div>
-    <button @click="goToAddGroup" class="add-group btn-dashed">
-      + Add Group
-    </button>
   </section>
 </template>
 
@@ -19,7 +21,7 @@ export default {
   methods: {
     goToAddGroup() {
       this.$router.push('/group/edit');
-    }
+    },
   },
   computed: {
     groups() {

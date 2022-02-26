@@ -18,7 +18,12 @@
         />
       </div>
       <div class="members-list-container">
-        <h3 class="members-title">Members</h3>
+        <div class="list-header">
+          <h3 class="members-title">Members</h3>
+          <button @click="editMember()" class="add-member top-header-btn">
+            Add <img :src="require('@/assets/icons/plus-solid.svg')" />
+          </button>
+        </div>
         <div class="members-list">
           <member-preview
             v-for="member in groupToEdit.members"
@@ -27,9 +32,6 @@
             @edit="editMember"
           />
         </div>
-        <button @click="editMember()" class="add-member btn-dashed">
-          + Add Member
-        </button>
       </div>
     </main>
     <button @click="saveGroup" class="btn dark buttom-btn create-btn">
@@ -100,7 +102,7 @@ export default {
     async saveGroup() {
       const members = this.groupToEdit.members.map((m) => m.name);
       members.forEach((member) => {
-        const lowCaseMember = member.toLowerCase()
+        const lowCaseMember = member.toLowerCase();
         if (!this.groupToEdit.expenses[lowCaseMember]) {
           this.groupToEdit.expenses[lowCaseMember] = [];
         }

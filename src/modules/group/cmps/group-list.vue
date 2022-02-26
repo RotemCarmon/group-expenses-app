@@ -23,6 +23,9 @@
         @remove="removeGroup"
         @close="toggleMenu"
       >
+        <template #content-top>
+          <div @click="goToAddGroup" class="line">Add Group</div>
+        </template>
       </option-menu>
     </transition>
   </section>

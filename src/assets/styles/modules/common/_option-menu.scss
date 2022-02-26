@@ -1,0 +1,27 @@
+.option-menu-container {
+    position: fixed;
+    top: calc(100% - 200px);
+    left: 0;
+    right: 0;
+    height: 200px;
+    // transform: translateY(-100%);
+
+    box-shadow: 0 -2px 4px 2px $gray-300;
+    border-radius: 12% 12% 0 0;
+}
+
+.option-list {
+    padding: 25px;
+    .line {
+        @include flex-center;
+        font-size: $fontSizeBig;
+        padding: 16px 0;
+
+        &.delete {
+            color: $red;
+        }
+        &:not(:last-child) {
+            border-bottom: 1px solid $gray-200;
+        }
+    }
+}

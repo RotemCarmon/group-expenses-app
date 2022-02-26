@@ -1,5 +1,17 @@
 .group-list-container {
     .group-list {
         margin-bottom: rem(26px);
+
+        .group-preview-container {
+            font-size: $fontSizeMedium;
+        }
+
+        .ellipsis-icon {
+            padding: 4px;
+            img {
+                height: 25px;
+                // width: 100%;
+            }
+        }
     }
 }

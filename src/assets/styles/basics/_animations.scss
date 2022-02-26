@@ -56,7 +56,6 @@
     transform: translateY(150%);
 }
 
-
 // SLIDE-DOWN
 .slide-down-enter-active,
 .slide-down-leave-active {
@@ -68,8 +67,6 @@
     transform: translateY(-150%);
 }
 
-
-
 // SLIDE-RIGHT
 .slide-right-enter-active,
 .slide-right-leave-active {
@@ -79,4 +76,15 @@
 .slide-right-enter,
 .slide-right-leave-to {
     transform: translateX(150%);
+}
+
+// MENU_BOTTOM
+.menu-bottom-enter-active,
+.menu-bottom-leave-active {
+    transition: transform 0.2s ease-out;
+    transform: translateY(0%);
+}
+.menu-bottom-enter,
+.menu-bottom-leave-to {
+    transform: translateY(100%);
 }

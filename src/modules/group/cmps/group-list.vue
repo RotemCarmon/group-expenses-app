@@ -9,18 +9,41 @@
       </div>
     </div>
     <div class="group-list">
-      <group-preview v-for="group in groups" :key="group.id" :group="group" />
+      <group-preview
+        v-for="group in groups"
+        :key="group.id"
+        :group="group"
+        @openMenu="toggleMenu"
+      />
     </div>
+    <transition name="menu-bottom" mode="out-in">
+      <option-menu v-if="selectedGroupId" @edit="editGroup" @remove="removeGroup" />
+    </transition>
   </section>
 </template>
 
 <script>
 import groupPreview from './group-preview';
+import { optionMenu } from '@/modules/common/cmps';
 export default {
   name: 'group-list',
+  data() {
+    return {
+      selectedGroupId: null,
+    };
+  },
   methods: {
     goToAddGroup() {
       this.$router.push('/group/edit');
+    },
+    toggleMenu(groupId) {
+      this.selectedGroupId = this.selectedGroupId ? null : groupId;
+    },
+    editGroup() {
+      this.$router.push(`/group/edit/${this.selectedGroupId}`);
+    },
+    removeGroup() {
+      console.log('Removing group');
     },
   },
   computed: {
@@ -30,6 +53,7 @@ export default {
   },
   components: {
     groupPreview,
+    optionMenu,
   },
 };
 </script>

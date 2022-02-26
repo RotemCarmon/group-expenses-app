@@ -15,11 +15,14 @@ $black: #000 !default;
 
 $smokedWhite: #edf0f6;
 $blue: #0d6efd !default;
-$red: #f8d7da !default;
+$red: #df5561 !default;
 $yellow: #ffc107 !default;
 $green: #d4edda !default;
 $cyan: #0dcaf0 !default;
 $darkBlue: #0a53c0;
+
+
+$messageRed: #f8d7da;
 
 $statusGreen: #00c388;
 $statusYellow: #ffd98f;
@@ -63,7 +66,7 @@ $secondary: $gray-600 !default;
 $success: $green !default;
 $info: $cyan !default;
 $warning: $yellow !default;
-$danger: $red !default;
+$danger: $messageRed !default;
 
 // Breakpoints
 $mobile-breakpoint: 460px;
@@ -88,3 +91,5 @@ $fontSizeBig: 1.375rem; //22px;
 $fontSizeBig2: 1.75rem; //28px;
 $fontSizeBigger: 2.125rem; //34px;
 $fontSizeHuge: 2.5rem; //40px;
+
+$vh: calc(var(--vh, 1vh) * 100);

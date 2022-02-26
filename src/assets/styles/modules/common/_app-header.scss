@@ -1,6 +1,8 @@
+$header-height: 80px;
+
 .app-header-container {
     padding: 20px 0;
-    max-height: 80px;
+    max-height: $header-height;
     display: flex;
     justify-content: space-between;
 

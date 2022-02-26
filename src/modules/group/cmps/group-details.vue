@@ -3,9 +3,9 @@
     <main>
       <div class="page-header">
         <div class="title">{{ group.name }}</div>
-        <button class="add-expense-btn btn dark" @click="goToAddExpense">
-          + Add Expense
-        </button>
+        <div class="ellipsis-icon" @click.stop="toggleMenu">
+          <img :src="require('@/assets/icons/ellipsis.svg')" />
+        </div>
       </div>
       <template v-if="summary">
         <div class="member" v-for="(amount, member) in summary" :key="member">
@@ -16,7 +16,8 @@
             class="break-down"
             :class="{ pos: amount >= 0, neg: amount < 0 }"
           >
-            {{ parseFloat(amount.toFixed(2)) }} {{ getSymbolFromCurrency(userCurrency) }}
+            {{ parseFloat(amount.toFixed(2)) }}
+            {{ getSymbolFromCurrency(userCurrency) }}
           </div>
         </div>
       </template>
@@ -26,15 +27,31 @@
     </main>
     <div class="total-spent">
       Total Spent
-      <span>{{ parseFloat(totalSpent.toFixed(2)) }} {{ getSymbolFromCurrency(userCurrency) }}</span>
+      <span
+        >{{ parseFloat(totalSpent.toFixed(2)) }}
+        {{ getSymbolFromCurrency(userCurrency) }}</span
+      >
     </div>
+    <transition name="menu-bottom" mode="out-in">
+      <option-menu
+        v-if="isMenuOpen"
+        @edit="editGroup"
+        @remove="removeGroup"
+        @close="toggleMenu"
+      >
+        <template #content-top>
+          <div @click="goToAddExpense" class="line">Add Expense</div>
+        </template>
+      </option-menu>
+    </transition>
   </section>
 </template>
 
 <script>
-import getSymbolFromCurrency from 'currency-symbol-map'
+import getSymbolFromCurrency from 'currency-symbol-map';
 import { eventBus } from '@/modules/common/services/event-bus.service.js';
 import { expenseService } from '../services/expense.service';
+import { optionMenu } from '@/modules/common/cmps';
 export default {
   name: 'group-details',
   data() {
@@ -42,6 +59,7 @@ export default {
       group: null,
       totalSpent: 0,
       summary: null,
+      isMenuOpen: false,
       getSymbolFromCurrency,
     };
   },
@@ -51,15 +69,12 @@ export default {
     },
     userCurrency() {
       return this.loggedInUser?.prefs?.currency;
-    }
+    },
   },
   methods: {
     async getExpenses(userCurrency) {
       const { expenses } = this.group;
-      const summary = await expenseService.getSummary(
-        expenses,
-        userCurrency
-      );
+      const summary = await expenseService.getSummary(expenses, userCurrency);
       // make sure this value updates when user pref currency is updated
       this.summary = summary;
     },
@@ -87,15 +102,26 @@ export default {
       this.getExpenses(userCurrency);
       this.getTotalExpenses(userCurrency);
     },
+    editGroup() {
+      this.$router.push(`/group/edit/${this.group.id}`);
+    },
+    removeGroup() {
+      console.log('Removing group');
+    },
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+    },
   },
   async created() {
     await this.getGroup();
     this.getSummeryData();
 
     eventBus.$on('currency-updated', (userCurrency) => {
-      console.log('updated currency:', userCurrency)
       this.getSummeryData(userCurrency);
     });
+  },
+  components: {
+    optionMenu,
   },
 };
 </script>

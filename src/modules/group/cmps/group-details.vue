@@ -16,7 +16,7 @@
             class="break-down"
             :class="{ pos: amount >= 0, neg: amount < 0 }"
           >
-            {{ parseFloat(amount.toFixed(2)) }} {{currencySymble}}
+            {{ parseFloat(amount.toFixed(2)) }} {{ getSymbolFromCurrency(userCurrency) }}
           </div>
         </div>
       </template>
@@ -26,12 +26,14 @@
     </main>
     <div class="total-spent">
       Total Spent
-      <span>{{ parseFloat(totalSpent.toFixed(2)) }} {{currencySymble}}</span>
+      <span>{{ parseFloat(totalSpent.toFixed(2)) }} {{ getSymbolFromCurrency(userCurrency) }}</span>
     </div>
   </section>
 </template>
 
 <script>
+import getSymbolFromCurrency from 'currency-symbol-map'
+import { eventBus } from '@/modules/common/services/event-bus.service.js';
 import { expenseService } from '../services/expense.service';
 export default {
   name: 'group-details',
@@ -40,6 +42,7 @@ export default {
       group: null,
       totalSpent: 0,
       summary: null,
+      getSymbolFromCurrency,
     };
   },
   computed: {
@@ -47,19 +50,15 @@ export default {
       return this.$store.getters['authStore/loggedInUser'];
     },
     userCurrency() {
-      return this.loggedInUser?.prefs?.currency
-    },
-    currencySymble(){
-      const res = new Intl.NumberFormat({}, { style: 'currency', currency: this.userCurrency }).format(this.totalSpent)
-      return res.charAt(0)
+      return this.loggedInUser?.prefs?.currency;
     }
-
   },
   methods: {
-    async getExpenses(expenses) {
+    async getExpenses(userCurrency) {
+      const { expenses } = this.group;
       const summary = await expenseService.getSummary(
         expenses,
-        this.userCurrency
+        userCurrency
       );
       // make sure this value updates when user pref currency is updated
       this.summary = summary;

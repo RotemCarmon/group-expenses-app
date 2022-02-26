@@ -29,7 +29,7 @@
             v-for="member in groupToEdit.members"
             :key="member.id"
             :member="member"
-            @edit="editMember"
+            @toggleMenu="toggleMenu"
           />
         </div>
       </div>
@@ -40,11 +40,19 @@
 
     <transition name="slide-down" mode="out-in">
       <memberEdit
-        v-if="isAddMember"
-        @close="isAddMember = false"
+        v-if="isEditMember"
+        @close="toggleEditMember"
         @save="saveMember"
-        :member="memberToEdit"
+        :member="memberSelected"
       />
+    </transition>
+    <transition name="menu-bottom" mode="out-in">
+      <option-menu
+        v-if="isMenuOpen"
+        @edit="editMember"
+        @remove="removeMember"
+        @close="toggleMenu"
+      ></option-menu>
     </transition>
   </section>
 </template>
@@ -53,21 +61,31 @@
 import { groupService } from '../services/group.service.js';
 import memberPreview from './member-preview';
 import memberEdit from './member-edit';
+import { optionMenu } from '@/modules/common/cmps';
 export default {
   name: 'group-edit',
   data() {
     return {
       edit: false,
       groupToEdit: null,
-      isAddMember: false,
-      memberToEdit: null,
+      isEditMember: false,
+      isMenuOpen: false,
+      memberSelected: null,
     };
   },
   methods: {
-    editMember(member) {
-      if (!member) member = groupService.getEmptyMember();
-      this.memberToEdit = { ...member };
-      this.isAddMember = true;
+    editMember() {
+      if (!this.memberSelected) {
+        this.memberSelected = groupService.getEmptyMember();
+      }
+      this.isEditMember = true;
+      this.isMenuOpen = false;
+    },
+    toggleEditMember() {
+      this.isEditMember = !this.isEditMember;
+      if (!this.isEditMember) {
+        this.memberSelected = null;
+      }
     },
     saveMember(member) {
       const idx = this.groupToEdit.members.findIndex((m) => m.id === member.id);
@@ -77,8 +95,8 @@ export default {
       } else {
         this.groupToEdit.members.splice(idx, 1, member);
       }
-      this.isAddMember = false;
-      this.memberToEdit = null;
+      this.isEditMember = false;
+      this.memberSelected = null;
     },
     async getGroup() {
       const { groupId } = this.$route.params;
@@ -114,6 +132,13 @@ export default {
       });
       this.$router.push('/group/' + id);
     },
+    toggleMenu(member) {
+      this.memberSelected = this.memberSelected ? null : { ...member };
+      this.isMenuOpen = !this.isMenuOpen;
+    },
+    removeMember() {
+      console.log('Removing member');
+    },
   },
   created() {
     this.getGroup();
@@ -121,6 +146,7 @@ export default {
   components: {
     memberPreview,
     memberEdit,
+    optionMenu,
   },
 };
 </script>

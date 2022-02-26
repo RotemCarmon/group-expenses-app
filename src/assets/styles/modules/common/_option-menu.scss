@@ -1,13 +1,13 @@
 .option-menu-container {
     position: fixed;
-    top: calc(100% - 200px);
+    bottom: 0;
     left: 0;
     right: 0;
-    height: 200px;
-    // transform: translateY(-100%);
+    height: auto;
 
     box-shadow: 0 -2px 4px 2px $gray-300;
     border-radius: 12% 12% 0 0;
+    outline: none;
 }
 
 .option-list {

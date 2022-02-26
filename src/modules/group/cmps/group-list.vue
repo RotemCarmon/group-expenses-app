@@ -17,7 +17,13 @@
       />
     </div>
     <transition name="menu-bottom" mode="out-in">
-      <option-menu v-if="selectedGroupId" @edit="editGroup" @remove="removeGroup" @close="toggleMenu" />
+      <option-menu
+        v-if="selectedGroupId"
+        @edit="editGroup"
+        @remove="removeGroup"
+        @close="toggleMenu"
+      >
+      </option-menu>
     </transition>
   </section>
 </template>

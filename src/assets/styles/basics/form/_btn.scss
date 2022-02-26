@@ -11,7 +11,10 @@
 
     &.light {
         font-weight: 500;
-        border: 2px solid $darkGray;
+        border: 1px solid $darkGray;
+    }
+    &.secondary {
+        background-color: $gray-300;
     }
 
     &.dark {

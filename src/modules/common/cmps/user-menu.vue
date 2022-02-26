@@ -1,5 +1,10 @@
 <template>
-  <section class="user-menu-container">
+  <section
+    ref="userMenu"
+    tabindex="0"
+    @blur="$emit('close')"
+    class="user-menu-container"
+  >
     <div class="menu-header">
       <button @click="$emit('close')" class="close-btn">
         <img :src="require('@/assets/icons/close.svg')" />
@@ -70,8 +75,8 @@ export default {
       };
       this.$store.dispatch({ type: 'userStore/updateUser', user: newUser });
       this.isCurrencyChange = false;
-      eventBus.$emit('currency-updated', this.currency)
-    },
+      eventBus.$emit('currency-updated', this.currency);
+    }
   },
   computed: {
     loggedInUser() {
@@ -80,6 +85,9 @@ export default {
     currencyCodes() {
       return this.$store.getters['commonStore/currencyCodes'];
     },
+  },
+  mounted() {
+    this.$refs.userMenu.focus();
   },
   created() {
     this.currency = this.loggedInUser?.prefs?.currency;

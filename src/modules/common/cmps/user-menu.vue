@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { eventBus } from '@/modules/common/services/event-bus.service.js';
 import multiSelect from './multi-select.vue';
 export default {
   name: 'user-menu',
@@ -69,6 +70,7 @@ export default {
       };
       this.$store.dispatch({ type: 'userStore/updateUser', user: newUser });
       this.isCurrencyChange = false;
+      eventBus.$emit('currency-updated', this.currency)
     },
   },
   computed: {

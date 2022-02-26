@@ -11,7 +11,6 @@
             font-size: $fontSizeBig;
             font-weight: 500;
         }
-
         .member-preview-container {
             .group-owner {
                 font-size: $fontStizeXSmall;
@@ -36,4 +35,11 @@
     input:not(:last-child) {
         margin-bottom: 20px;
     }
+}
+
+.list-header {
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

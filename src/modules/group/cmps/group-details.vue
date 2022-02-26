@@ -74,17 +74,29 @@ export default {
       this.group = group;
       return group;
     },
-    async getTotalExpenses(expenses) {
-      this.totalSpent = await expenseService.getTotalExpenses(expenses, this.userCurrency);
+    async getTotalExpenses(userCurrency) {
+      const { expenses } = this.group;
+      this.totalSpent = await expenseService.getTotalExpenses(
+        expenses,
+        userCurrency
+      );
     },
     goToAddExpense() {
       this.$router.push(`${this.$route.fullPath}/expense`);
     },
+    getSummeryData(userCurrency = this.userCurrency) {
+      this.getExpenses(userCurrency);
+      this.getTotalExpenses(userCurrency);
+    },
   },
   async created() {
-    const group = await this.getGroup();
-    this.getExpenses(group?.expenses);
-    this.getTotalExpenses(group?.expenses);
+    await this.getGroup();
+    this.getSummeryData();
+
+    eventBus.$on('currency-updated', (userCurrency) => {
+      console.log('updated currency:', userCurrency)
+      this.getSummeryData(userCurrency);
+    });
   },
 };
 </script>

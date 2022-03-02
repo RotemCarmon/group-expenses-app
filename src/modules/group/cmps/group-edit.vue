@@ -62,6 +62,7 @@ import { groupService } from '../services/group.service.js';
 import memberPreview from './member-preview';
 import memberEdit from './member-edit';
 import { optionMenu } from '@/modules/common/cmps';
+import { popupService } from '@/modules/common/services/popup.service.js';
 export default {
   name: 'group-edit',
   data() {
@@ -136,8 +137,21 @@ export default {
       this.memberSelected = this.memberSelected ? null : { ...member };
       this.isMenuOpen = !this.isMenuOpen;
     },
-    removeMember() {
-      console.log('Removing member');
+    async removeMember() {
+      const member = this.memberSelected;
+      if (member.isOwner) {
+        popupService.warn("Can't remove the group owner");
+        return;
+      }
+      const isConfirm = await popupService.confirm(
+        `Are you sure you want to remove the member ${member.name}?`,
+        'Yes',
+        'No'
+      );
+      if (!isConfirm) return;
+      this.groupToEdit.members = this.groupToEdit.members.filter(
+        (m) => m.id !== member.id
+      );
     },
   },
   created() {

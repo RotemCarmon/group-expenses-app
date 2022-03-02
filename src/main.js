@@ -11,7 +11,6 @@ initStoreForRouter(store);
 
 // Setting vh for mobile view
 let vh = window.innerHeight * 0.01;
-console.log('vh:', vh * 100)
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
 

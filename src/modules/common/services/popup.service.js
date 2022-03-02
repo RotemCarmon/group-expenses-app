@@ -11,7 +11,8 @@ var idTimeoutMap = {}
 export const popupService = {
     success,
     error,
-    confirm
+    confirm,
+    warn
 };
 
 function confirm(txt, approveTxt = 'ok', cancelTxt = 'cancel') {
@@ -31,6 +32,11 @@ function success(txt, time) {
 function error(txt, err) {
     loggerService.error(err);
     const msg = { status: 'error', txt };
+    _showAlert(msg);
+}
+
+function warn(txt) {
+    const msg = { status: 'warn', txt };
     _showAlert(msg);
 }
 
@@ -121,10 +127,10 @@ function _createBtns(msg, id, cb) {
     }
 
     var elBtns = document.createElement('div');
-    elBtns.classList.add('action-btns')
+    elBtns.classList.add('confirm-action-btns')
 
-    elBtns.appendChild(elCancelBtn)
     elBtns.appendChild(elApproveBtn)
+    elBtns.appendChild(elCancelBtn)
 
     return elBtns
 }

@@ -1,4 +1,4 @@
-import { getFirestore, collection, getDoc, setDoc, addDoc, doc, query as _query, where, getDocs } from "firebase/firestore"
+import { getFirestore, collection, getDoc, setDoc, addDoc, doc, query as _query, where, getDocs, deleteDoc } from "firebase/firestore"
 import { loggerService } from '@/modules/common/services/logger.service.js'
 const db = getFirestore()
 
@@ -52,7 +52,7 @@ async function put(collectionName, data) {
 }
 async function remove(collectionName, id) {
   try {
-
+    await deleteDoc(doc(db, collectionName, id));
   } catch (err) {
     loggerService.error(`Had issue removing document from ${collectionName} collection with id: ${id}`)
     throw err

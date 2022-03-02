@@ -4,8 +4,8 @@
     @click.stop="goToGroupDetails"
   >
     <div class="group-name">{{ group.name }}</div>
-    <div class="ellipsis-icon" @click.stop="$emit('openMenu', group.id)">
-      <img :src="require('@/assets/icons/ellipsis.svg')" alt="" />
+    <div class="ellipsis-icon" @click.stop="$emit('openMenu', group)">
+      <img :src="require('@/assets/icons/ellipsis.svg')" />
     </div>
   </section>
 </template>

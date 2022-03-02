@@ -26,7 +26,9 @@ export default {
       if (idx === -1) return
       state.groups.splice(idx, 1, group)
     },
-
+    removeGroup(state, { groupId }) {
+      state.groups = state.groups.filter(group => group.id !== groupId)
+    },
     resetState(state) {
       state = initState()
     }
@@ -44,7 +46,7 @@ export default {
         commit({ type: 'setLoading', isLoading: false }, { root: true })
       }
     },
-    async getGroupById({commit }, { groupId }) {
+    async getGroupById({ commit }, { groupId }) {
       commit({ type: 'setLoading', isLoading: true }, { root: true })
       try {
         return await groupService.getGroupById(groupId)
@@ -66,6 +68,20 @@ export default {
         loggerService.error(err)
       } finally {
         commit({ type: 'setLoading', isLoading: false }, { root: true })
+      }
+    },
+    async removeGroup({ commit }, { groupId }) {
+      commit({ type: 'setLoading', isLoading: true }, { root: true })
+      try {
+        console.log('groupId:', groupId)
+        await groupService.removeGroup(groupId)
+        commit({ type: 'removeGroup', groupId })
+
+      } catch (error) {
+        loggerService.error(err)
+      } finally {
+        commit({ type: 'setLoading', isLoading: false }, { root: true })
+
       }
     }
   },

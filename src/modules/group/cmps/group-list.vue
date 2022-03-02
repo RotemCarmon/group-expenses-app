@@ -18,7 +18,7 @@
     </div>
     <transition name="menu-bottom" mode="out-in">
       <option-menu
-        v-if="selectedGroupId"
+        v-if="selectedGroup"
         @edit="editGroup"
         @remove="removeGroup"
         @close="toggleMenu"
@@ -34,25 +34,57 @@
 <script>
 import groupPreview from './group-preview';
 import { optionMenu } from '@/modules/common/cmps';
+import { popupService } from '@/modules/common/services/popup.service.js';
 export default {
   name: 'group-list',
   data() {
     return {
-      selectedGroupId: null,
+      selectedGroup: null,
     };
   },
   methods: {
     goToAddGroup() {
       this.$router.push('/group/edit');
     },
-    toggleMenu(groupId) {
-      this.selectedGroupId = this.selectedGroupId ? null : groupId;
+    toggleMenu(group) {
+      this.selectedGroup = this.selectedGroup ? null : group;
+      console.log('this.selectedGroup',this.selectedGroup);
     },
     editGroup() {
-      this.$router.push(`/group/edit/${this.selectedGroupId}`);
+      const isOwner = this.isGroupOwner();
+      if (!isOwner) {
+        popupService.warn('Only the group owner can edit');
+        return;
+      }
+      this.$router.push(`/group/edit/${this.selectedGroup.id}`);
     },
-    removeGroup() {
+    async removeGroup() {
       console.log('Removing group');
+      const isOwner = this.isGroupOwner();
+      if (!isOwner) {
+        popupService.warn('Only the group owner can delete');
+        return;
+      }
+      const group = this.selectedGroup
+      const isConfirm = await popupService.confirm(
+        `Are you sure you want to delete the group ${group.name}?`,
+        'Yes',
+        'No'
+      );
+      if (!isConfirm) return;
+
+      this.$store.dispatch({type:'groupStore/removeGroup', groupId: group.id})
+    },
+    isGroupOwner() {
+      const loggedInUser = this.$store.getters['authStore/loggedInUser'];
+      const owner = this.selectedGroup?.members.find(
+        (member) => member.isOwner
+      );
+      const ownerEmail = owner?.email;
+      console.log('ownerEmail:', ownerEmail);
+      const userEmail = loggedInUser?.email;
+      console.log('userEmail:', userEmail);
+      return ownerEmail === userEmail;
     },
   },
   computed: {

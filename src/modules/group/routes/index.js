@@ -5,7 +5,6 @@ import { groupList, groupEdit, groupDetails, expenseEdit } from '../cmps'
 export const groupRoutes = [
   {
     path: '/group',
-    name: 'group-page',
     component: groupPage,
     children: [
       {

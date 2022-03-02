@@ -15,6 +15,8 @@ export const popupService = {
     warn
 };
 
+var gConfirmShowing = null
+
 function confirm(txt, approveTxt = 'ok', cancelTxt = 'cancel') {
     return new Promise((resolve) => {
 
@@ -42,11 +44,18 @@ function warn(txt) {
 
 function _showConfirm(msg, cb) {
     const id = utilService.makeId();
+    gConfirmShowing = id
     const elConfirm = createConfirm(msg, id, cb);
     elAlertContainer.appendChild(elConfirm);
 }
 
 function _showAlert(msg, time = 3000) {
+    if (gConfirmShowing) {
+        elAlertContainer.classList.remove('full-screen');
+        const elConfirm = document.getElementById(gConfirmShowing);
+        elConfirm.classList.remove('leave');
+        elConfirm.remove();
+    }
     const id = utilService.makeId();
     const elAlert = createAlert(msg, id);
     elAlertContainer.appendChild(elAlert);
@@ -58,16 +67,17 @@ function _showAlert(msg, time = 3000) {
 
 
 
-function closeAlert(id) {
+function closeAlert(id, isFullScreen = false) {
     clearTimeout(idTimeoutMap[id])
     delete idTimeoutMap[id]
 
     const elAlert = document.getElementById(id);
     elAlert.classList.add('leave')
     setTimeout(() => {
-        elAlertContainer.classList.remove('full-screen');
+        if (isFullScreen) elAlertContainer.classList.remove('full-screen');
         elAlert.classList.remove('leave');
         if (elAlert) elAlert.remove();
+        gConfirmShowing = null
     }, 400)
 }
 
@@ -115,7 +125,7 @@ function _createBtns(msg, id, cb) {
     elCancelBtn.innerText = msg.cancelTxt;
     elCancelBtn.onclick = () => {
         cb(false)
-        closeAlert(id)
+        closeAlert(id, true)
     }
 
     var elApproveBtn = document.createElement('button');
@@ -123,7 +133,7 @@ function _createBtns(msg, id, cb) {
     elApproveBtn.innerText = msg.approveTxt;
     elApproveBtn.onclick = () => {
         cb(true)
-        closeAlert(id)
+        closeAlert(id, true)
     }
 
     var elBtns = document.createElement('div');

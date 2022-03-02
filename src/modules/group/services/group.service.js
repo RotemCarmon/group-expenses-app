@@ -15,12 +15,15 @@ async function getGroupById(groupId) {
 }
 
 async function saveGroup(group) {
-  if(group.id) {
+  if (group.id) {
     return await firebaseService.put(COLLECTION_NAME, group)
   } else {
     return await firebaseService.post(COLLECTION_NAME, group)
-    
   }
+}
+
+async function removeGroup(groupId) {
+  return await firebaseService.remove(COLLECTION_NAME, groupId)
 }
 
 export const groupService = {
@@ -28,7 +31,8 @@ export const groupService = {
   getGroupById,
   getEmptyGroup,
   getEmptyMember,
-  saveGroup
+  saveGroup,
+  removeGroup
 }
 
 function getEmptyGroup() {
@@ -37,14 +41,14 @@ function getEmptyGroup() {
     description: '',
     members: [],
     expenses: {},
-    memberEmails:[]
+    memberEmails: []
   }
 }
 
 function getEmptyMember() {
   return {
     name: '',
-    email:'',
+    email: '',
     id: makeId(8)
   }
 }

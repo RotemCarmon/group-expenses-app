@@ -3,24 +3,25 @@
     <div class="page-header">
       <div class="title">Sign In</div>
     </div>
+    <form>
+      <label class="form-row">
+        <span>Email </span>
+        <input type="text" v-model="creds.email" class="form-input" />
+        <p class="error" v-show="emailError">{{ emailError }}</p>
+      </label>
+      <label class="form-row">
+        <span>Password </span>
+        <input type="password" autocomplete  v-model="creds.password" class="form-input" />
+        <p class="error" v-show="passwordError">{{ passwordError }}</p>
+      </label>
 
-    <label class="form-row">
-      <span>Email </span>
-      <input type="text" v-model="creds.email" class="form-input" />
-      <p class="error" v-show="emailError">{{ emailError }}</p>
-    </label>
-    <label class="form-row">
-      <span>Password </span>
-      <input type="password" v-model="creds.password" class="form-input" />
-      <p class="error" v-show="passwordError">{{ passwordError }}</p>
-    </label>
+      <button @click="doLogin" class="btn dark buttom-btn">Sign in</button>
 
-    <button @click="doLogin" class="btn dark buttom-btn">Sign in</button>
-
-    <div class="no-account">
-      <p>Don’t have an account yet?</p>
-      <span @click="goToRegister">Register</span>
-    </div>
+      <div class="no-account">
+        <p>Don’t have an account yet?</p>
+        <span @click.prevent="goToRegister">Register</span>
+      </div>
+    </form>
   </section>
 </template>
 

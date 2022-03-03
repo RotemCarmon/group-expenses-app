@@ -27,4 +27,12 @@
         color: $statusMaroon;
         font-size: $fontSizeNormal;
     }
+    .password-field {
+        position: relative;
+    }
+    .toggle-password {
+        max-height: 20px;
+        position: absolute;
+        right: 20px;
+    }
 }

@@ -6,25 +6,38 @@
     <form>
       <label class="form-row">
         <span>Username </span>
-        <input type="text" v-model="creds.username" autocomplete="username" class="form-input" />
+        <input
+          type="text"
+          v-model="creds.username"
+          autocomplete="username"
+          class="form-input"
+        />
         <p class="error" v-show="usernameError">{{ usernameError }}</p>
       </label>
       <label class="form-row">
         <span>Email </span>
-        <input type="text" v-model="creds.email" autocomplete="email" class="form-input" />
+        <input
+          type="text"
+          v-model="creds.email"
+          autocomplete="email"
+          class="form-input"
+        />
         <p class="error" v-show="emailError">{{ emailError }}</p>
       </label>
-      <label class="form-row">
+      <label class="form-row password-field">
         <span>Password </span>
-        <input type="password" autocomplete="new-password" v-model="creds.password" class="form-input" />
+        <img
+          :src="require(`@/assets/icons/${eyeImg}.svg`)"
+          class="toggle-password"
+          @click="isPasswordShowen = !isPasswordShowen"
+        />
+        <input
+          :type="isPasswordShowen? 'text':'password'"
+          autocomplete="new-password"
+          v-model="creds.password"
+          class="form-input"
+        />
         <p class="error" v-show="passwordError">{{ passwordError }}</p>
-      </label>
-      <label class="form-row">
-        <span>Repeat Password </span>
-        <input type="password" autocomplete="new-password" v-model="passwordConfirm" class="form-input" />
-        <p class="error" v-show="passwordConfirmError">
-          {{ passwordConfirmError }}
-        </p>
       </label>
 
       <button @click.prevent="doSignup" class="btn dark buttom-btn">
@@ -49,11 +62,10 @@ export default {
         email: '',
         password: '',
       },
-      passwordConfirm: '',
       usernameError: '',
       emailError: '',
       passwordError: '',
-      passwordConfirmError: '',
+      isPasswordShowen: false,
     };
   },
   methods: {
@@ -69,7 +81,6 @@ export default {
       this.usernameError = '';
       this.emailError = '';
       this.passwordError = '';
-      this.passwordConfirmError = '';
       let isValid = true;
       if (!this.creds.username) {
         this.usernameError = 'Must enter username';
@@ -86,14 +97,15 @@ export default {
         this.passwordError = 'Password should be at least 6 characters';
         isValid = false;
       }
-      if (this.passwordConfirm !== this.creds.password) {
-        this.passwordConfirmError = "Passwords don't match";
-        isValid = false;
-      }
       return isValid;
     },
     goToSignin() {
       this.$emit('toggle');
+    },
+  },
+  computed: {
+    eyeImg() {
+      return this.isPasswordShowen ? 'eye-slash-light' : 'eye-light';
     },
   },
   mounted() {

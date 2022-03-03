@@ -9,9 +9,19 @@
         <input type="text" v-model="creds.email" class="form-input" />
         <p class="error" v-show="emailError">{{ emailError }}</p>
       </label>
-      <label class="form-row">
+      <label class="form-row password-field">
         <span>Password </span>
-        <input type="password" autocomplete  v-model="creds.password" class="form-input" />
+        <img
+          :src="require(`@/assets/icons/${eyeImg}.svg`)"
+          class="toggle-password"
+          @click="isPasswordShowen = !isPasswordShowen"
+        />
+        <input
+          :type="isPasswordShowen? 'text':'password'"
+          autocomplete
+          v-model="creds.password"
+          class="form-input"
+        />
         <p class="error" v-show="passwordError">{{ passwordError }}</p>
       </label>
 
@@ -36,6 +46,7 @@ export default {
       },
       emailError: '',
       passwordError: '',
+      isPasswordShowen: false,
     };
   },
   methods: {
@@ -61,6 +72,11 @@ export default {
     goToRegister() {
       this.$emit('toggle');
     },
+  },
+  computed: {
+    eyeImg() {
+      return this.isPasswordShowen ?  'eye-slash-light' : 'eye-light'
+    }
   },
   mounted() {
     try {

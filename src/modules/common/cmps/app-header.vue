@@ -5,7 +5,7 @@
         <img :src="require('@/assets/icons/arrow-left.svg')" />
       </div>
     </div>
-    <div class="avatar-container" @click="isMenuOpen = true">
+    <div class="avatar-container" @click="isMenuOpen = true" :class="{'letter-avatar': loggedInUser && !loggedInUser.imgUrl}">
       <img
         v-if="!loggedInUser"
         :src="require('@/assets/icons/avatar.svg')"
@@ -50,7 +50,8 @@ export default {
       return !noBackCmps.includes(this.$route.name);
     },
     loggedInUser() {
-      return this.$store.getters['authStore/loggedInUser'];
+      const user = this.$store.getters['authStore/loggedInUser'];
+      return user
     },
     avatarCapital() {
       return this.loggedInUser.username.charAt(0).toUpperCase();

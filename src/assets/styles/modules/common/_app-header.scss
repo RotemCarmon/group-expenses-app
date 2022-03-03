@@ -22,7 +22,10 @@ $header-height: 80px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #862be9;
+        &.letter-avatar {    
+            background-color: #862be9;
+        }
+
         img {
             // padding: 4px;
             height: 100%;

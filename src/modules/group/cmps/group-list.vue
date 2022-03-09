@@ -16,6 +16,7 @@
         @openMenu="toggleMenu"
       />
     </div>
+    <div class="no-groups no-data"><p>You have no groups</p><p class="add-group-instruction">Click <strong>Add +</strong> to create your first group</p></div>
     <transition name="menu-bottom" mode="out-in">
       <option-menu
         v-if="selectedGroup"
@@ -48,7 +49,7 @@ export default {
     },
     toggleMenu(group) {
       this.selectedGroup = this.selectedGroup ? null : group;
-      console.log('this.selectedGroup',this.selectedGroup);
+      console.log('this.selectedGroup', this.selectedGroup);
     },
     editGroup() {
       const isOwner = this.isGroupOwner();
@@ -65,7 +66,7 @@ export default {
         popupService.warn('Only the group owner can delete');
         return;
       }
-      const group = this.selectedGroup
+      const group = this.selectedGroup;
       const isConfirm = await popupService.confirm(
         `Are you sure you want to delete the group ${group.name}?`,
         'Yes',
@@ -73,7 +74,10 @@ export default {
       );
       if (!isConfirm) return;
 
-      this.$store.dispatch({type:'groupStore/removeGroup', groupId: group.id})
+      this.$store.dispatch({
+        type: 'groupStore/removeGroup',
+        groupId: group.id,
+      });
     },
     isGroupOwner() {
       const loggedInUser = this.$store.getters['authStore/loggedInUser'];

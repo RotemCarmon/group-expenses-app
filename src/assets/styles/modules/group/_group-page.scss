@@ -7,6 +7,22 @@
         }
 
     }
+
+    .no-groups {
+        text-align: center;
+        font-size: $fontSizeBig;
+        margin-top: 80px;
+        color: $gray-500;
+        
+        .add-group-instruction {
+            margin-top: 10px;
+            font-size: $fontSizeNormal;
+
+            strong {
+                font-weight: 500;
+            }
+        }
+    }
 }
 
 .ellipsis-icon {
@@ -14,4 +30,5 @@
     img {
         height: 25px;
     }
+
 }

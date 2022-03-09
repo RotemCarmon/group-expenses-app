@@ -16,7 +16,12 @@
         @openMenu="toggleMenu"
       />
     </div>
-    <div class="no-groups no-data"><p>You have no groups</p><p class="add-group-instruction">Click <strong>Add +</strong> to create your first group</p></div>
+    <div v-if="!groups || !groups.length" class="no-groups no-data">
+      <p>You have no groups</p>
+      <p class="add-group-instruction">
+        Click <strong>Add +</strong> to create your first group
+      </p>
+    </div>
     <transition name="menu-bottom" mode="out-in">
       <option-menu
         v-if="selectedGroup"

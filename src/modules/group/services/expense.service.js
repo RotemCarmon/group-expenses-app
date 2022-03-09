@@ -107,12 +107,12 @@ function getEmptyExpense() {
 
 
 function _convertToBase(amount = 0, currency) {
-  const rate = gCurrencyData[currency] || 1
+  const rate = gCurrencyData[currency]?.value || 1
   return amount / rate
 }
 
 function _convertFromBase(amount = 0, currency) {
-  const rate = gCurrencyData[currency] || 1
+  const rate = gCurrencyData[currency]?.value || 1
   return amount * rate
 }
 

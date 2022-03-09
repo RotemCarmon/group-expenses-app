@@ -9,7 +9,7 @@ async function getCurrencyData() {
     let currencyData = storageService.load('currency')
 
     if (!currencyData || !Object.keys(currencyData?.data).length || currencyData.exp < Date.now()) {
-      const res = await axios.get(`https://freecurrencyapi.net/api/v2/latest?apikey=${API_KEY}`)
+      const res = await axios.get(`https://api.currencyapi.com/v3/latest?apikey=${API_KEY}`)
 
       currencyData = {
         exp: Date.now() + expTime,

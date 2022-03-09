@@ -1,5 +1,6 @@
 .multi-select-container {
     position: relative;
+    
     .search-input {
         border: none;
         width: 100%;
@@ -23,6 +24,7 @@
         display: flex;
         padding-inline-start: 6px;
         align-items: center;
+        background-color: white;
 
         img {
             position: absolute;

@@ -13,11 +13,11 @@ async function getCurrencyData() {
 
       currencyData = {
         exp: Date.now() + expTime,
-        data: res.data.data
+        data: res.data?.data
       }
       let currencyData = storageService.save('currency', currencyData)
     }
-    return currencyData.data
+    return currencyData?.data
 
 
   } catch (err) {

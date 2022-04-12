@@ -1,5 +1,5 @@
 <template>
-  <section class="login-signup-container container" @keyup.enter="doSignup">
+  <section class="login-signup-container container" >
     <div class="page-header">
       <div class="title">Sign Up</div>
     </div>

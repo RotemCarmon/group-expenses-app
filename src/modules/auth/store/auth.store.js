@@ -1,4 +1,5 @@
 import { authService } from '../services/auth.service.js'
+import { getErrorMessage } from '../services/auth.error.js'
 import { loggerService } from '@/modules/common/services/logger.service.js'
 import { popupService } from '@/modules/common/services/popup.service.js'
 import { router } from '@/router'
@@ -26,6 +27,8 @@ export default {
         commit({ type: 'setLoggedInUser', loggedInUser: user })
         router.push('/')
       } catch (err) {
+        const msg = getErrorMessage(err.code)
+        popupService.error(msg)
         loggerService.error(err)
       } finally {
         commit({ type: 'setLoading', isLoading: false }, { root: true })
@@ -41,6 +44,8 @@ export default {
         router.push('/')
 
       } catch (err) {
+        const msg = getErrorMessage(err.code)
+        popupService.error(msg)
         loggerService.error(err)
       } finally {
         commit({ type: 'setLoading', isLoading: false }, { root: true })

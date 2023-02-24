@@ -54,7 +54,7 @@ export default {
     },
     toggleMenu(group) {
       this.selectedGroup = this.selectedGroup ? null : group;
-      console.log('this.selectedGroup', this.selectedGroup);
+
     },
     editGroup() {
       const isOwner = this.isGroupOwner();
@@ -90,9 +90,7 @@ export default {
         (member) => member.isOwner
       );
       const ownerEmail = owner?.email;
-      console.log('ownerEmail:', ownerEmail);
       const userEmail = loggedInUser?.email;
-      console.log('userEmail:', userEmail);
       return ownerEmail === userEmail;
     },
   },

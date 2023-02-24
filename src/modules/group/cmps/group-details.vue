@@ -32,6 +32,7 @@
         {{ getSymbolFromCurrency(userCurrency) }}</span
       >
     </div>
+
     <transition name="menu-bottom" mode="out-in">
       <option-menu
         v-if="isMenuOpen"
@@ -130,9 +131,7 @@ export default {
     },
     isGroupOwner() {
       const loggedInUser = this.$store.getters['authStore/loggedInUser'];
-      const owner = this.group?.members.find(
-        (member) => member.isOwner
-      );
+      const owner = this.group?.members.find((member) => member.isOwner);
 
       const ownerEmail = owner?.email;
       const userEmail = loggedInUser?.email;

@@ -39,7 +39,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: rgba(0, 0, 0, 0.4);
+        background-color: rgba(0, 0, 0, 0.6);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -86,12 +86,12 @@
         }
 
         .approve-btn {
-            background-color: $darkBlue;
+            background-color: $pop;
             color: white;
         }
         .cancel-btn {
-            border: 2px solid darkBlue;
-            color: darkBlue;
+            border: 2px solid $pop;
+            color: $pop;
         }
     }
 }

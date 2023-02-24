@@ -39,7 +39,7 @@
       />
       <h3 class="sub-title">Exclude</h3>
       <multi-select
-        :items="members"
+        :items="membersLowerCase"
         placeholder="Who to exclude?"
         v-model="expenseToEdit.exclude"
       />
@@ -64,6 +64,9 @@ export default {
   computed: {
     members() {
       return this.group?.members?.map((member) => member.name);
+    },
+    membersLowerCase() {
+      return this.group?.members?.map((member) => member.name.toLowerCase());
     },
     currencyCodes() {
       return this.$store.getters['commonStore/currencyCodes'];

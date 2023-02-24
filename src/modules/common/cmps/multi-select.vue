@@ -93,6 +93,7 @@ export default {
     toggleCheck(item) {
       if (!this.isMulti) {
         this.val = item;
+        this.searchTerm = item
       } else {
         const idx = this.val.findIndex((c) => c === item);
         if (idx === -1) {
@@ -102,6 +103,7 @@ export default {
         }
       }
       this.$emit('input', this.val);
+
       if (!this.isMulti) {
         this.toggleMenu();
       }

@@ -93,8 +93,12 @@ export default {
       if (idx === -1) {
         this.groupToEdit.members.push(member);
         this.groupToEdit.memberEmails.push(member.email);
+
+        // if group already have expenses choose if to exclude or include the new member with all expenses
       } else {
         this.groupToEdit.members.splice(idx, 1, member);
+        // if group already have expenses and member name was changed need to update everywhere 
+        // or - when group has expenses dont allow updating member name
       }
       this.isEditMember = false;
       this.memberSelected = null;

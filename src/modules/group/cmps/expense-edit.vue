@@ -68,6 +68,12 @@ export default {
     currencyCodes() {
       return this.$store.getters['commonStore/currencyCodes'];
     },
+    loggedInUser() {
+      return this.$store.getters['authStore/loggedInUser'];
+    },
+    userCurrency() {
+      return this.loggedInUser?.prefs?.currency;
+    },
   },
   methods: {
     async getGroup() {
@@ -83,11 +89,12 @@ export default {
     async getExpense() {
       // check if expenseId exist
       this.expenseToEdit = expenseService.getEmptyExpense();
+      this.expenseToEdit.currency = this.userCurrency
     },
-    saveExpense() {     
+    saveExpense() {
       this.group.expenses[this.spender.toLowerCase()].push(this.expenseToEdit);
       this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
   },
   created() {

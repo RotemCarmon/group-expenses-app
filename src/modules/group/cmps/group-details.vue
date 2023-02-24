@@ -52,6 +52,7 @@ import getSymbolFromCurrency from 'currency-symbol-map';
 import { eventBus } from '@/modules/common/services/event-bus.service.js';
 import { expenseService } from '../services/expense.service';
 import { optionMenu } from '@/modules/common/cmps';
+import { popupService } from '@/modules/common/services/popup.service.js';
 export default {
   name: 'group-details',
   data() {
@@ -105,8 +106,37 @@ export default {
     editGroup() {
       this.$router.push(`/group/edit/${this.group.id}`);
     },
-    removeGroup() {
+    async removeGroup() {
       console.log('Removing group');
+      const isOwner = this.isGroupOwner();
+      if (!isOwner) {
+        popupService.warn('Only the group owner can delete');
+        return;
+      }
+      const group = this.group;
+      const isConfirm = await popupService.confirm(
+        `Are you sure you want to delete the group ${group.name}?`,
+        'Yes',
+        'No'
+      );
+      if (!isConfirm) return;
+
+      await this.$store.dispatch({
+        type: 'groupStore/removeGroup',
+        groupId: group.id,
+      });
+
+      this.$router.push('/group/');
+    },
+    isGroupOwner() {
+      const loggedInUser = this.$store.getters['authStore/loggedInUser'];
+      const owner = this.group?.members.find(
+        (member) => member.isOwner
+      );
+
+      const ownerEmail = owner?.email;
+      const userEmail = loggedInUser?.email;
+      return ownerEmail === userEmail;
     },
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;

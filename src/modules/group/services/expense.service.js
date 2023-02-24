@@ -24,6 +24,7 @@ async function getTotalExpenses(expenses, userCurrency) {
 function getSumPerMember(expenses) {
   const membersSum = {}
   const members = Object.keys(expenses)
+
   members.forEach(member => {
     const sum = expenses[member].reduce((acc, expense) => {
       if (!expense) return acc
@@ -42,16 +43,14 @@ function getEqualExpense(expenses) {
   const equalExpense = {}
   const members = Object.keys(expenses)
 
-  // Map initial members
-  members.forEach(member => {
-    equalExpense[member] = 0
-  })
-
   members.forEach(member => {
     if (!equalExpense[member]) equalExpense[member] = 0
+
     expenses[member].forEach(expense => {
       members.forEach(_member => {
-        if (expense.exclude.includes(_member)) return
+
+        if (expense.exclude.some(exc => exc.toLowerCase() === _member.toLowerCase())) return
+
         if (!equalExpense[_member]) equalExpense[_member] = 0
         // convert to base currency => expense.amount
         const amount = _convertToBase(expense.amount, expense.currency)

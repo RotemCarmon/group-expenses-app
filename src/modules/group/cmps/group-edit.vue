@@ -39,7 +39,7 @@
     </button>
 
     <transition name="slide-down" mode="out-in">
-      <memberEdit
+      <member-edit
         v-if="isEditMember"
         @close="toggleEditMember"
         @save="saveMember"

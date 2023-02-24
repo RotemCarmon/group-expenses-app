@@ -6,7 +6,6 @@ const USER_SESSION_KEY = 'loggedInUser';
 
 async function login(userCreds) {
   const { email, password } = userCreds
-  console.log('email:', email)
   const { user } = await signInWithEmailAndPassword(auth, email, password)
   const loggedInUser = await userService.getUserById(user.uid)
   _saveLocalUser(loggedInUser)

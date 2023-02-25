@@ -1,26 +1,47 @@
 .expense-edit-container {
     .group-name {
         font-size: $fontSizeNormal;
-        color: $gray-500;
+        color: $grayText;
         span {
             font-weight: 500;
         }
         margin-bottom: 16px;
     }
-    .currency-select {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-weight: 500;
-
-      .multi-select-container {
+    .expense-container {
+        padding-block: 16px;
         flex: 1;
-      }
+        gap: 16px;
+        background-color: $lightAqua;
+        align-items: flex-start;
+    }
+
+    .card-section {
+        background-color: $white;
+        border-radius: 4px;
+        padding: 16px;
+        box-shadow: 0 0 5px rgba($gray-800, 0.2);
+    }
+    .currency-select {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-weight: 500;
+
+        .multi-select-container {
+            flex: 1;
+        }
     }
 
     .sub-title {
-      font-size: $fontSizeBig;
-      font-weight: 500;
-      margin-bottom: 6px;
+        font-size: $fontSizeMedium;
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+
+    .footer {
+        padding-block: rem(24px);
+        .bottom-btn {
+            margin-bottom: 0;
+        }
     }
 }

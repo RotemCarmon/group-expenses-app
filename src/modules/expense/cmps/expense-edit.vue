@@ -1,48 +1,55 @@
 <template>
   <section class="expense-edit-container container" v-if="group">
     <main>
-      <div class="group-name">
-        Group <span>{{ group.name }}</span>
+      <div class="expense-header section-app-container">
+        <div class="page-header">
+          <div class="title">{{ edit ? 'Edit' : 'Add' }} Expense</div>
+        </div>
+        <div class="group-name">
+          Group <span>{{ group.name }}</span>
+        </div>
       </div>
-      <div class="page-header">
-        <div class="title">{{ edit ? 'Edit' : 'Add' }} Expense</div>
+      <div class="expense-container section-app-container">
+        <div class="card-section">
+          <input
+            type="text"
+            class="form-input form-row"
+            placeholder="Enter Amount"
+            v-model.number="expenseToEdit.amount"
+          />
+          <input
+            type="text"
+            class="form-input form-row"
+            placeholder="Enter Description"
+            v-model="expenseToEdit.description"
+          />
+          <div class="currency-select form-row">
+            Currency
+            <multi-select
+              :items="currencyCodes"
+              :isMulti="false"
+              :hasSearch="true"
+              :topSelections="['USD', 'EUR']"
+              v-model="expenseToEdit.currency"
+            />
+          </div>
+        </div>
+        <div class="card-section">
+          <h3 class="sub-title">Who is the spender?</h3>
+          <multi-select
+            :items="members"
+            :isMulti="false"
+            class="form-row"
+            v-model="spender"
+          />
+          <h3 class="sub-title">Exclude</h3>
+          <multi-select
+            :items="members"
+            placeholder="Who to exclude?"
+            v-model="expenseToEdit.exclude"
+          />
+        </div>
       </div>
-      <input
-        type="text"
-        class="form-input form-row"
-        placeholder="Enter Amount"
-        v-model.number="expenseToEdit.amount"
-      />
-      <input
-        type="text"
-        class="form-input form-row"
-        placeholder="Enter Description"
-        v-model="expenseToEdit.description"
-      />
-      <div class="currency-select form-row">
-        Currency
-        <multi-select
-          :items="currencyCodes"
-          :isMulti="false"
-          :hasSearch="true"
-          :topSelections="['USD', 'EUR']"
-          v-model="expenseToEdit.currency"
-        />
-      </div>
-
-      <h3 class="sub-title">Who is the spender?</h3>
-      <multi-select
-        :items="members"
-        :isMulti="false"
-        class="form-row"
-        v-model="spender"
-      />
-      <h3 class="sub-title">Exclude</h3>
-      <multi-select
-        :items="members"
-        placeholder="Who to exclude?"
-        v-model="expenseToEdit.exclude"
-      />
     </main>
     <div class="footer section-app-container">
       <button @click="saveExpense" class="btn dark bottom-btn">Submit</button>
@@ -53,6 +60,7 @@
 <script>
 import { expenseService } from '../services/expense.service';
 import { multiSelect } from '@/modules/common/cmps/';
+import { popupService } from '@/modules/common/services/popup.service.js';
 export default {
   name: 'expense-edit',
   data() {
@@ -102,6 +110,11 @@ export default {
       this.expenseToEdit = this.convertExcludesNamesToEmails(
         this.expenseToEdit
       );
+      if(!this.expenseToEdit.amount) {
+        popupService.warn('Please enter amount')
+        return
+      }
+
       this.expenseToEdit.createdAt = Date.now();
       this.group.expenses[spenderEmail].push(this.expenseToEdit);
       this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });

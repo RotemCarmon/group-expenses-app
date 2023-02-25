@@ -1,39 +1,44 @@
 .group-details-container {
     position: relative;
-  .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-  
-  .add-expense-btn {
-      height:30px;
-      padding: 0 12px;
-  }
-  }
-  .member {
-      padding: 12px 0;
-      display: flex;
-      justify-content: space-between;
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-      align-items: center;
-      border-bottom: 1px solid $gray-400;
+        .title {
+            font-weight: normal;
+            color: $darkAqua;
+            font-size: rem(20px);
+        }
 
+        .add-expense-btn {
+            height: 30px;
+            padding: 0 12px;
+        }
+    }
+    .member {
+        padding: 12px 0;
+        display: flex;
+        justify-content: space-between;
 
-      .break-down {
-          &.pos {
-              color: green;
-          }
-          &.neg {
-              color: red;
-          }
-      }
-  }
-  .total-spent {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      font-size: $fontSizeBig;
-      padding: 7px 12px;
-      border-radius: 4px;
-  }
+        align-items: center;
+        border-bottom: 1px solid $gray-400;
+
+        .break-down {
+            &.pos {
+                color: green;
+            }
+            &.neg {
+                color: red;
+            }
+        }
+    }
+    .total-spent {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        font-size: $fontSizeBig;
+        padding: 7px 12px;
+        border-radius: 4px;
+    }
 }

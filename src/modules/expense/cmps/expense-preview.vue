@@ -4,6 +4,9 @@
     <div class="date">
       {{ formatDate(expense.createdAt, 'D') }}
     </div>
+    <div class="ellipsis-icon" @click.stop="$emit('openMenu', group)">
+      <img :src="require('@/assets/icons/ellipsis.svg')" />
+    </div>
     <div class="description">{{ expense.description }}</div>
     <div class="amount">
       {{ getSymbolFromCurrency(expense.currency)
@@ -23,10 +26,10 @@ export default {
   props: {
     expense: { type: Object, required: true },
   },
-  methods:{
-formatDate,
-getSymbolFromCurrency
-  }
+  methods: {
+    formatDate,
+    getSymbolFromCurrency,
+  },
 };
 </script>
 

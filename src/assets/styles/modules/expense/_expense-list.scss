@@ -5,6 +5,7 @@
 
     .title {
         padding: 12px 0;
+        color: $darkAqua;
     }
 
     main {
@@ -15,15 +16,20 @@
         padding-block: 16px;
         background-color: $lightAqua;
     }
+
     .expense-preview-container {
+      position: relative;
         box-shadow: 0 0 3px rgba($gray-800, 0.2);
         background-color: $white;
         padding: 12px 20px;
+        padding-inline-end: 40px;
+        
         display: grid;
         grid-template-columns: 3fr 1fr;
         color: $darkText;
         column-gap: 8px;
         row-gap: 9px;
+
 
         .name,
         .date,
@@ -32,6 +38,17 @@
         }
         .exclude {
             font-size: $fontStizeSmall;
+            grid-row: 3/4;
+        }
+        .ellipsis-icon {
+          position: absolute;
+          right: 5px;
+          top: 50%;
+          transform: translateY(-50%);
+
+            img {
+                transform: rotate(90deg);
+            }
         }
     }
 

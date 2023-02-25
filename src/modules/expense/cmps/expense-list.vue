@@ -31,6 +31,8 @@
 <script>
 import expensePreview from './expense-preview';
 import { optionMenu } from '@/modules/common/cmps';
+import { popupService } from '@/modules/common/services/popup.service.js';
+import getSymbolFromCurrency from 'currency-symbol-map';
 export default {
   name: 'expense-list',
   data() {
@@ -89,6 +91,27 @@ export default {
       this.$router.push(
         `/expense/edit/${this.group.id}/${this.selectedExpense.id}?spender=${this.selectedExpense.email}`
       );
+    },
+    async removeExpense() {
+      const expense = this.selectedExpense;
+
+      const isConfirm = await popupService.confirm(
+        `Are you sure you want to delete this expense?\n ${
+          expense.description
+        } - ${getSymbolFromCurrency(expense.currency)}${expense.amount}`,
+        'Yes',
+        'No'
+      );
+      if (!isConfirm) return;
+
+      const idx = this.group.expenses[expense.email].findIndex(
+        (exp) => exp.id === expense?.id
+      );
+      if (idx !== -1) {
+        this.group.expenses[expense.email].splice(idx, 1);
+      }
+
+      this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });
     },
   },
   async created() {

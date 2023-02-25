@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="expense-page full">
     <router-view />
   </div>
 </template>

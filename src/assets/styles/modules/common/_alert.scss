@@ -86,12 +86,12 @@
         }
 
         .approve-btn {
-            background-color: $pop;
+            background-color: $buttonGreen;
             color: white;
         }
         .cancel-btn {
-            border: 2px solid $pop;
-            color: $pop;
+            border: 2px solid $buttonGreen;
+            color: $buttonGreen;
         }
     }
 }

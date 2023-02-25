@@ -24,12 +24,7 @@ export const groupRoutes = [
         path: ':groupId',
         component: groupDetails,
         name: 'group-details'
-      },
-      {
-        path: ':groupId/expense/:expenseId?',
-        component: expenseEdit,
-        name: 'expense-edit'
-      },
+      }
     ]
   }
 ]

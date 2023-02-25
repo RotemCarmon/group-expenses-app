@@ -1,5 +1,5 @@
 import expensePage from '../views/expense-page'
-import { expenseList } from '../cmps';
+import { expenseList, expenseEdit } from '../cmps';
 
 export const expenseRoutes = [
   {
@@ -10,7 +10,12 @@ export const expenseRoutes = [
         path: ':groupId',
         component: expenseList,
         name: 'expense-list'
-      }
+      },
+      {
+        path: 'edit/:groupId/:expenseId?',
+        component: expenseEdit,
+        name: 'expense-edit'
+      },
     ]
   }
 ]

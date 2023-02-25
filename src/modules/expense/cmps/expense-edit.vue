@@ -97,7 +97,10 @@ export default {
     saveExpense() {
       const spenderEmail = this.findEmailByNameInGroup(this.spender);
 
-      this.expenseToEdit = this.convertExcludesNamesToEmails(this.expenseToEdit);
+      this.expenseToEdit = this.convertExcludesNamesToEmails(
+        this.expenseToEdit
+      );
+      this.expenseToEdit.createdAt = Date.now();
       this.group.expenses[spenderEmail].push(this.expenseToEdit);
       this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });
       this.$router.go(-1);

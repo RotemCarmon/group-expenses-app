@@ -1,6 +1,7 @@
+import * as XLSX from "xlsx";
 import { currencyService } from '@/modules/common/services/currency.service.js'
 import { loggerService } from '@/modules/common/services/logger.service.js'
-import { makeId } from '@/modules/common/services/util.service.js'
+import { makeId, formatDate, findEmailByNameInGroup, findNameByEmailInGroup } from '@/modules/common/services/util.service.js'
 
 
 var gCurrencyData
@@ -86,12 +87,54 @@ async function getSummary(expenses, userCurrency) {
   }
 }
 
+
+
+// EXCEL
+function exportExcel(group) {
+  const data = prepareExpenseData(group)
+
+  const wb = XLSX.utils.book_new(); // create a new empty workbook
+  const ws = XLSX.utils.json_to_sheet(data, { header: ['spender', 'amount', 'description', 'exclude', 'currency', 'email', 'createdAt'] }); // create a sheet from json
+  XLSX.utils.book_append_sheet(wb, ws, "Expenses"); // appends sheet to workbook
+  XLSX.writeFile(
+    wb,
+    `${group.name || 'Expenses'}-${formatDate(new Date())}.xlsx`
+  ); // download file
+
+}
+
+function prepareExpenseData(group) {
+  const res = []
+  const expenses = group.expenses
+
+  for (const email in expenses) {
+    const currUserExpenses = expenses[email]
+    const name = findNameByEmailInGroup(email, group)
+
+    const expenseReports = currUserExpenses.map((expense) => {
+      return {
+        spender: name,
+        amount: expense.amount,
+        description: expense.description,
+        exclude: expense.exclude.map((_email) => findNameByEmailInGroup(_email, group)).join(', '),
+        currency: expense.currency,
+        email,
+        createdAt: formatDate(expense.createdAt),
+      };
+    });
+
+    res.push(...expenseReports)
+  }
+  return res
+}
+
 export const expenseService = {
   getSumPerMember,
   getEqualExpense,
   getSummary,
   getTotalExpenses,
-  getEmptyExpense
+  getEmptyExpense,
+  exportExcel
 }
 
 function getEmptyExpense() {

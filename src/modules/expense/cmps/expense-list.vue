@@ -1,27 +1,30 @@
 <template>
   <section class="expense-list-container" v-if="expenses && group">
     <h3 class="group-name">{{ group.name }}</h3>
-    <div class="titles grid-layout">
-      <div class="name">Name</div>
-      <div class="name">Amount</div>
-      <div class="name">Date</div>
-      <div class="name">Discription</div>
-    </div>
-    <div class="expense-preview" v-for="expense in expenses" :key="expense.id">
-      <div class="grid-layout">
-        <div class="name">{{ expense.name }}</div>
-        <div class="amount">
-          {{ expense.amount }}{{ getSymbolFromCurrency(expense.currency) }}
+    <main>
+      <div
+        class="expense-preview"
+        v-for="expense in expenses"
+        :key="expense.id"
+      >
+        <div class="grid-layout">
+          <div class="name">{{ expense.name }}</div>
+          <div class="amount">
+            {{ expense.amount }}{{ getSymbolFromCurrency(expense.currency) }}
+          </div>
+          <div class="createdAt">
+            {{ formatDate(expense.createdAt, 'dd/LL') }}
+          </div>
+          <div class="description">{{ expense.description }}</div>
         </div>
-        <div class="createdAt">
-          {{ formatDate(expense.createdAt, 'dd/LL') }}
+        <div class="exclude" v-if="expense.exclude && expense.exclude.length">
+          <div class="line"></div>
+          Exclude: {{ expense.exclude.join(', ') }}
         </div>
-        <div class="description">{{ expense.description }}</div>
       </div>
-      <div class="exclude" v-if="expense.exclude && expense.exclude.length">
-        <div class="line"></div>
-        Exclude: {{ expense.exclude.join(', ') }}
-      </div>
+    </main>
+    <div class="footer section-app-container">
+      <button class="btn dark bottom-btn">Submit</button>
     </div>
   </section>
 </template>
@@ -87,40 +90,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.group-name {
-  margin-bottom: 16px;
-}
-.titles {
-  font-weight: bold;
-  padding: 0 6px 10px;
-}
-.grid-layout {
-  display: grid;
-  grid-template-columns: 80px 70px 60px 120px;
-}
-.expense-preview {
-  background-color: #cd9fd3;
-  border-radius: 4px;
-  box-shadow: 0 0 4px rgba(9, 9, 9, 0.292);
-  padding: 8px 6px;
-
-  &:not(:last-child) {
-    margin-bottom: 6px;
-  }
-  .description {
-      white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  }
-  .exclude {
-    .line {
-      width: 100%;
-      height: 1px;
-      background-color: rgba(230, 230, 230, 0.67);
-      margin: 8px 0;
-    }
-  }
-}
-</style>

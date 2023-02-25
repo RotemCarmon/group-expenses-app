@@ -5,21 +5,24 @@
         <img :src="require('@/assets/icons/arrow-left.svg')" />
       </div>
     </div>
-    <div class="avatar-container" @click="isMenuOpen = true" :class="{'letter-avatar': loggedInUser && !loggedInUser.imgUrl}">
+    <div
+      class="avatar-container"
+      @click="isMenuOpen = true"
+      :class="{ 'letter-avatar': loggedInUser && !loggedInUser.imgUrl }"
+    >
       <img
         v-if="!loggedInUser"
-        :src="require('@/assets/icons/avatar.svg')"
+        :src="require('@/assets/imgs/user-avatar.png')"
         class="default-avatar"
       />
       <img v-else-if="loggedInUser.imgUrl" :src="loggedInUser.imgUrl" />
       <div v-else class="avatar">{{ avatarCapital }}</div>
     </div>
 
-    <div class="screen" :class="{open:isMenuOpen}" ></div>
+    <div class="screen" :class="{ open: isMenuOpen }"></div>
     <transition name="slide-right" mode="out-in">
       <user-menu v-if="isMenuOpen" @close="isMenuOpen = false" />
     </transition>
-
   </section>
 </template>
 
@@ -51,7 +54,7 @@ export default {
     },
     loggedInUser() {
       const user = this.$store.getters['authStore/loggedInUser'];
-      return user
+      return user;
     },
     avatarCapital() {
       return this.loggedInUser.username.charAt(0).toUpperCase();

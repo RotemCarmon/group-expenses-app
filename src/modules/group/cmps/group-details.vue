@@ -52,7 +52,7 @@
 <script>
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { eventBus } from '@/modules/common/services/event-bus.service.js';
-import { expenseService } from '../services/expense.service';
+import { expenseService } from '@/modules/expense/services/expense.service';
 import { optionMenu } from '@/modules/common/cmps';
 import { popupService } from '@/modules/common/services/popup.service.js';
 export default {
@@ -86,8 +86,8 @@ export default {
       const res = {};
       for (const email in summary) {
         const val = summary[email];
-        const name = this.findNameByEmailInGroup(email)
-        res[name] = val
+        const name = this.findNameByEmailInGroup(email);
+        res[name] = val;
       }
       return res;
     },

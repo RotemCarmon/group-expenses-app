@@ -3,7 +3,6 @@ import groupPreview from './group-preview'
 import groupEdit from './group-edit'
 import groupDetails from './group-details'
 import memberEdit from './member-edit'
-import expenseEdit from './expense-edit'
 
 
 export {
@@ -12,5 +11,4 @@ export {
   groupEdit,
   groupDetails,
   memberEdit,
-  expenseEdit
 }

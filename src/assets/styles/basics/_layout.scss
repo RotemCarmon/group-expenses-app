@@ -59,6 +59,44 @@
     }
 }
 
+.section-app-container {
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    grid-auto-rows: min-content;
+
+    > * {
+        grid-column: 2;
+    }
+
+    @include for-wide-layout {
+        grid-template-columns:
+            minmax(20px, 1fr)
+            minmax(auto, $normal-breakpoint)
+            minmax(20px, 1fr);
+    }
+
+    @include for-normal-layout {
+        grid-template-columns:
+            minmax(20px, 1fr)
+            minmax(auto, $narrow-breakpoint)
+            minmax(20px, 1fr);
+    }
+
+    @include for-narrow-layout {
+        grid-template-columns:
+            minmax(20px, 1fr)
+            minmax(auto, $mobile-breakpoint)
+            minmax(20px, 1fr);
+    }
+
+    @include for-mobile-layout {
+        grid-template-columns:
+            minmax(20px, 1fr)
+            minmax(auto, $mobile-breakpoint - 10)
+            minmax(20px, 1fr);
+    }
+}
+
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));

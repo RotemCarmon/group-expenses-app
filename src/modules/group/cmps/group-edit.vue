@@ -34,7 +34,7 @@
         </div>
       </div>
     </main>
-    <button @click="saveGroup" class="btn dark buttom-btn create-btn">
+    <button @click="saveGroup" class="btn dark bottom-btn create-btn">
       Save
     </button>
 

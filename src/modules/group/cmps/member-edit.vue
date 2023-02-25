@@ -20,7 +20,7 @@
         v-model="memberToEdit.email"
       />
     </main>
-    <button @click="save" class="btn dark buttom-btn create-btn">Save</button>
+    <button @click="save" class="btn dark bottom-btn create-btn">Save</button>
   </section>
 </template>
 

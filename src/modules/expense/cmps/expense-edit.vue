@@ -44,7 +44,9 @@
         v-model="expenseToEdit.exclude"
       />
     </main>
-    <button @click="saveExpense" class="btn dark buttom-btn">Submit</button>
+    <div class="footer section-app-container">
+      <button @click="saveExpense" class="btn dark bottom-btn">Submit</button>
+    </div>
   </section>
 </template>
 

@@ -40,7 +40,7 @@
         <p class="error" v-show="passwordError">{{ passwordError }}</p>
       </label>
 
-      <button @click.prevent="doSignup" class="btn dark buttom-btn">
+      <button @click.prevent="doSignup" class="btn dark bottom-btn">
         Create Account
       </button>
 

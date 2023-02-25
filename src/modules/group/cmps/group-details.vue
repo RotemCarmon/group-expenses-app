@@ -115,7 +115,7 @@ export default {
       );
     },
     goToAddExpense() {
-      this.$router.push(`${this.$route.fullPath}/expense`);
+      this.$router.push(`/expense/edit/${this.group.id}`);
     },
     getSummeryData(userCurrency = this.userCurrency) {
       this.getExpenses(userCurrency);

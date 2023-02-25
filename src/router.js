@@ -37,6 +37,10 @@ router.beforeEach(async (to, from, next) => {
   if (!loggedInUser) {
     if (['login-signup'].includes(to.name)) return next();
     return router.push('/auth').catch(() => { });
+  } else {
+    if (['login-signup'].includes(to.name)) {
+      return next('/')
+    }
   }
   next()
 })

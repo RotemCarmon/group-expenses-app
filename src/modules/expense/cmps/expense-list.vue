@@ -12,7 +12,9 @@
       />
     </main>
     <div class="footer section-app-container">
-      <button class="btn dark bottom-btn">Export</button>
+      <button @click="exportExpenses" class="btn dark bottom-btn">
+        Export
+      </button>
     </div>
 
     <!-- OPTION MENU -->
@@ -33,6 +35,7 @@ import expensePreview from './expense-preview';
 import { optionMenu } from '@/modules/common/cmps';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import getSymbolFromCurrency from 'currency-symbol-map';
+import { expenseService } from '../services/expense.service';
 export default {
   name: 'expense-list',
   data() {
@@ -112,6 +115,9 @@ export default {
       }
 
       this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });
+    },
+    exportExpenses() {
+      expenseService.exportExcel(this.group);
     },
   },
   async created() {

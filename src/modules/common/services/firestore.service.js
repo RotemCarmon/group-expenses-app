@@ -76,5 +76,13 @@ function _buildCriteria(filterBy) {
     criteria.key = key
     criteria.value = value
   }
+
+  else if (filterBy.eq) {
+    criteria.operator = '=='
+    const [key, value] = filterBy.eq
+    criteria.key = key
+    criteria.value = value
+
+  }
   return criteria
 }

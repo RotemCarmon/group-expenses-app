@@ -97,7 +97,7 @@ export const expenseService = {
 function getEmptyExpense() {
   return {
     id: makeId(),
-    amount: 0,
+    amount: '',
     exclude: [],
     description: '',
     currency: ''

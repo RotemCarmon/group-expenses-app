@@ -39,7 +39,7 @@
       />
       <h3 class="sub-title">Exclude</h3>
       <multi-select
-        :items="membersLowerCase"
+        :items="members"
         placeholder="Who to exclude?"
         v-model="expenseToEdit.exclude"
       />
@@ -65,9 +65,6 @@ export default {
     members() {
       return this.group?.members?.map((member) => member.name);
     },
-    membersLowerCase() {
-      return this.group?.members?.map((member) => member.name.toLowerCase());
-    },
     currencyCodes() {
       return this.$store.getters['commonStore/currencyCodes'];
     },
@@ -92,12 +89,24 @@ export default {
     async getExpense() {
       // check if expenseId exist
       this.expenseToEdit = expenseService.getEmptyExpense();
-      this.expenseToEdit.currency = this.userCurrency
+      this.expenseToEdit.currency = this.userCurrency;
+    },
+    findEmailByNameInGroup(name) {
+      return this.group.members.find((mem) => mem.name === name)?.email;
     },
     saveExpense() {
-      this.group.expenses[this.spender.toLowerCase()].push(this.expenseToEdit);
+      const spenderEmail = this.findEmailByNameInGroup(this.spender);
+
+      this.expenseToEdit = this.convertExcludesNamesToEmails(this.expenseToEdit);
+      this.group.expenses[spenderEmail].push(this.expenseToEdit);
       this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });
       this.$router.go(-1);
+    },
+    convertExcludesNamesToEmails(expenseToEdit) {
+      expenseToEdit.exclude = expenseToEdit.exclude.map((name) =>
+        this.findEmailByNameInGroup(name)
+      );
+      return expenseToEdit;
     },
   },
   created() {

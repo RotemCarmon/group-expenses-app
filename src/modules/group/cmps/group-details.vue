@@ -33,6 +33,7 @@
       >
     </div>
 
+    <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
       <option-menu
         v-if="isMenuOpen"
@@ -77,8 +78,21 @@ export default {
     async getExpenses(userCurrency) {
       const { expenses } = this.group;
       const summary = await expenseService.getSummary(expenses, userCurrency);
+
       // make sure this value updates when user pref currency is updated
-      this.summary = summary;
+      this.summary = this.convertSummaryEmailsToNames(summary);
+    },
+    convertSummaryEmailsToNames(summary) {
+      const res = {};
+      for (const email in summary) {
+        const val = summary[email];
+        const name = this.findNameByEmailInGroup(email)
+        res[name] = val
+      }
+      return res;
+    },
+    findNameByEmailInGroup(email) {
+      return this.group.members.find((mem) => mem.email === email)?.name;
     },
     async getGroup() {
       const { groupId } = this.$route.params;

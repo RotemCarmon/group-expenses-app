@@ -38,6 +38,7 @@
       Save
     </button>
 
+    <!-- MEMBER EDIT -->
     <transition name="slide-down" mode="out-in">
       <member-edit
         v-if="isEditMember"
@@ -46,6 +47,8 @@
         :member="memberSelected"
       />
     </transition>
+
+    <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
       <option-menu
         v-if="isMenuOpen"
@@ -88,21 +91,25 @@ export default {
         this.memberSelected = null;
       }
     },
-    saveMember(member) {
+    async saveMember(member) {
+
+      // if group have expenses already and the member email was updated - don't allow!
+      
       const idx = this.groupToEdit.members.findIndex((m) => m.id === member.id);
       if (idx === -1) {
         this.groupToEdit.members.push(member);
         this.groupToEdit.memberEmails.push(member.email);
-
-        // if group already have expenses choose if to exclude or include the new member with all expenses
       } else {
         this.groupToEdit.members.splice(idx, 1, member);
-        // if group already have expenses and member name was changed need to update everywhere 
-        // or - when group has expenses dont allow updating member name
       }
+
+      this.closeEditMember();
+    },
+    closeEditMember() {
       this.isEditMember = false;
       this.memberSelected = null;
     },
+
     async getGroup() {
       const { groupId } = this.$route.params;
 
@@ -123,11 +130,10 @@ export default {
       }
     },
     async saveGroup() {
-      const members = this.groupToEdit.members.map((m) => m.name);
-      members.forEach((member) => {
-        const lowCaseMember = member.toLowerCase();
-        if (!this.groupToEdit.expenses[lowCaseMember]) {
-          this.groupToEdit.expenses[lowCaseMember] = [];
+      const membersEmails = this.groupToEdit.members.map((m) => m.email);
+      membersEmails.forEach((memberEmail) => {
+        if (!this.groupToEdit.expenses[memberEmail]) {
+          this.groupToEdit.expenses[memberEmail] = [];
         }
       });
 

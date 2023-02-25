@@ -38,7 +38,7 @@ export default {
   methods: {
     back() {
       let homeRoute = '/';
-      if (this.$route.name === 'expense-edit') {
+      if (this.$route.path.includes('expense')) {
         homeRoute = `/group/${this.$route.params.groupId}`;
       } else if (this.$route.path.includes('group')) {
         homeRoute = '/group';

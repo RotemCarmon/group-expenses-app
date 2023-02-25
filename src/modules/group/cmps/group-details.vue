@@ -44,6 +44,9 @@
         <template #content-top>
           <div @click="goToAddExpense" class="line">Add Expense</div>
         </template>
+        <template #content-bottom>
+          <div @click="goToExpenseList" class="line">Show All Expenses</div>
+        </template>
       </option-menu>
     </transition>
   </section>
@@ -154,6 +157,9 @@ export default {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
     },
+    goToExpenseList() {
+      this.$router.push(`/expense/${this.group.id}`);
+    }
   },
   async created() {
     await this.getGroup();

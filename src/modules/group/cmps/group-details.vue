@@ -2,7 +2,7 @@
   <section class="group-details-container container" v-if="group">
     <main>
       <div class="page-header">
-        <div class="title">{{ group.name }}</div>
+        <h3 class="title">{{ group.name }}</h3>
         <div class="ellipsis-icon" @click.stop="toggleMenu">
           <img :src="require('@/assets/icons/ellipsis.svg')" />
         </div>

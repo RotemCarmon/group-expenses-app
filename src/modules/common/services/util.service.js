@@ -7,7 +7,9 @@ export const utilService = {
     deepSearch,
     getDeepVal,
     padNum,
-    DateTime
+    DateTime,
+    findNameByEmailInGroup,
+    findEmailByNameInGroup
 };
 
 function delay(ms = 1500) {
@@ -171,6 +173,14 @@ export function dateTimeFormat(date, timeGroup = 'day') {
     } else {
         return d.toFormat('dd/MM')
     }
+}
+
+
+export function findEmailByNameInGroup(name, group) {
+    return group.members.find((mem) => mem.name === name)?.email;
+}
+export function findNameByEmailInGroup(email, group) {
+    return group.members.find((mem) => mem.email === email)?.name;
 }
 
 export { DateTime }

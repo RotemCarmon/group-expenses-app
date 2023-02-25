@@ -154,7 +154,7 @@ export function cleanDecPoint(data, digCount = 0) {
 }
 
 export function formatDate(date, format = 'D T') {
-    if (!date || !Object.keys(date).length) return null
+    if (!date) return null
     if (!(date instanceof Date)) date = new Date(date)
     return DateTime.fromJSDate(date).setLocale('en-UK').toFormat(format)
 

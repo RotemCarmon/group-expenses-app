@@ -14,11 +14,15 @@ async function updateUser(user) {
 async function getUserById(userId) {
   return await firebaseService.get(COLLECTION_NAME, userId)
 }
+async function getUserByEmail(email) {
+  return await firebaseService.query(COLLECTION_NAME, { eq: ['email', email] })
+}
 
 export const userService = {
   addUser,
   getUserById,
-  updateUser
+  updateUser,
+  getUserByEmail
 }
 
 

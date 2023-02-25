@@ -1,5 +1,8 @@
 <template>
-  <section class="expense-edit-container container" v-if="group">
+  <section
+    class="expense-edit-container container"
+    v-if="group && expenseToEdit"
+  >
     <main>
       <div class="expense-header section-app-container">
         <div class="page-header">
@@ -97,12 +100,31 @@ export default {
       }
     },
     async getExpense() {
-      // check if expenseId exist
-      this.expenseToEdit = expenseService.getEmptyExpense();
-      this.expenseToEdit.currency = this.userCurrency;
+      const { expenseId } = this.$route.params;
+      const { spender } = this.$route.query;
+      if (expenseId && spender) {
+        this.expenseToEdit = {};
+        const currExpenses = this.group.expenses[spender];
+        const expense = currExpenses.find((exp) => exp.id === expenseId);
+
+        expense.exclude = expense.exclude.map((exc) =>
+          this.findNameByEmailInGroup(exc)
+        );
+
+        const spenderName = this.findNameByEmailInGroup(spender);
+        this.spender = spenderName;
+
+        this.expenseToEdit = expense;
+      } else {
+        this.expenseToEdit = expenseService.getEmptyExpense();
+        this.expenseToEdit.currency = this.userCurrency;
+      }
     },
     findEmailByNameInGroup(name) {
       return this.group.members.find((mem) => mem.name === name)?.email;
+    },
+    findNameByEmailInGroup(email) {
+      return this.group.members.find((mem) => mem.email === email)?.name;
     },
     saveExpense() {
       const spenderEmail = this.findEmailByNameInGroup(this.spender);
@@ -110,13 +132,23 @@ export default {
       this.expenseToEdit = this.convertExcludesNamesToEmails(
         this.expenseToEdit
       );
-      if(!this.expenseToEdit.amount) {
-        popupService.warn('Please enter amount')
-        return
+      if (!this.expenseToEdit.amount) {
+        popupService.warn('Please enter amount');
+        return;
       }
-
-      this.expenseToEdit.createdAt = Date.now();
-      this.group.expenses[spenderEmail].push(this.expenseToEdit);
+      const { expenseId } = this.$route.params;
+      if (expenseId) {
+        const { spender } = this.$route.query;
+        const idx = this.group.expenses[spenderEmail].findIndex(
+          (exp) => exp.id === expenseId
+        );
+        if (idx !== -1) {
+          this.group.expenses[spender].splice(idx, 1, this.expenseToEdit);
+        }
+      } else {
+        this.expenseToEdit.createdAt = Date.now();
+        this.group.expenses[spenderEmail].push(this.expenseToEdit);
+      }
       this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });
       this.$router.go(-1);
     },
@@ -127,10 +159,10 @@ export default {
       return expenseToEdit;
     },
   },
-  created() {
-    this.getGroup();
-    this.getExpense();
+  async created() {
     this.spender = this.$store.getters['authStore/loggedInUser']?.username;
+    await this.getGroup();
+    this.getExpense();
   },
   components: {
     multiSelect,

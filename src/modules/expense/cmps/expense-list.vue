@@ -8,21 +8,35 @@
         v-for="expense in expenses"
         :key="expense.id"
         :expense="expense"
+        @openMenu="toggleMenu"
       />
     </main>
     <div class="footer section-app-container">
       <button class="btn dark bottom-btn">Export</button>
     </div>
+
+    <!-- OPTION MENU -->
+    <transition name="menu-bottom" mode="out-in">
+      <option-menu
+        v-if="selectedExpense"
+        @edit="goToEditExpense"
+        @remove="removeExpense"
+        @close="toggleMenu"
+      >
+      </option-menu>
+    </transition>
   </section>
 </template>
 
 <script>
 import expensePreview from './expense-preview';
+import { optionMenu } from '@/modules/common/cmps';
 export default {
   name: 'expense-list',
   data() {
     return {
       group: null,
+      selectedExpense: null,
     };
   },
   computed: {
@@ -55,6 +69,9 @@ export default {
     },
   },
   methods: {
+    toggleMenu(expense) {
+      this.selectedExpense = this.selectedExpense ? null : expense;
+    },
     async getGroup() {
       const { groupId } = this.$route.params;
       if (!groupId) return;
@@ -68,12 +85,18 @@ export default {
     findNameByEmailInGroup(email) {
       return this.group.members.find((mem) => mem.email === email)?.name;
     },
+    goToEditExpense() {
+      this.$router.push(
+        `/expense/edit/${this.group.id}/${this.selectedExpense.id}?spender=${this.selectedExpense.email}`
+      );
+    },
   },
   async created() {
     await this.getGroup();
   },
   components: {
     expensePreview,
+    optionMenu,
   },
 };
 </script>

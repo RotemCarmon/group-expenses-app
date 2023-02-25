@@ -4,7 +4,7 @@
     <div class="date">
       {{ formatDate(expense.createdAt, 'D') }}
     </div>
-    <div class="ellipsis-icon" @click.stop="$emit('openMenu', group)">
+    <div class="ellipsis-icon" @click.stop="$emit('openMenu', expense)">
       <img :src="require('@/assets/icons/ellipsis.svg')" />
     </div>
     <div class="description">{{ expense.description }}</div>

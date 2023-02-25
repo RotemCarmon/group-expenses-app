@@ -43,8 +43,6 @@
       >
         <template #content-top>
           <div @click="goToAddExpense" class="line">Add Expense</div>
-        </template>
-        <template #content-bottom>
           <div @click="goToExpenseList" class="line">Show All Expenses</div>
         </template>
       </option-menu>

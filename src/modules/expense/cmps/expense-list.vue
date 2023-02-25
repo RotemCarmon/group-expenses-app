@@ -1,37 +1,23 @@
 <template>
   <section class="expense-list-container" v-if="expenses && group">
-    <h3 class="group-name">{{ group.name }}</h3>
+    <div class="title section-app-container">
+      <h3 class="group-name">{{ group.name }}</h3>
+    </div>
     <main>
-      <div
-        class="expense-preview"
+      <expense-preview
         v-for="expense in expenses"
         :key="expense.id"
-      >
-        <div class="grid-layout">
-          <div class="name">{{ expense.name }}</div>
-          <div class="amount">
-            {{ expense.amount }}{{ getSymbolFromCurrency(expense.currency) }}
-          </div>
-          <div class="createdAt">
-            {{ formatDate(expense.createdAt, 'dd/LL') }}
-          </div>
-          <div class="description">{{ expense.description }}</div>
-        </div>
-        <div class="exclude" v-if="expense.exclude && expense.exclude.length">
-          <div class="line"></div>
-          Exclude: {{ expense.exclude.join(', ') }}
-        </div>
-      </div>
+        :expense="expense"
+      />
     </main>
     <div class="footer section-app-container">
-      <button class="btn dark bottom-btn">Submit</button>
+      <button class="btn dark bottom-btn">Export</button>
     </div>
   </section>
 </template>
 
 <script>
-import { formatDate } from '@/modules/common/services/util.service';
-import getSymbolFromCurrency from 'currency-symbol-map';
+import expensePreview from './expense-preview';
 export default {
   name: 'expense-list',
   data() {
@@ -69,8 +55,6 @@ export default {
     },
   },
   methods: {
-    formatDate,
-    getSymbolFromCurrency,
     async getGroup() {
       const { groupId } = this.$route.params;
       if (!groupId) return;
@@ -87,6 +71,9 @@ export default {
   },
   async created() {
     await this.getGroup();
+  },
+  components: {
+    expensePreview,
   },
 };
 </script>

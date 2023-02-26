@@ -126,7 +126,7 @@ export default {
     findNameByEmailInGroup(email) {
       return this.group.members.find((mem) => mem.email === email)?.name;
     },
-    saveExpense() {
+    async saveExpense() {
       const spenderEmail = this.findEmailByNameInGroup(this.spender);
 
       this.expenseToEdit = this.convertExcludesNamesToEmails(
@@ -150,6 +150,18 @@ export default {
         this.group.expenses[spenderEmail].push(this.expenseToEdit);
       }
       this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });
+
+      // const isConfirm = await popupService.confirm(
+      //   `Do you want to add another expense?`,
+      //   'Yes',
+      //   'No'
+      // );
+      // if (isConfirm) {
+      //   this.expenseToEdit = expenseService.getEmptyExpense();
+      //   this.spender = this.loggedInUser.username;
+      //   return
+      // }
+
       this.$router.go(-1);
     },
     convertExcludesNamesToEmails(expenseToEdit) {

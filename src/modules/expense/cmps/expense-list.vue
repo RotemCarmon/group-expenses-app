@@ -1,8 +1,16 @@
 <template>
   <section class="expense-list-container" v-if="expenses && group">
-    <div class="title section-app-container">
-      <h3 class="group-name">{{ group.name }}</h3>
+    <div class="section-app-container">
+      <div class="header">
+        <div class="title">
+          <h3 class="group-name">{{ group.name }}</h3>
+        </div>
+        <button @click="exportExpenses" class="btn dark export-btn">
+          Export
+        </button>
+      </div>
     </div>
+
     <main>
       <expense-preview
         v-for="expense in expenses"
@@ -11,11 +19,7 @@
         @openMenu="toggleMenu"
       />
     </main>
-    <div class="footer section-app-container">
-      <button @click="exportExpenses" class="btn dark bottom-btn">
-        Export
-      </button>
-    </div>
+    <!-- <div class="footer section-app-container"></div> -->
 
     <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">

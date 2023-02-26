@@ -14,13 +14,22 @@
         color: $darkAqua;
     }
 
-    main {
+
+    .list-container {
+        position: relative;
+        overflow-y: auto;
+        flex: 1;
+        border-block: 2px solid $lightGray;
+        background-color: $lightAqua;
+
+    }
+    
+    .expense-list {
+        position: absolute;
+        width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 6px;
-        flex: 1;
-        padding-block: 16px;
-        background-color: $lightAqua;
+        gap: 1px;
     }
 
     .expense-preview-container {

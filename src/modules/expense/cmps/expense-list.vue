@@ -4,13 +4,15 @@
       <h3 class="group-name">{{ group.name }}</h3>
     </div>
 
-    <main>
-      <expense-preview
-        v-for="expense in expenses"
-        :key="expense.id"
-        :expense="expense"
-        @openMenu="toggleMenu"
-      />
+    <main class="list-container">
+      <div class="expense-list">
+        <expense-preview
+          v-for="expense in expenses"
+          :key="expense.id"
+          :expense="expense"
+          @openMenu="toggleMenu"
+        />
+      </div>
     </main>
     <div class="footer section-app-container">
       <button @click="exportExpenses" class="btn dark bottom-btn">

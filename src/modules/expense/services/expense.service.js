@@ -6,86 +6,47 @@ import { makeId, formatDate, findEmailByNameInGroup, findNameByEmailInGroup } fr
 
 var gCurrencyData
 
-
 async function getTotalExpenses(expenses, userCurrency) {
   gCurrencyData = await _getCurrencyRate()
-  let sum = 0
-  for (const member in expenses) {
-    const memberExpenses = expenses[member]
-    sum += memberExpenses.reduce((acc, expense) => {
-      const amount = _convertToBase(expense.amount, expense.currency)
-      acc += amount
-      return acc
-    }, 0)
-  }
+
+  const sum = expenses.reduce((sum, expense) => {
+    sum += _convertToBase(expense.amount, expense.currency)
+    return sum
+  }, 0)
   return _convertFromBase(sum, userCurrency)
 }
 
-// This function get the amount each member HAVE paid
-function getSumPerMember(expenses) {
-  const membersSum = {}
-  const members = Object.keys(expenses)
+async function getBalances(group, userCurrency) {
+  gCurrencyData = await _getCurrencyRate()
 
-  members.forEach(member => {
-    const sum = expenses[member].reduce((acc, expense) => {
-      if (!expense) return acc
-      // convert to base currency
-      const amount = _convertToBase(expense.amount, expense.currency)
-      acc += amount
-      return acc
-    }, 0)
-    membersSum[member] = sum
-  })
-  return membersSum
-}
-
-// This function gets the amout each member should have paid
-function getEqualExpense(expenses) {
-  const equalExpense = {}
-  const members = Object.keys(expenses)
-
-  members.forEach(member => {
-    if (!equalExpense[member]) equalExpense[member] = 0
-
-    expenses[member].forEach(expense => {
-      members.forEach(_member => {
-
-        if (expense.exclude.some(exc => exc.toLowerCase() === _member.toLowerCase())) return
-
-        if (!equalExpense[_member]) equalExpense[_member] = 0
-        // convert to base currency => expense.amount
-        const amount = _convertToBase(expense.amount, expense.currency)
-        equalExpense[_member] += amount / (members.length - expense.exclude.length)
-      })
-    })
-  })
-  return equalExpense;
-}
-
-// This function calculates the difference between each member paid and what he should've pay
-function calcSummary(sumPerMember, equalExpense, userCurrency) {
-  const members = Object.keys(sumPerMember)
-  const summary = {}
-  members.forEach(member => {
-    // convert to user pref currency
-    const amountDiff = sumPerMember[member] - equalExpense[member]
-    const amount = _convertFromBase(amountDiff, userCurrency)
-    summary[member] = amount
-  })
-  return summary
-}
-
-async function getSummary(expenses, userCurrency) {
-  try {
-    if (!expenses) return
-    gCurrencyData = await _getCurrencyRate()
-    const sumPerMember = getSumPerMember(expenses)
-    const equalExpense = getEqualExpense(expenses)
-    return calcSummary(sumPerMember, equalExpense, userCurrency)
-  } catch (err) {
-    loggerService.error(err)
+  const balances = {}
+  // Get the mount each member paied
+  for (const member of Object.values(group.members)) {
+    balances[member.email] = member.amountSpent
   }
+
+  // For each expense
+  const totalMemberCount = group.memberEmails.length
+
+  for (const expense of group.expenses) {
+    const memberCount = totalMemberCount - expense.exclude.length
+    const amountPerMember = _convertToBase(expense.amount, expense.currency) / memberCount
+
+
+    for (const member of Object.values(group.members)) {
+      if (!expense.exclude.includes(member.email)) {
+        balances[member.email] -= amountPerMember
+      }
+    }
+  }
+
+  for (const member in balances) {
+    balances[member] = _convertFromBase(balances[member], userCurrency)
+  }
+
+  return balances
 }
+
 
 
 
@@ -128,13 +89,50 @@ function prepareExpenseData(group) {
   return res
 }
 
+// PREPARE EXPENSE
+async function prepareExpense(expense, group) {
+  gCurrencyData = await _getCurrencyRate()
+
+  const { spender, amount, exclude } = expense
+  group.expenses.push(expense)
+  group.members[expense.spender].expenses.push(expense)
+  group.members[expense.spender].amountSpent += _convertToBase(amount, expense.currency)
+
+  for (const memberEmail of group.memberEmails) {
+    if (memberEmail !== spender && !exclude.includes(memberEmail)) {
+      group.members[memberEmail].expenses.push(expense)
+    }
+  }
+
+  return group
+}
+
+async function removeExpense(expense, group) {
+  gCurrencyData = await _getCurrencyRate()
+  
+  const { spender, amount, currency, id } = expense
+  const idx = group.expenses.findIndex((exp) => exp.id === id);
+  if (idx !== -1) {
+    group.expenses.splice(idx, 1);
+  }
+
+  const idx2 = group.members[spender].expenses.findIndex((exp) => exp.id === id);
+  if (idx2 !== -1) {
+    group.members[spender].expenses.splice(idx2, 1);
+  }
+
+  group.members[spender].amountSpent -= _convertToBase(amount, currency)
+
+  return group
+}
+
 export const expenseService = {
-  getSumPerMember,
-  getEqualExpense,
-  getSummary,
   getTotalExpenses,
   getEmptyExpense,
-  exportExcel
+  exportExcel,
+  prepareExpense,
+  getBalances,
+  removeExpense
 }
 
 function getEmptyExpense() {
@@ -143,7 +141,8 @@ function getEmptyExpense() {
     amount: '',
     exclude: [],
     description: '',
-    currency: ''
+    currency: '',
+    spender: ''
   }
 }
 

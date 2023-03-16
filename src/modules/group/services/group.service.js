@@ -32,7 +32,9 @@ export const groupService = {
   getEmptyGroup,
   getEmptyMember,
   saveGroup,
-  removeGroup
+  removeGroup,
+  createMember,
+
 }
 
 function getEmptyGroup() {
@@ -50,5 +52,13 @@ function getEmptyMember() {
     name: '',
     email: '',
     id: makeId(8)
+  }
+function createMember({ username, email, id, isOwner }) {
+  return {
+    name: username,
+    email,
+    id,
+    isOwner,
+    expenses: []
   }
 }

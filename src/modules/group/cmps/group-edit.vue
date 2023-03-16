@@ -50,12 +50,7 @@
 
     <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
-      <option-menu
-        v-if="isMenuOpen"
-        @edit="editMember"
-        @remove="removeMember"
-        @close="toggleMenu"
-      ></option-menu>
+      <option-menu v-if="isMenuOpen" @remove="removeMember" @close="toggleMenu" :isShowEdit="false"></option-menu>
     </transition>
   </section>
 </template>

@@ -6,28 +6,16 @@
 
     <main class="list-container">
       <div class="expense-list">
-        <expense-preview
-          v-for="expense in expenses"
-          :key="expense.id"
-          :expense="expense"
-          @openMenu="toggleMenu"
-        />
+        <expense-preview v-for="expense in expenses" :key="expense.id" :expense="expense" @openMenu="toggleMenu" />
       </div>
     </main>
     <div class="footer section-app-container">
-      <button @click="exportExpenses" class="btn dark bottom-btn">
-        Export
-      </button>
+      <button @click="exportExpenses" class="btn dark bottom-btn">Export</button>
     </div>
 
     <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
-      <option-menu
-        v-if="selectedExpense"
-        @edit="goToEditExpense"
-        @remove="removeExpense"
-        @close="toggleMenu"
-      >
+      <option-menu v-if="selectedExpense" @edit="goToEditExpense" @remove="removeExpense" @close="toggleMenu">
       </option-menu>
     </transition>
   </section>
@@ -49,34 +37,23 @@ export default {
   },
   computed: {
     expenses() {
-      const res = [];
-
-      const expenses = this.group?.expenses;
-      for (const email in expenses) {
-        const name = this.findNameByEmailInGroup(email);
-        const currUserExpenses = expenses[email];
-
-        const expenseReports = currUserExpenses.map((expense) => {
-          return {
-            amount: expense.amount,
-            description: expense.description,
-            name,
-            email,
-            exclude: expense.exclude.map((exc) =>
-              this.findNameByEmailInGroup(exc)
-            ),
-            currency: expense.currency,
-            id: expense.id,
-            createdAt: expense.createdAt,
-          };
-        });
-        res.push(...expenseReports);
-      }
+      if (!this.group) return null;
+      const res = this.group?.expenses?.reduce((expenses, expense) => {
+        expenses.push(this.prepareExpenseReport(expense));
+        return expenses;
+      }, []);
 
       return res.sort((a, b) => a.createdAt - b.createdAt);
     },
   },
   methods: {
+    prepareExpenseReport(expense) {
+      return {
+        ...expense,
+        name: this.findNameByEmailInGroup(expense.spender),
+        exclude: expense.exclude.map((exc) => this.findNameByEmailInGroup(exc)),
+      };
+    },
     toggleMenu(expense) {
       this.selectedExpense = this.selectedExpense ? null : expense;
     },
@@ -91,7 +68,7 @@ export default {
       return group;
     },
     findNameByEmailInGroup(email) {
-      return this.group.members.find((mem) => mem.email === email)?.name;
+      return Object.values(this.group.members).find((mem) => mem.email === email)?.name;
     },
     goToEditExpense() {
       this.$router.push(
@@ -102,22 +79,15 @@ export default {
       const expense = this.selectedExpense;
 
       const isConfirm = await popupService.confirm(
-        `Are you sure you want to delete this expense?\n ${
-          expense.description
-        } - ${getSymbolFromCurrency(expense.currency)}${expense.amount}`,
+        `Are you sure you want to delete this expense?\n ${expense.description} ${getSymbolFromCurrency(
+          expense.currency
+        )}${expense.amount}`,
         'Yes',
         'No'
       );
       if (!isConfirm) return;
 
-      const idx = this.group.expenses[expense.email].findIndex(
-        (exp) => exp.id === expense?.id
-      );
-      if (idx !== -1) {
-        this.group.expenses[expense.email].splice(idx, 1);
-      }
-
-      this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });
+      this.$store.dispatch({ type: 'expenseStore/removeExpense', expense, group: this.group });
     },
     exportExpenses() {
       expenseService.exportExcel(this.group);

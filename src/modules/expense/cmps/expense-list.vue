@@ -72,7 +72,7 @@ export default {
     },
     goToEditExpense() {
       this.$router.push(
-        `/expense/edit/${this.group.id}/${this.selectedExpense.id}?spender=${this.selectedExpense.email}`
+        `/expense/edit/${this.group.id}/${this.selectedExpense.id}?spender=${this.selectedExpense.spender}`
       );
     },
     async removeExpense() {

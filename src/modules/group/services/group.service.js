@@ -53,12 +53,16 @@ function getEmptyMember() {
     email: '',
     id: makeId(8)
   }
-function createMember({ username, email, id, isOwner }) {
+}
+
+function createMember(options = {}) {
+  const { username = '', email = '', id = makeId(8), isOwner = false } = options
   return {
     name: username,
     email,
     id,
     isOwner,
-    expenses: []
+    expenses: [],
+    amountSpent: 0
   }
 }

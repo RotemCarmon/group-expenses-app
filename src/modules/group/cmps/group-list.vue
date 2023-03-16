@@ -86,7 +86,7 @@ export default {
     },
     isGroupOwner() {
       const loggedInUser = this.$store.getters['authStore/loggedInUser'];
-      const owner = this.selectedGroup?.members.find(
+      const owner = Object.values(this.selectedGroup?.members).find(
         (member) => member.isOwner
       );
       const ownerEmail = owner?.email;

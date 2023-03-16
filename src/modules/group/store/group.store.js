@@ -73,7 +73,6 @@ export default {
     async removeGroup({ commit }, { groupId }) {
       commit({ type: 'setLoading', isLoading: true }, { root: true })
       try {
-        console.log('groupId:', groupId)
         await groupService.removeGroup(groupId)
         commit({ type: 'removeGroup', groupId })
 

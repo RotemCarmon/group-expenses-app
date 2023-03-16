@@ -59,7 +59,7 @@ export default {
   methods: {
     editMember() {
       if (!this.memberSelected) {
-        this.memberSelected = groupService.getEmptyMember();
+        this.memberSelected = groupService.createMember();
       }
       this.isEditMember = true;
       this.isMenuOpen = false;

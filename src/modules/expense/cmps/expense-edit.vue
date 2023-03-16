@@ -1,8 +1,5 @@
 <template>
-  <section
-    class="expense-edit-container container"
-    v-if="group && expenseToEdit"
-  >
+  <section class="expense-edit-container container" v-if="group && expenseToEdit">
     <main>
       <div class="expense-header section-app-container">
         <div class="page-header">
@@ -39,23 +36,14 @@
         </div>
         <div class="card-section">
           <h3 class="sub-title">Who is the spender?</h3>
-          <multi-select
-            :items="members"
-            :isMulti="false"
-            class="form-row"
-            v-model="spender"
-          />
+          <multi-select :items="members" :isMulti="false" class="form-row" v-model="spender" />
           <h3 class="sub-title">Exclude</h3>
-          <multi-select
-            :items="members"
-            placeholder="Who to exclude?"
-            v-model="expenseToEdit.exclude"
-          />
+          <multi-select :items="members" placeholder="Who to exclude?" v-model="expenseToEdit.exclude" />
         </div>
       </div>
     </main>
     <div class="footer section-app-container">
-      <button @click="saveExpense" class="btn dark bottom-btn">Submit</button>
+      <button @click="saveExpense" class="btn dark bottom-btn">Save</button>
     </div>
   </section>
 </template>
@@ -76,7 +64,7 @@ export default {
   },
   computed: {
     members() {
-      return this.group?.members?.map((member) => member.name);
+      return this.group?.members && Object.values(this.group?.members).map((m) => m.name);
     },
     currencyCodes() {
       return this.$store.getters['commonStore/currencyCodes'];
@@ -91,83 +79,69 @@ export default {
   methods: {
     async getGroup() {
       const { groupId } = this.$route.params;
-      if (groupId) {
-        const group = await this.$store.dispatch({
-          type: 'groupStore/getGroupById',
-          groupId,
-        });
-        this.group = group;
-      }
+      if (!groupId) return;
+
+      const group = await this.$store.dispatch({
+        type: 'groupStore/getGroupById',
+        groupId,
+      });
+      this.group = group;
     },
     async getExpense() {
       const { expenseId } = this.$route.params;
       const { spender } = this.$route.query;
       if (expenseId && spender) {
-        this.expenseToEdit = {};
-        const currExpenses = this.group.expenses[spender];
-        const expense = currExpenses.find((exp) => exp.id === expenseId);
-
-        expense.exclude = expense.exclude.map((exc) =>
-          this.findNameByEmailInGroup(exc)
-        );
-
-        const spenderName = this.findNameByEmailInGroup(spender);
-        this.spender = spenderName;
-
-        this.expenseToEdit = expense;
+        this.prepareExpenseToEdit(expenseId, spender);
       } else {
         this.expenseToEdit = expenseService.getEmptyExpense();
         this.expenseToEdit.currency = this.userCurrency;
       }
     },
+    prepareExpenseToEdit(expenseId, spender) {
+      this.expenseToEdit = {};
+
+      const expense = this.group.expenses.find((exp) => exp.id === expenseId);
+      expense.exclude = expense.exclude.map((exc) => this.findNameByEmailInGroup(exc));
+
+      this.spender = this.findNameByEmailInGroup(spender);
+      this.expenseToEdit = expense;
+    },
     findEmailByNameInGroup(name) {
-      return this.group.members.find((mem) => mem.name === name)?.email;
+      return Object.values(this.group.members).find((mem) => mem.name === name)?.email;
     },
     findNameByEmailInGroup(email) {
-      return this.group.members.find((mem) => mem.email === email)?.name;
+      return Object.values(this.group.members).find((mem) => mem.email === email)?.name;
     },
     async saveExpense() {
-      const spenderEmail = this.findEmailByNameInGroup(this.spender);
-
-      this.expenseToEdit = this.convertExcludesNamesToEmails(
-        this.expenseToEdit
-      );
       if (!this.expenseToEdit.amount) {
         popupService.warn('Please enter amount');
         return;
       }
+
+      // this can happen in the expense service
+      this.expenseToEdit = this.convertExcludesNamesToEmails(this.expenseToEdit);
+      this.expenseToEdit.spender = this.findEmailByNameInGroup(this.spender);
+
       const { expenseId } = this.$route.params;
       if (expenseId) {
         const { spender } = this.$route.query;
-        const idx = this.group.expenses[spenderEmail].findIndex(
-          (exp) => exp.id === expenseId
-        );
-        if (idx !== -1) {
-          this.group.expenses[spender].splice(idx, 1, this.expenseToEdit);
-        }
+        this.expenseToEdit = this.group.expenses.find((exp) => exp.id === expenseId);
+        this.group = await expenseService.removeExpense({ ...this.expenseToEdit, spender }, { ...this.group });
       } else {
         this.expenseToEdit.createdAt = Date.now();
-        this.group.expenses[spenderEmail].push(this.expenseToEdit);
       }
-      this.$store.dispatch({ type: 'groupStore/saveGroup', group: this.group });
 
-      // const isConfirm = await popupService.confirm(
-      //   `Do you want to add another expense?`,
-      //   'Yes',
-      //   'No'
-      // );
-      // if (isConfirm) {
-      //   this.expenseToEdit = expenseService.getEmptyExpense();
-      //   this.spender = this.loggedInUser.username;
-      //   return
-      // }
+      this.$store.dispatch({
+        type: 'expenseStore/saveExpense',
+        expense: this.expenseToEdit,
+        group: this.group,
+      });
 
+      // NAVIGATE BACK TO GROUP PAGE
       this.$router.go(-1);
     },
     convertExcludesNamesToEmails(expenseToEdit) {
-      expenseToEdit.exclude = expenseToEdit.exclude.map((name) =>
-        this.findEmailByNameInGroup(name)
-      );
+      expenseToEdit.exclude = expenseToEdit.exclude.map((name) => this.findEmailByNameInGroup(name));
       return expenseToEdit;
     },
   },

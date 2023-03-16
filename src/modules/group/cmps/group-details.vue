@@ -7,15 +7,12 @@
           <img :src="require('@/assets/icons/ellipsis.svg')" />
         </div>
       </div>
-      <template v-if="summary">
-        <div class="member" v-for="(amount, member) in summary" :key="member">
+      <template v-if="balances">
+        <div class="member" v-for="(amount, member) in balances" :key="member">
           <div class="name">
             {{ member }}
           </div>
-          <div
-            class="break-down"
-            :class="{ pos: amount >= 0, neg: amount < 0 }"
-          >
+          <div class="break-down" :class="{ pos: amount >= 0, neg: amount < 0 }">
             {{ parseFloat(amount.toFixed(2)) }}
             {{ getSymbolFromCurrency(userCurrency) }}
           </div>
@@ -27,20 +24,12 @@
     </main>
     <div class="total-spent">
       Total Spent
-      <span
-        >{{ parseFloat(totalSpent.toFixed(2)) }}
-        {{ getSymbolFromCurrency(userCurrency) }}</span
-      >
+      <span>{{ parseFloat(totalSpent.toFixed(2)) }} {{ getSymbolFromCurrency(userCurrency) }}</span>
     </div>
 
     <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
-      <option-menu
-        v-if="isMenuOpen"
-        @edit="editGroup"
-        @remove="removeGroup"
-        @close="toggleMenu"
-      >
+      <option-menu v-if="isMenuOpen" @edit="editGroup" @remove="removeGroup" @close="toggleMenu">
         <template #content-top>
           <div @click="goToAddExpense" class="line">Add Expense</div>
           <div @click="goToExpenseList" class="line">Show All Expenses</div>
@@ -63,6 +52,7 @@ export default {
       group: null,
       totalSpent: 0,
       summary: null,
+      balances: null,
       isMenuOpen: false,
       getSymbolFromCurrency,
     };
@@ -76,47 +66,16 @@ export default {
     },
   },
   methods: {
-    async getExpenses(userCurrency) {
-      const { expenses } = this.group;
-      const summary = await expenseService.getSummary(expenses, userCurrency);
-
-      // make sure this value updates when user pref currency is updated
-      this.summary = this.convertSummaryEmailsToNames(summary);
-    },
-    convertSummaryEmailsToNames(summary) {
-      const res = {};
-      for (const email in summary) {
-        const val = summary[email];
-        const name = this.findNameByEmailInGroup(email);
-        res[name] = val;
-      }
-      return res;
-    },
-    findNameByEmailInGroup(email) {
-      return this.group.members.find((mem) => mem.email === email)?.name;
-    },
-    async getGroup() {
-      const { groupId } = this.$route.params;
-      if (!groupId) return;
-      const group = await this.$store.dispatch({
-        type: 'groupStore/getGroupById',
-        groupId,
-      });
-      this.group = group;
-      return group;
-    },
     async getTotalExpenses(userCurrency) {
       const { expenses } = this.group;
-      this.totalSpent = await expenseService.getTotalExpenses(
-        expenses,
-        userCurrency
-      );
+      this.totalSpent = await expenseService.getTotalExpenses(expenses, userCurrency);
     },
-    goToAddExpense() {
-      this.$router.push(`/expense/edit/${this.group.id}`);
+
+    async getBalances(userCurrency) {
+      this.balances = await expenseService.getBalances(this.group, userCurrency);
     },
     getSummeryData(userCurrency = this.userCurrency) {
-      this.getExpenses(userCurrency);
+      this.getBalances(userCurrency);
       this.getTotalExpenses(userCurrency);
     },
     editGroup() {
@@ -146,7 +105,7 @@ export default {
     },
     isGroupOwner() {
       const loggedInUser = this.$store.getters['authStore/loggedInUser'];
-      const owner = this.group?.members.find((member) => member.isOwner);
+      const owner = Object.values(this.group.members).find((member) => member.isOwner);
 
       const ownerEmail = owner?.email;
       const userEmail = loggedInUser?.email;
@@ -157,7 +116,20 @@ export default {
     },
     goToExpenseList() {
       this.$router.push(`/expense/${this.group.id}`);
-    }
+    },
+    goToAddExpense() {
+      this.$router.push(`/expense/edit/${this.group.id}`);
+    },
+    async getGroup() {
+      const { groupId } = this.$route.params;
+      if (!groupId) return;
+      const group = await this.$store.dispatch({
+        type: 'groupStore/getGroupById',
+        groupId,
+      });
+      this.group = group;
+      return group;
+    },
   },
   async created() {
     await this.getGroup();

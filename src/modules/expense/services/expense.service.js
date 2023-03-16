@@ -55,7 +55,7 @@ function exportExcel(group) {
   const data = prepareExpenseData(group)
 
   const wb = XLSX.utils.book_new(); // create a new empty workbook
-  const ws = XLSX.utils.json_to_sheet(data, { header: ['spender', 'amount', 'description', 'exclude', 'currency', 'email', 'createdAt'] }); // create a sheet from json
+  const ws = XLSX.utils.json_to_sheet(data, { header: ['spender', 'description', 'amount', 'currency', 'exclude', 'email', 'createdAt'] }); // create a sheet from json
   XLSX.utils.book_append_sheet(wb, ws, "Expenses"); // appends sheet to workbook
   XLSX.writeFile(
     wb,
@@ -65,27 +65,23 @@ function exportExcel(group) {
 }
 
 function prepareExpenseData(group) {
-  const res = []
   const expenses = group.expenses
 
-  for (const email in expenses) {
-    const currUserExpenses = expenses[email]
-    const name = findNameByEmailInGroup(email, group)
+  const res = expenses.reduce((acc, expense) => {
+    const name = findNameByEmailInGroup(expense.spender, group)
 
-    const expenseReports = currUserExpenses.map((expense) => {
-      return {
-        spender: name,
-        amount: expense.amount,
-        description: expense.description,
-        exclude: expense.exclude.map((_email) => findNameByEmailInGroup(_email, group)).join(', '),
-        currency: expense.currency,
-        email,
-        createdAt: formatDate(expense.createdAt),
-      };
-    });
+    acc.push({
+      spender: name,
+      amount: expense.amount,
+      description: expense.description,
+      exclude: expense.exclude.map((_email) => findNameByEmailInGroup(_email, group)).join(', '),
+      currency: expense.currency,
+      email: expense.spender,
+      createdAt: formatDate(expense.createdAt),
+    })
+    return acc
+  }, [])
 
-    res.push(...expenseReports)
-  }
   return res
 }
 
@@ -98,27 +94,21 @@ async function prepareExpense(expense, group) {
   group.members[expense.spender].expenses.push(expense)
   group.members[expense.spender].amountSpent += _convertToBase(amount, expense.currency)
 
-  for (const memberEmail of group.memberEmails) {
-    if (memberEmail !== spender && !exclude.includes(memberEmail)) {
-      group.members[memberEmail].expenses.push(expense)
-    }
-  }
-
   return group
 }
 
 async function removeExpense(expense, group) {
   gCurrencyData = await _getCurrencyRate()
-  
+
   const { spender, amount, currency, id } = expense
   const idx = group.expenses.findIndex((exp) => exp.id === id);
   if (idx !== -1) {
     group.expenses.splice(idx, 1);
   }
 
-  const idx2 = group.members[spender].expenses.findIndex((exp) => exp.id === id);
-  if (idx2 !== -1) {
-    group.members[spender].expenses.splice(idx2, 1);
+  const memIdx = group.members[spender].expenses.findIndex((exp) => exp.id === id);
+  if (memIdx !== -1) {
+    group.members[spender].expenses.splice(memIdx, 1);
   }
 
   group.members[spender].amountSpent -= _convertToBase(amount, currency)

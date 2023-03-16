@@ -39,8 +39,8 @@ function getEmptyGroup() {
   return {
     name: '',
     description: '',
-    members: [],
-    expenses: {},
+    members: {},
+    expenses: [],
     memberEmails: []
   }
 }

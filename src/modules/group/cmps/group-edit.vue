@@ -5,17 +5,8 @@
         <div class="title">{{ edit ? 'Edit' : 'Add' }} Group</div>
       </div>
       <div class="group-form">
-        <input
-          class="form-input"
-          type="text"
-          v-model="groupToEdit.name"
-          placeholder="Group Name"
-        />
-        <textarea
-          class="form-textarea"
-          v-model="groupToEdit.description"
-          placeholder="Group Description"
-        />
+        <input class="form-input" type="text" v-model="groupToEdit.name" placeholder="Group Name" />
+        <textarea class="form-textarea" v-model="groupToEdit.description" placeholder="Group Description" />
       </div>
       <div class="members-list-container">
         <div class="list-header">
@@ -34,18 +25,11 @@
         </div>
       </div>
     </main>
-    <button @click="saveGroup" class="btn dark bottom-btn create-btn">
-      Save
-    </button>
+    <button @click="saveGroup" class="btn dark bottom-btn create-btn">Save</button>
 
     <!-- MEMBER EDIT -->
     <transition name="slide-down" mode="out-in">
-      <member-edit
-        v-if="isEditMember"
-        @close="toggleEditMember"
-        @save="saveMember"
-        :member="memberSelected"
-      />
+      <member-edit v-if="isEditMember" @close="toggleEditMember" @save="saveMember" :member="memberSelected" />
     </transition>
 
     <!-- OPTION MENU -->
@@ -87,17 +71,38 @@ export default {
       }
     },
     async saveMember(member) {
-      // if group have expenses already and the member email was updated - don't allow!
-
-      const idx = this.groupToEdit.members.findIndex((m) => m.id === member.id);
-      if (idx === -1) {
-        this.groupToEdit.members.push(member);
-        this.groupToEdit.memberEmails.push(member.email);
+      const isMemeberExist = !!this.groupToEdit.members[member.email];
+      if (isMemeberExist) {
+        popupService.error('Member already exist with this email');
       } else {
-        this.groupToEdit.members.splice(idx, 1, member);
+        this.groupToEdit.members[member.email] = member;
+        this.groupToEdit.memberEmails.push(member.email);
       }
 
       this.closeEditMember();
+    },
+    async removeMember() {
+      const member = this.memberSelected;
+      if (member.isOwner) {
+        popupService.warn("Can't remove the group owner");
+        return;
+      }
+
+      if (this.groupToEdit.expenses?.length) {
+        // group is active
+        popupService.warn("Can't remove a member from an active group");
+        return;
+      }
+
+      const isConfirm = await popupService.confirm(
+        `Are you sure you want to remove the member ${member.name}?`,
+        'Yes',
+        'No'
+      );
+
+      if (!isConfirm) return;
+      delete this.groupToEdit.members[member.email];
+      this.groupToEdit.memberEmails = this.groupToEdit.memberEmails.filter((email) => email !== member.email);
     },
     closeEditMember() {
       this.isEditMember = false;
@@ -106,35 +111,39 @@ export default {
 
     async getGroup() {
       const { groupId } = this.$route.params;
-
       this.edit = !!groupId;
       if (groupId) {
-        const group = await this.$store.dispatch({
-          type: 'groupStore/getGroupById',
-          groupId,
-        });
-        this.groupToEdit = JSON.parse(JSON.stringify(group));
+        this.getGroupById(groupId);
       } else {
-        const { username, email, id } =
-          this.$store.getters['authStore/loggedInUser'];
-        const group = groupService.getEmptyGroup();
-        group.members.push({ id, email, name: username, isOwner: true });
-        group.memberEmails = [email];
-        this.groupToEdit = group;
+        this.getNewGroup();
       }
+    },
+    async getGroupById(groupId) {
+      const group = await this.$store.dispatch({
+        type: 'groupStore/getGroupById',
+        groupId,
+      });
+      this.groupToEdit = JSON.parse(JSON.stringify(group));
+    },
+
+    getNewGroup() {
+      const group = groupService.getEmptyGroup();
+
+      // create a member from the loggedin user
+      const { username, email, id } = this.$store.getters['authStore/loggedInUser'];
+      const member = groupService.createMember({ username, email, id, isOwner: true });
+
+      // add member to group
+      group.members[email] = member;
+      group.memberEmails = [email];
+
+      this.groupToEdit = group;
     },
     async saveGroup() {
       if (!this.groupToEdit.name) {
-        popupService.error('Please enter group name');
+        popupService.warn('Please enter group name');
         return;
       }
-
-      const membersEmails = this.groupToEdit.members.map((m) => m.email);
-      membersEmails.forEach((memberEmail) => {
-        if (!this.groupToEdit.expenses[memberEmail]) {
-          this.groupToEdit.expenses[memberEmail] = [];
-        }
-      });
 
       const { id } = await this.$store.dispatch({
         type: 'groupStore/saveGroup',
@@ -145,22 +154,6 @@ export default {
     toggleMenu(member) {
       this.memberSelected = this.memberSelected ? null : { ...member };
       this.isMenuOpen = !this.isMenuOpen;
-    },
-    async removeMember() {
-      const member = this.memberSelected;
-      if (member.isOwner) {
-        popupService.warn("Can't remove the group owner");
-        return;
-      }
-      const isConfirm = await popupService.confirm(
-        `Are you sure you want to remove the member ${member.name}?`,
-        'Yes',
-        'No'
-      );
-      if (!isConfirm) return;
-      this.groupToEdit.members = this.groupToEdit.members.filter(
-        (m) => m.id !== member.id
-      );
     },
   },
   created() {

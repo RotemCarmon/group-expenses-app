@@ -92,9 +92,8 @@ export default {
       }
     },
     async saveMember(member) {
-
       // if group have expenses already and the member email was updated - don't allow!
-      
+
       const idx = this.groupToEdit.members.findIndex((m) => m.id === member.id);
       if (idx === -1) {
         this.groupToEdit.members.push(member);
@@ -130,6 +129,11 @@ export default {
       }
     },
     async saveGroup() {
+      if (!this.groupToEdit.name) {
+        popupService.error('Please enter group name');
+        return;
+      }
+
       const membersEmails = this.groupToEdit.members.map((m) => m.email);
       membersEmails.forEach((memberEmail) => {
         if (!this.groupToEdit.expenses[memberEmail]) {

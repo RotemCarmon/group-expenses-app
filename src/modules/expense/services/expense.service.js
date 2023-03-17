@@ -1,7 +1,6 @@
 import * as XLSX from "xlsx";
 import { currencyService } from '@/modules/common/services/currency.service.js'
-import { loggerService } from '@/modules/common/services/logger.service.js'
-import { makeId, formatDate, findNameByEmailInGroup } from '@/modules/common/services/util.service.js'
+import { utilService, formatDate, findNameByEmailInGroup } from '@/modules/common/services/util.service.js'
 
 
 var gCurrencyData
@@ -129,7 +128,7 @@ export const expenseService = {
 
 function getEmptyExpense() {
   return {
-    id: makeId(),
+    id: utilService.makeId(),
     amount: '',
     exclude: [],
     description: '',
@@ -137,7 +136,6 @@ function getEmptyExpense() {
     spender: ''
   }
 }
-
 
 function _convertToBase(amount = 0, currency) {
   const rate = gCurrencyData[currency]?.value || 1

@@ -1,9 +1,5 @@
-import { httpService } from '@/modules/common/services/http.service.js'
-import { storageService } from '@/modules/common/services/async-storage.service.js'
-
 import { firebaseService } from '@/modules/common/services/firestore.service.js';
-
-import { makeId } from '@/modules/common/services/util.service.js'
+import { utilService } from '@/modules/common/services/util.service.js'
 
 const COLLECTION_NAME = 'group'
 
@@ -48,7 +44,7 @@ function getEmptyGroup() {
 
 
 function createMember(options = {}) {
-  const { username = '', email = '', id = makeId(8), isOwner = false } = options
+  const { username = '', email = '', id = utilService.makeId(8), isOwner = false } = options
   return {
     name: username,
     email,

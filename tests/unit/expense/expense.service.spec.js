@@ -24,10 +24,5 @@ describe('EXPENSE SERVICE', () => {
 
       expect(exp).toEqual(emptyExpense)
     })
-    test('Should return an empty expense with default values for the values not specified', () => {
-      const exp = expenseService.getEmptyExpense()
-
-      expect(exp).toEqual(emptyExpense)
-    })
   })
 })

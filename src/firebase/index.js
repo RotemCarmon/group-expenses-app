@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"
 
 
 
@@ -23,12 +22,9 @@ if (!app) {
 
 
 
-// // utils
-// const db = getFirestore();
+// utils
 const auth = getAuth();
 
 export {
-  // db,
   auth,
-  // createUserWithEmailAndPassword
 }

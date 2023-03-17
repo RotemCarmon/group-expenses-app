@@ -1,7 +1,7 @@
 import * as XLSX from "xlsx";
 import { currencyService } from '@/modules/common/services/currency.service.js'
 import { loggerService } from '@/modules/common/services/logger.service.js'
-import { makeId, formatDate, findEmailByNameInGroup, findNameByEmailInGroup } from '@/modules/common/services/util.service.js'
+import { makeId, formatDate, findNameByEmailInGroup } from '@/modules/common/services/util.service.js'
 
 
 var gCurrencyData
@@ -20,7 +20,7 @@ async function getBalances(group, userCurrency) {
   gCurrencyData = await _getCurrencyRate()
 
   const balances = {}
-  // Get the mount each member paied
+  // Get the amount each member paid
   for (const member of Object.values(group.members)) {
     balances[member.email] = member.amountSpent
   }
@@ -35,11 +35,13 @@ async function getBalances(group, userCurrency) {
 
     for (const member of Object.values(group.members)) {
       if (!expense.exclude.includes(member.email)) {
+        // decrese the amount per member from each member's balasnce if he's not excluded from expense
         balances[member.email] -= amountPerMember
       }
     }
   }
 
+  // convert the balances to be in the user's currrency
   for (const member in balances) {
     balances[member] = _convertFromBase(balances[member], userCurrency)
   }
@@ -86,13 +88,13 @@ function prepareExpenseData(group) {
 }
 
 // PREPARE EXPENSE
-async function prepareExpense(expense, group) {
+async function addExpense(expense, group) {
   gCurrencyData = await _getCurrencyRate()
 
-  const { spender, amount, exclude } = expense
+  const { spender, amount, currency } = expense
   group.expenses.push(expense)
-  group.members[expense.spender].expenses.push(expense)
-  group.members[expense.spender].amountSpent += _convertToBase(amount, expense.currency)
+  group.members[spender].expenses.push(expense)
+  group.members[spender].amountSpent += _convertToBase(amount, currency)
 
   return group
 }
@@ -120,7 +122,7 @@ export const expenseService = {
   getTotalExpenses,
   getEmptyExpense,
   exportExcel,
-  prepareExpense,
+  addExpense,
   getBalances,
   removeExpense
 }

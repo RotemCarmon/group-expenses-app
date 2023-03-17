@@ -9,7 +9,7 @@ export default {
   actions: {
     async saveExpense({ dispatch }, { expense, group }) {
       try {
-        const groupToSave = await expenseService.prepareExpense(expense, { ...group })
+        const groupToSave = await expenseService.addExpense(expense, { ...group })
         dispatch({ type: 'groupStore/saveGroup', group: groupToSave }, { root: true })
       } catch (err) {
         loggerService.error(err)

@@ -1,6 +1,6 @@
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { userService } from './user.service.js'
-const auth = getAuth()
+import { auth } from '@/firebase';
 
 const USER_SESSION_KEY = 'loggedInUser';
 
@@ -19,7 +19,7 @@ async function signup(creds) {
     creds.email,
     creds.password
   );
-  const userTosave = { ...creds, prefs: {currency: 'USD'} }
+  const userTosave = { ...creds, prefs: { currency: 'USD' } }
   userTosave.id = user.uid
   userTosave.createdAt = Date.now()
 

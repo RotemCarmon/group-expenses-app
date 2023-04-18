@@ -33,15 +33,15 @@
 </template>
 
 <script setup>
-import { expenseService } from '../services/expense.service';
-import { multiSelect } from '@/modules/common/cmps/';
-import { popupService } from '@/modules/common/services/popup.service.js';
 import { computed, ref } from 'vue';
+import { expenseService } from '../services/expense.service';
+import { popupService } from '@/modules/common/services/popup.service.js';
 import { useCommonStore } from '../../common/store';
 import { useAuthStore } from '../../auth/store/auth.store';
 import { useRoute, useRouter } from 'vue-router';
 import { useGroupStore } from '../../group/store';
 import { useExpenseStore } from '../../expense/store';
+import multiSelect from '@/modules/common/cmps/multi-select';
 
 const commonStore = useCommonStore();
 const authStore = useAuthStore();
@@ -76,7 +76,7 @@ async function getExpense() {
     prepareExpenseToEdit(expenseId, spender);
   } else {
     expenseToEdit.value = expenseService.getEmptyExpense();
-    expenseToEdit.value.currency = this.userCurrency;
+    expenseToEdit.value.currency = userCurrency.value;
   }
 }
 function prepareExpenseToEdit(expenseId, spender) {
@@ -95,8 +95,8 @@ function findNameByEmailInGroup(email) {
   return Object.values(group.value.members).find((mem) => mem.email === email)?.name;
 }
 async function saveExpense() {
-  if (!expenseToEdit.value.amount) {
-    popupService.warn('Please enter amount');
+  if (!validateAmount(expenseToEdit.value.amount)) {
+    popupService.warn('Please enter a valide amount');
     return;
   }
 
@@ -121,8 +121,13 @@ async function saveExpense() {
   // NAVIGATE BACK TO GROUP PAGE
   router.go(-1);
 }
+
+function validateAmount(amount) {
+  return amount && amount > 0 && typeof amount === 'number';
+}
+
 function convertExcludesNamesToEmails(expenseToEdit) {
-  expenseToEdit.exclude = expenseToEdit.exclude.map((name) => this.findEmailByNameInGroup(name));
+  expenseToEdit.exclude = expenseToEdit.exclude.map((name) => findEmailByNameInGroup(name));
   return expenseToEdit;
 }
 

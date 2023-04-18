@@ -38,8 +38,8 @@ export const useGroupStore = defineStore('group', {
       const commonStore = useCommonStore()
       commonStore.isLoading = true
       try {
-        const savedGroup = await groupService.saveGroup(group)
-        
+        const savedGroup = await groupService.saveGroup({ ...group })
+
         if (!!group.id) {
           const idx = this.groups.findIndex(g => g.id === group.id)
           if (idx === -1) return
@@ -47,7 +47,7 @@ export const useGroupStore = defineStore('group', {
         } else {
           this.groups.push(group)
         }
-        
+
         return savedGroup
       } catch (err) {
         loggerService.error(err)
@@ -61,12 +61,12 @@ export const useGroupStore = defineStore('group', {
       try {
         await groupService.removeGroup(groupId)
         this.groups = this.groups.filter(group => group.id !== groupId)
-        
+
       } catch (error) {
         loggerService.error(err)
       } finally {
         commonStore.isLoading = false
-        
+
       }
     }
   }

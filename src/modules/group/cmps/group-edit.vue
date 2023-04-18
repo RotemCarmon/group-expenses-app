@@ -41,7 +41,7 @@ import memberPreview from './member-preview';
 import memberEdit from './member-edit';
 import optionMenu from '@/modules/common/cmps/option-menu';
 import { popupService } from '@/modules/common/services/popup.service.js';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const groupStore = useGroupStore();
@@ -56,6 +56,18 @@ const isEditMember = ref(false);
 const isMenuOpen = ref(false);
 const memberSelected = ref(null);
 
+// COMPUTED
+const isGroupOwner = computed(() => {
+  return memberSelected.value.isOwner;
+});
+const isGroupActive = computed(() => {
+  return groupToEdit.value.expenses && groupToEdit.value.expenses.length;
+});
+const isEditEnabled = computed(() => {
+  return !isGroupOwner.value && !isGroupActive.value;
+});
+
+// FUNCTIONS
 function editMember() {
   if (!memberSelected.value) {
     memberSelected.value = groupService.createMember();
@@ -84,18 +96,18 @@ async function saveMember(member) {
 }
 
 async function removeMember() {
-  const member = memberSelected.value;
-  if (member.isOwner) {
+  if (isGroupOwner.value) {
     popupService.warn("Can't remove the group owner");
     return;
   }
 
-  if (groupToEdit.value.expenses?.length) {
+  if (isGroupActive.value) {
     // group is active
     popupService.warn("Can't remove a member from an active group");
     return;
   }
 
+  const member = memberSelected.value;
   const isConfirm = await popupService.confirm(`Are you sure you want to remove the member ${member.name}?`, 'Yes', 'No');
 
   if (!isConfirm) return;

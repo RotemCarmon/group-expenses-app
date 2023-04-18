@@ -11,8 +11,8 @@
       <div v-else class="avatar">{{ avatarCapital }}</div>
     </div>
 
-    <div class="screen" :class="{ open: isMenuOpen }"></div>
-    <transition name="slide-right" mode="out-in">
+    <div class="screen" :class="{ open: isMenuOpen }" @click="isMenuOpen = false"></div>
+    <transition name="slide-right">
       <user-menu v-if="isMenuOpen" @close="isMenuOpen = false" />
     </transition>
   </section>

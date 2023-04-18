@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { useAuthStore } from '@/modules/auth/store'
 
 import { authRoutes } from '@/modules/auth/routes'
 import { commonRoutes } from '@/modules/common/routes'
@@ -25,19 +26,18 @@ export const router = createRouter({
 });
 
 
-// let _store;
-// export const initStore = store => _store = store;
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore()
+  const loggedInUser = authStore.loggedInUser
 
 
-// router.beforeEach(async (to, from, next) => {
-//   let loggedInUser = _store.getters['authStore/loggedInUser'];
-//   if (!loggedInUser) {
-//     if (['login-signup'].includes(to.name)) return next();
-//     return router.push('/auth').catch(() => { });
-//   } else {
-//     if (['login-signup'].includes(to.name)) {
-//       return next('/')
-//     }
-//   }
-//   next()
-// })
+  if (!loggedInUser) {
+    if (['login-signup'].includes(to.name)) return next();
+    return next('/auth').catch(() => { });
+  } else {
+    if (['login-signup'].includes(to.name)) {
+      return next('/')
+    }
+  }
+  next()
+})

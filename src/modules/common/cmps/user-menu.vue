@@ -18,10 +18,6 @@
     <div class="currency">
       <p>Set default currency</p>
       <multi-select :items="currencyCodes" :isMulti="false" :topSelections="topSelections" :hasSearch="true" v-model="currency" class="currency-select" />
-      
-      <!-- <select v-model="currency">
-        <option v-for="curr in currencyCodes" :value="curr" :key="curr">{{ curr }}</option>
-      </select> -->
       <transition name="fade">
         <button v-if="isCurrencyChange" @click="updateCurrency" class="btn save-btn">Save</button>
       </transition>

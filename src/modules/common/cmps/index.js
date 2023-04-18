@@ -1,8 +1,8 @@
-import appHeader from './app-header'
-import actionButtons from './action-buttons'
-import multiSelect from './multi-select'
-import userMenu from './user-menu'
-import optionMenu from './option-menu'
+const appHeader = () => import('./app-header')
+const actionButtons = () => import('./action-buttons')
+const multiSelect = () => import('./multi-select')
+const userMenu = () => import('./user-menu')
+const optionMenu = () => import('./option-menu')
 
 export {
   appHeader,

@@ -11,17 +11,10 @@
       <div class="members-list-container">
         <div class="list-header">
           <h3 class="members-title">Members</h3>
-          <button @click="editMember()" class="add-member top-header-btn">
-            Add <img :src="require('@/assets/icons/plus-solid.svg')" />
-          </button>
+          <button @click="editMember()" class="add-member top-header-btn">Add <img :src="require('@/assets/icons/plus-solid.svg')" /></button>
         </div>
         <div class="members-list">
-          <member-preview
-            v-for="member in groupToEdit.members"
-            :key="member.id"
-            :member="member"
-            @toggleMenu="toggleMenu"
-          />
+          <member-preview v-for="member in groupToEdit.members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
         </div>
       </div>
     </main>
@@ -34,135 +27,132 @@
 
     <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
-      <option-menu v-if="isMenuOpen" @remove="removeMember" @close="toggleMenu" :isShowEdit="false"></option-menu>
+      <option-menu v-if="isMenuOpen" @remove="removeMember" @close="toggleMenu" :isShowEdit="false" />
     </transition>
   </section>
 </template>
 
-<script>
+<script setup>
+import { useGroupStore } from '../store/';
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+
 import { groupService } from '../services/group.service.js';
 import memberPreview from './member-preview';
 import memberEdit from './member-edit';
-import { optionMenu } from '@/modules/common/cmps';
+import optionMenu from '@/modules/common/cmps/option-menu';
 import { popupService } from '@/modules/common/services/popup.service.js';
-export default {
-  name: 'group-edit',
-  data() {
-    return {
-      edit: false,
-      groupToEdit: null,
-      isEditMember: false,
-      isMenuOpen: false,
-      memberSelected: null,
-    };
-  },
-  methods: {
-    editMember() {
-      if (!this.memberSelected) {
-        this.memberSelected = groupService.createMember();
-      }
-      this.isEditMember = true;
-      this.isMenuOpen = false;
-    },
-    toggleEditMember() {
-      this.isEditMember = !this.isEditMember;
-      if (!this.isEditMember) {
-        this.memberSelected = null;
-      }
-    },
-    async saveMember(member) {
-      const isMemeberExist = !!this.groupToEdit.members[member.email];
-      if (isMemeberExist) {
-        popupService.error('Member already exist with this email');
-      } else {
-        this.groupToEdit.members[member.email] = member;
-        this.groupToEdit.memberEmails.push(member.email);
-      }
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-      this.closeEditMember();
-    },
-    async removeMember() {
-      const member = this.memberSelected;
-      if (member.isOwner) {
-        popupService.warn("Can't remove the group owner");
-        return;
-      }
+const groupStore = useGroupStore();
+const authStore = useAuthStore();
 
-      if (this.groupToEdit.expenses?.length) {
-        // group is active
-        popupService.warn("Can't remove a member from an active group");
-        return;
-      }
+const route = useRoute();
+const router = useRouter();
 
-      const isConfirm = await popupService.confirm(
-        `Are you sure you want to remove the member ${member.name}?`,
-        'Yes',
-        'No'
-      );
+const edit = ref(false);
+const groupToEdit = ref(null);
+const isEditMember = ref(false);
+const isMenuOpen = ref(false);
+const memberSelected = ref(null);
 
-      if (!isConfirm) return;
-      delete this.groupToEdit.members[member.email];
-      this.groupToEdit.memberEmails = this.groupToEdit.memberEmails.filter((email) => email !== member.email);
-    },
-    closeEditMember() {
-      this.isEditMember = false;
-      this.memberSelected = null;
-    },
+function editMember() {
+  if (!memberSelected.value) {
+    memberSelected.value = groupService.createMember();
+  }
+  isEditMember.value = true;
+  isMenuOpen.value = false;
+}
 
-    async getGroup() {
-      const { groupId } = this.$route.params;
-      this.edit = !!groupId;
-      if (groupId) {
-        this.getGroupById(groupId);
-      } else {
-        this.getNewGroup();
-      }
-    },
-    async getGroupById(groupId) {
-      const group = await this.$store.dispatch({
-        type: 'groupStore/getGroupById',
-        groupId,
-      });
-      this.groupToEdit = JSON.parse(JSON.stringify(group));
-    },
+function toggleEditMember() {
+  isEditMember.value = !isEditMember.value;
+  if (!isEditMember.value) {
+    memberSelected.value = null;
+  }
+}
 
-    getNewGroup() {
-      const group = groupService.getEmptyGroup();
+async function saveMember(member) {
+  const isMemeberExist = !!groupToEdit.value.members[member.email];
+  if (isMemeberExist) {
+    popupService.error('Member already exist with this email');
+  } else {
+    groupToEdit.value.members[member.email] = member;
+    groupToEdit.value.memberEmails.push(member.email);
+  }
 
-      // create a member from the loggedin user
-      const { username, email, id } = this.$store.getters['authStore/loggedInUser'];
-      const member = groupService.createMember({ username, email, id, isOwner: true });
+  closeEditMember();
+}
 
-      // add member to group
-      group.members[email] = member;
-      group.memberEmails = [email];
+async function removeMember() {
+  const member = memberSelected.value;
+  if (member.isOwner) {
+    popupService.warn("Can't remove the group owner");
+    return;
+  }
 
-      this.groupToEdit = group;
-    },
-    async saveGroup() {
-      if (!this.groupToEdit.name) {
-        popupService.warn('Please enter group name');
-        return;
-      }
+  if (groupToEdit.value.expenses?.length) {
+    // group is active
+    popupService.warn("Can't remove a member from an active group");
+    return;
+  }
 
-      const { id } = await this.$store.dispatch({
-        type: 'groupStore/saveGroup',
-        group: this.groupToEdit,
-      });
-      this.$router.push('/group/' + id);
-    },
-    toggleMenu(member) {
-      this.memberSelected = this.memberSelected ? null : { ...member };
-      this.isMenuOpen = !this.isMenuOpen;
-    },
-  },
-  created() {
-    this.getGroup();
-  },
-  components: {
-    memberPreview,
-    memberEdit,
-    optionMenu,
-  },
-};
+  const isConfirm = await popupService.confirm(`Are you sure you want to remove the member ${member.name}?`, 'Yes', 'No');
+
+  if (!isConfirm) return;
+  delete groupToEdit.value.members[member.email];
+  groupToEdit.value.memberEmails = groupToEdit.value.memberEmails.filter((email) => email !== member.email);
+}
+
+function closeEditMember() {
+  isEditMember.value = false;
+  memberSelected.value = null;
+}
+
+async function getGroup() {
+  const { groupId } = route.params;
+
+  edit.value = !!groupId;
+  if (groupId) {
+    getGroupById(groupId);
+  } else {
+    getNewGroup();
+  }
+}
+
+async function getGroupById(groupId) {
+  const group = await groupStore.getGroupById({ groupId });
+  groupToEdit.value = JSON.parse(JSON.stringify(group));
+}
+
+function getNewGroup() {
+  const group = groupService.getEmptyGroup();
+
+  // create a member from the loggedin user
+  const { username, email, id } = authStore.loggedInUser;
+  const member = groupService.createMember({ username, email, id, isOwner: true });
+
+  // add member to group
+  group.members[email] = member;
+  group.memberEmails = [email];
+
+  groupToEdit.value = group;
+}
+
+async function saveGroup() {
+  if (!groupToEdit.value.name) {
+    popupService.warn('Please enter group name');
+    return;
+  }
+
+  const { id } = await groupStore.saveGroup({ group: groupToEdit.value });
+  router.push('/group/' + id);
+}
+
+function toggleMenu(member) {
+  memberSelected.value = memberSelected.value ? null : { ...member };
+  isMenuOpen.value = !isMenuOpen.value;
+}
+
+// CREATED
+getGroup();
 </script>

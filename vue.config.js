@@ -1,4 +1,14 @@
+const path = require(`path`);
+
 const options = {
+  // configureWebpack: {
+  //   resolve: {
+  //     symlinks: false,
+  //     alias: {
+  //       vue: path.resolve(`./node_modules/vue`)
+  //     }
+  //   }
+  // },
   pages: {
     index: {
       entry: 'src/main.js',

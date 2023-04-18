@@ -1,5 +1,5 @@
-import commonStore from './common.store.js'
+import { useCommonStore } from './common.store.js'
 
-export default {
-  commonStore
+export {
+  useCommonStore
 };

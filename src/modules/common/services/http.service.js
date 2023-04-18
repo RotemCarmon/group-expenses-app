@@ -1,6 +1,5 @@
 import Axios from 'axios'
 import { config } from '@/config/config'
-import { store } from '@/store.js';
 import { loggerService } from '@/modules/common/services/logger.service.js'
 
 import { utilService as utils } from './util.service';
@@ -36,7 +35,6 @@ async function ajax(endpoint, method = 'get', data = null, params = {}, headers 
     } catch (err) {
         if(endpoint === 'logger') return
         loggerService.error(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: ${data}`)
-        // store.dispatch({ type: 'handleError', err });
         throw err
     }
 }

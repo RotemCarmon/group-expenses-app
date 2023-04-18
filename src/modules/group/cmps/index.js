@@ -1,8 +1,8 @@
-import groupList from './group-list'
-import groupPreview from './group-preview'
-import groupEdit from './group-edit'
-import groupDetails from './group-details'
-import memberEdit from './member-edit'
+const groupList = () => import('./group-list')
+const groupPreview = () => import('./group-preview')
+const groupEdit = () => import('./group-edit')
+const groupDetails = () => import('./group-details')
+const memberEdit = () => import('./member-edit')
 
 
 export {

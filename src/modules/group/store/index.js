@@ -1,5 +1,5 @@
-import groupStore from './group.store.js'
+import { useGroupStore } from './group.store.js'
 
-export default {
-  groupStore
+export {
+  useGroupStore
 };

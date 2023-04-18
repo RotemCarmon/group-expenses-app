@@ -5,24 +5,13 @@
   </section>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import login from '../cmps/login';
 import signup from '../cmps/signup';
-export default {
-  name: 'login-signup',
-  data() {
-    return {
-      isLogin: true,
-    };
-  },
-  methods: {
-    toggleSignPage() {
-      this.isLogin = !this.isLogin;
-    },
-  },
-  components: {
-    login,
-    signup
-  },
-};
+
+const isLogin = ref(true);
+function toggleSignPage() {
+  isLogin.value = !isLogin.value;
+}
 </script>

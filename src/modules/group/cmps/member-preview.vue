@@ -10,19 +10,14 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: 'member-preview',
-  props: {
-    member: { type: Object },
-  },
-  methods: {
-    editMember() {
-      this.$emit('edit', this.member);
-    },
-  },
-};
-</script>
+<script setup>
+const props = defineProps({
+  member: { type: Object },
+});
 
-<style>
-</style>
+const emit = defineEmits(['edit','toggleMenu']);
+
+function editMember() {
+  emit('edit', props.member);
+}
+</script>

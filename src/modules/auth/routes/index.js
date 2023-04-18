@@ -1,4 +1,4 @@
-import loginSignupPage from '../views/login-signup'
+const loginSignupPage = () => import('../views/login-signup')
 
 export const authRoutes = [
   {

@@ -11,27 +11,11 @@
       </div>
       <div class="expense-container section-app-container">
         <div class="card-section">
-          <input
-            type="text"
-            class="form-input form-row"
-            placeholder="Enter Amount"
-            v-model.number="expenseToEdit.amount"
-          />
-          <input
-            type="text"
-            class="form-input form-row"
-            placeholder="Enter Description"
-            v-model="expenseToEdit.description"
-          />
+          <input type="text" class="form-input form-row" placeholder="Enter Amount" v-model.number="expenseToEdit.amount" />
+          <input type="text" class="form-input form-row" placeholder="Enter Description" v-model="expenseToEdit.description" />
           <div class="currency-select form-row">
             Currency
-            <multi-select
-              :items="currencyCodes"
-              :isMulti="false"
-              :hasSearch="true"
-              :topSelections="['USD', 'EUR']"
-              v-model="expenseToEdit.currency"
-            />
+            <multi-select :items="currencyCodes" :isMulti="false" :hasSearch="true" :topSelections="['USD', 'EUR']" v-model="expenseToEdit.currency" />
           </div>
         </div>
         <div class="card-section">
@@ -48,110 +32,102 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import { expenseService } from '../services/expense.service';
 import { multiSelect } from '@/modules/common/cmps/';
 import { popupService } from '@/modules/common/services/popup.service.js';
-export default {
-  name: 'expense-edit',
-  data() {
-    return {
-      edit: false,
-      group: null,
-      expenseToEdit: null,
-      spender: '', // loggedInUser
-    };
-  },
-  computed: {
-    members() {
-      return this.group?.members && Object.values(this.group?.members).map((m) => m.name);
-    },
-    currencyCodes() {
-      return this.$store.getters['commonStore/currencyCodes'];
-    },
-    loggedInUser() {
-      return this.$store.getters['authStore/loggedInUser'];
-    },
-    userCurrency() {
-      return this.loggedInUser?.prefs?.currency;
-    },
-  },
-  methods: {
-    async getGroup() {
-      const { groupId } = this.$route.params;
-      if (!groupId) return;
+import { computed, ref } from 'vue';
+import { useCommonStore } from '../../common/store';
+import { useAuthStore } from '../../auth/store/auth.store';
+import { useRoute, useRouter } from 'vue-router';
+import { useGroupStore } from '../../group/store';
+import { useExpenseStore } from '../../expense/store';
 
-      const group = await this.$store.dispatch({
-        type: 'groupStore/getGroupById',
-        groupId,
-      });
-      this.group = group;
-    },
-    async getExpense() {
-      const { expenseId } = this.$route.params;
-      const { spender } = this.$route.query;
-      if (expenseId && spender) {
-        this.prepareExpenseToEdit(expenseId, spender);
-      } else {
-        this.expenseToEdit = expenseService.getEmptyExpense();
-        this.expenseToEdit.currency = this.userCurrency;
-      }
-    },
-    prepareExpenseToEdit(expenseId, spender) {
-      this.expenseToEdit = {};
+const commonStore = useCommonStore();
+const authStore = useAuthStore();
+const groupStore = useGroupStore();
+const expenseStore = useExpenseStore();
 
-      const expense = this.group.expenses.find((exp) => exp.id === expenseId);
-      expense.exclude = expense.exclude.map((exc) => this.findNameByEmailInGroup(exc));
+const router = useRouter();
+const route = useRoute();
 
-      this.spender = this.findNameByEmailInGroup(spender);
-      this.expenseToEdit = expense;
-    },
-    findEmailByNameInGroup(name) {
-      return Object.values(this.group.members).find((mem) => mem.name === name)?.email;
-    },
-    findNameByEmailInGroup(email) {
-      return Object.values(this.group.members).find((mem) => mem.email === email)?.name;
-    },
-    async saveExpense() {
-      if (!this.expenseToEdit.amount) {
-        popupService.warn('Please enter amount');
-        return;
-      }
+const members = computed(() => group.value?.members && Object.values(group.value?.members).map((m) => m.name));
 
-      // this can happen in the expense service
-      this.expenseToEdit = this.convertExcludesNamesToEmails(this.expenseToEdit);
-      this.expenseToEdit.spender = this.findEmailByNameInGroup(this.spender);
+const loggedInUser = computed(() => authStore.loggedInUser);
+const currencyCodes = computed(() => commonStore.currencyCodes);
+const userCurrency = computed(() => loggedInUser.value?.prefs?.currency);
 
-      const { expenseId } = this.$route.params;
-      if (expenseId) {
-        const { spender } = this.$route.query;
-        this.expenseToEdit = this.group.expenses.find((exp) => exp.id === expenseId);
-        this.group = await expenseService.removeExpense({ ...this.expenseToEdit, spender }, { ...this.group });
-      } else {
-        this.expenseToEdit.createdAt = Date.now();
-      }
+const edit = ref(false);
+const group = ref(null);
+const expenseToEdit = ref(null);
+const spender = ref(loggedInUser.value?.username);
 
-      this.$store.dispatch({
-        type: 'expenseStore/saveExpense',
-        expense: this.expenseToEdit,
-        group: this.group,
-      });
+// FUNCTIONS
+async function getGroup() {
+  const { groupId } = route.params;
+  if (!groupId) return;
 
-      // NAVIGATE BACK TO GROUP PAGE
-      this.$router.go(-1);
-    },
-    convertExcludesNamesToEmails(expenseToEdit) {
-      expenseToEdit.exclude = expenseToEdit.exclude.map((name) => this.findEmailByNameInGroup(name));
-      return expenseToEdit;
-    },
-  },
-  async created() {
-    this.spender = this.$store.getters['authStore/loggedInUser']?.username;
-    await this.getGroup();
-    this.getExpense();
-  },
-  components: {
-    multiSelect,
-  },
-};
+  group.value = await groupStore.getGroupById({ groupId });
+}
+async function getExpense() {
+  const { expenseId } = route.params;
+  const { spender } = route.query;
+  if (expenseId && spender) {
+    prepareExpenseToEdit(expenseId, spender);
+  } else {
+    expenseToEdit.value = expenseService.getEmptyExpense();
+    expenseToEdit.value.currency = this.userCurrency;
+  }
+}
+function prepareExpenseToEdit(expenseId, spender) {
+  expenseToEdit.value = {};
+
+  const expense = group.value.expenses.find((exp) => exp.id === expenseId);
+  expense.exclude = expense.exclude.map((exc) => findNameByEmailInGroup(exc));
+
+  spender.value = findNameByEmailInGroup(spender);
+  expenseToEdit.value = expense;
+}
+function findEmailByNameInGroup(name) {
+  return Object.values(group.value.members).find((mem) => mem.name === name)?.email;
+}
+function findNameByEmailInGroup(email) {
+  return Object.values(group.value.members).find((mem) => mem.email === email)?.name;
+}
+async function saveExpense() {
+  if (!expenseToEdit.value.amount) {
+    popupService.warn('Please enter amount');
+    return;
+  }
+
+  // this can happen in the expense service
+  expenseToEdit.value = convertExcludesNamesToEmails(expenseToEdit.value);
+  expenseToEdit.value.spender = findEmailByNameInGroup(spender.value);
+
+  const { expenseId } = route.params;
+
+  if (expenseId) {
+    const { spender } = route.query;
+    expenseToEdit.value = group.value.expenses.find((exp) => exp.id === expenseId);
+    group.value = await expenseService.removeExpense({ ...expenseToEdit.value, spender }, { ...group.value });
+  } else {
+    expenseToEdit.value.createdAt = Date.now();
+  }
+  expenseStore.saveExpense({
+    expense: expenseToEdit.value,
+    group: group.value,
+  });
+
+  // NAVIGATE BACK TO GROUP PAGE
+  router.go(-1);
+}
+function convertExcludesNamesToEmails(expenseToEdit) {
+  expenseToEdit.exclude = expenseToEdit.exclude.map((name) => this.findEmailByNameInGroup(name));
+  return expenseToEdit;
+}
+
+(async function created() {
+  await getGroup();
+  getExpense();
+})();
 </script>

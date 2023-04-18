@@ -1,8 +1,5 @@
 <template>
-  <section
-    class="group-preview-container preview-grid"
-    @click.stop="goToGroupDetails"
-  >
+  <section class="group-preview-container preview-grid" @click.stop="goToGroupDetails">
     <div class="group-name">{{ group.name }}</div>
     <div class="ellipsis-icon" @click.stop="$emit('openMenu', group)">
       <img :src="require('@/assets/icons/ellipsis.svg')" />
@@ -10,23 +7,17 @@
   </section>
 </template>
 
-<script>
+<script setup>
+import { useRouter } from 'vue-router';
 import { actionButtons } from '@/modules/common/cmps';
-export default {
-  name: 'group-preview',
-  props: {
-    group: { type: Object },
-  },
-  methods: {
-    goToGroupDetails() {
-      this.$router.push('group/' + this.group.id);
-    },
-  },
-  components: {
-    actionButtons,
-  },
-};
-</script>
 
-<style>
-</style>
+const router = useRouter();
+
+const props = defineProps({
+  group: { type: Object },
+});
+
+function goToGroupDetails() {
+  router.push('group/' + props.group.id);
+}
+</script>

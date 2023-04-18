@@ -6,23 +6,14 @@
     <form>
       <label class="form-row">
         <span>Email </span>
-        <input type="text" v-model="creds.email" class="form-input" />
-        <p class="error" v-show="emailError">{{ emailError }}</p>
+        <input type="text" v-model="creds.email" class="form-input" ref="email" />
+        <p class="error" v-show="errors.emailError">{{ errors.emailError }}</p>
       </label>
       <label class="form-row password-field">
         <span>Password </span>
-        <img
-          :src="require(`@/assets/icons/${eyeImg}.svg`)"
-          class="toggle-password"
-          @click="isPasswordShowen = !isPasswordShowen"
-        />
-        <input
-          :type="isPasswordShowen? 'text':'password'"
-          autocomplete
-          v-model="creds.password"
-          class="form-input"
-        />
-        <p class="error" v-show="passwordError">{{ passwordError }}</p>
+        <img :src="require(`@/assets/icons/${eyeImg}.svg`)" class="toggle-password" @click="isPasswordShowen = !isPasswordShowen" />
+        <input :type="isPasswordShowen ? 'text' : 'password'" autocomplete v-model="creds.password" class="form-input" />
+        <p class="error" v-show="errors.passwordError">{{ errors.passwordError }}</p>
       </label>
 
       <button @click="doLogin" class="btn dark bottom-btn">Sign in</button>
@@ -35,53 +26,55 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: 'login',
-  data() {
-    return {
-      creds: {
-        email: '',
-        password: '',
-      },
-      emailError: '',
-      passwordError: '',
-      isPasswordShowen: false,
-    };
-  },
-  methods: {
-    doLogin() {
-      const isValid = this.validateInputs();
-      if (!isValid) return;
-      this.$store.dispatch({ type: 'authStore/login', userCreds: this.creds });
-    },
-    validateInputs() {
-      this.emailError = '';
-      this.passwordError = '';
-      let isValid = true;
-      if (!this.creds.email) {
-        this.emailError = 'Must enter email';
-        isValid = false;
-      }
-      if (!this.creds.password) {
-        this.passwordError = 'Must enter password';
-        isValid = false;
-      }
-      return isValid;
-    },
-    goToRegister() {
-      this.$emit('toggle');
-    },
-  },
-  computed: {
-    eyeImg() {
-      return this.isPasswordShowen ?  'eye-slash-light' : 'eye-light'
-    }
-  },
-  mounted() {
-    try {
-      this.$el.querySelector('input').focus();
-    } catch (e) {}
-  },
-};
+<script setup>
+import { ref, reactive, computed, onMounted } from 'vue';
+import { useAuthStore } from '../store/auth.store';
+
+const authStore = useAuthStore();
+const emit = defineEmits(['toggle']);
+
+const creds = reactive({
+  email: '',
+  password: '',
+});
+
+const errors = reactive({
+  emailError: '',
+  passwordError: '',
+});
+
+const isPasswordShowen = ref(false);
+const email = ref(null);
+
+onMounted(() => email.value.focus());
+
+// FUNCTIONS
+function doLogin() {
+  const isValid = validateInputs();
+  if (!isValid) return;
+  authStore.login({ userCreds: creds });
+}
+
+function validateInputs() {
+  errors.emailError = '';
+  errors.passwordError = '';
+
+  let isValid = true;
+  if (!creds.email) {
+    errors.emailError = 'Must enter email';
+    isValid = false;
+  }
+  if (!creds.password) {
+    errors.passwordError = 'Must enter password';
+    isValid = false;
+  }
+  return isValid;
+}
+
+function goToRegister() {
+  emit('toggle');
+}
+
+// COMPUTED
+const eyeImg = computed(() => (isPasswordShowen.value ? 'eye-slash-light' : 'eye-light'));
 </script>

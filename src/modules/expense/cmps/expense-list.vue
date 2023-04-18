@@ -15,90 +15,79 @@
 
     <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
-      <option-menu v-if="selectedExpense" @edit="goToEditExpense" @remove="removeExpense" @close="toggleMenu">
-      </option-menu>
+      <option-menu v-if="selectedExpense" @edit="goToEditExpense" @remove="removeExpense" @close="toggleMenu"> </option-menu>
     </transition>
   </section>
 </template>
 
-<script>
+<script setup>
 import expensePreview from './expense-preview';
-import { optionMenu } from '@/modules/common/cmps';
+import optionMenu from '@/modules/common/cmps/option-menu';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { expenseService } from '../services/expense.service';
-export default {
-  name: 'expense-list',
-  data() {
-    return {
-      group: null,
-      selectedExpense: null,
-    };
-  },
-  computed: {
-    expenses() {
-      if (!this.group) return null;
-      const res = this.group?.expenses?.reduce((expenses, expense) => {
-        expenses.push(this.prepareExpenseReport(expense));
-        return expenses;
-      }, []);
+import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useExpenseStore } from '../store';
+import { useGroupStore } from '../../group/store';
 
-      return res.sort((a, b) => a.createdAt - b.createdAt);
-    },
-  },
-  methods: {
-    prepareExpenseReport(expense) {
-      return {
-        ...expense,
-        name: this.findNameByEmailInGroup(expense.spender),
-        exclude: expense.exclude.map((exc) => this.findNameByEmailInGroup(exc)),
-      };
-    },
-    toggleMenu(expense) {
-      this.selectedExpense = this.selectedExpense ? null : expense;
-    },
-    async getGroup() {
-      const { groupId } = this.$route.params;
-      if (!groupId) return;
-      const group = await this.$store.dispatch({
-        type: 'groupStore/getGroupById',
-        groupId,
-      });
-      this.group = group;
-      return group;
-    },
-    findNameByEmailInGroup(email) {
-      return Object.values(this.group.members).find((mem) => mem.email === email)?.name;
-    },
-    goToEditExpense() {
-      this.$router.push(
-        `/expense/edit/${this.group.id}/${this.selectedExpense.id}?spender=${this.selectedExpense.spender}`
-      );
-    },
-    async removeExpense() {
-      const expense = this.selectedExpense;
+const expenseStore = useExpenseStore();
+const groupStore = useGroupStore();
 
-      const isConfirm = await popupService.confirm(
-        `Are you sure you want to delete this expense?\n ${expense.description} ${getSymbolFromCurrency(
-          expense.currency
-        )}${expense.amount}`,
-        'Yes',
-        'No'
-      );
-      if (!isConfirm) return;
+const route = useRoute();
+const router = useRouter();
 
-      this.$store.dispatch({ type: 'expenseStore/removeExpense', expense, group: this.group });
-    },
-    exportExpenses() {
-      expenseService.exportExcel(this.group);
-    },
-  },
-  async created() {
-    await this.getGroup();
-  },
-  components: {
-    expensePreview,
-    optionMenu,
-  },
-};
+const group = ref(null);
+const selectedExpense = ref(null);
+
+const expenses = computed(() => {
+  if (!group.value) return null;
+  const res = group.value?.expenses?.reduce((expenses, expense) => {
+    expenses.push(prepareExpenseReport(expense));
+    return expenses;
+  }, []);
+
+  return res.sort((a, b) => a.createdAt - b.createdAt);
+});
+
+// FUNCTIONS
+function prepareExpenseReport(expense) {
+  return {
+    ...expense,
+    name: findNameByEmailInGroup(expense.spender),
+    exclude: expense.exclude.map((exc) => findNameByEmailInGroup(exc)),
+  };
+}
+
+function toggleMenu(expense) {
+  selectedExpense.value = selectedExpense.value ? null : expense;
+}
+
+async function getGroup() {
+  const { groupId } = route.params;
+  if (!groupId) return;
+  group.value = await groupStore.getGroupById({ groupId });
+  return group.value;
+}
+
+function findNameByEmailInGroup(email) {
+  return Object.values(group.value.members).find((mem) => mem.email === email)?.name;
+}
+function goToEditExpense() {
+  router.push(`/expense/edit/${group.value.id}/${selectedExpense.value.id}?spender=${selectedExpense.value.spender}`);
+}
+async function removeExpense() {
+  const expense = selectedExpense.value;
+
+  const isConfirm = await popupService.confirm(`Are you sure you want to delete this expense?\n ${expense.description} ${getSymbolFromCurrency(expense.currency)}${expense.amount}`, 'Yes', 'No');
+  if (!isConfirm) return;
+
+  expenseStore.removeExpense({ expense, group: group.value });
+}
+function exportExpenses() {
+  expenseService.exportExcel(group.value);
+}
+
+// CREATED
+getGroup();
 </script>

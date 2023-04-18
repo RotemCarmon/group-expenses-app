@@ -1,4 +1,4 @@
-import groupPage from '../views/group-page'
+const groupPage = () => import('../views/group-page')
 import { groupList, groupEdit, groupDetails } from '../cmps'
 import { expenseEdit } from '@/modules//expense/cmps';
 
@@ -9,7 +9,7 @@ export const groupRoutes = [
     component: groupPage,
     children: [
       {
-        path: '/',
+        path: '',
         component: groupList,
         name: 'group-list'
       },

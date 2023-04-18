@@ -5,17 +5,13 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: 'action-buttons',
-  methods: {
-    edit() {
-      this.$emit('edit')
-    },
-    remove() {
-      this.$emit('remove')
-    }
-  },
+<script setup>
+const emit = defineEmits(['edit', 'remove']);
 
+function edit() {
+  emit('edit');
+}
+function remove() {
+  emit('remove');
 }
 </script>

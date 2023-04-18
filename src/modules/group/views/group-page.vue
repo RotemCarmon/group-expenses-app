@@ -4,14 +4,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  created() {
-    const loggedInUser = this.$store.getters['authStore/loggedInUser'];
-    this.$store.dispatch({
-      type: 'groupStore/loadGroups',
-      filterBy: { array: [ 'memberEmails', loggedInUser.email ] },
-    });
-  },
-};
+<script setup>
+import { useGroupStore } from '../store/';
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+
+const groupStore = useGroupStore();
+const authStore = useAuthStore();
+
+groupStore.loadGroups({ filterBy: { array: ['memberEmails', authStore.loggedInUser.email] } });
 </script>

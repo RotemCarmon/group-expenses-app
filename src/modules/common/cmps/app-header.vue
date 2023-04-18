@@ -5,16 +5,8 @@
         <img :src="require('@/assets/icons/arrow-left.svg')" />
       </div>
     </div>
-    <div
-      class="avatar-container"
-      @click="isMenuOpen = true"
-      :class="{ 'letter-avatar': loggedInUser && !loggedInUser.imgUrl }"
-    >
-      <img
-        v-if="!loggedInUser"
-        :src="require('@/assets/imgs/user-avatar.png')"
-        class="default-avatar"
-      />
+    <div class="avatar-container" @click="isMenuOpen = true" :class="{ 'letter-avatar': loggedInUser && !loggedInUser.imgUrl }">
+      <img v-if="!loggedInUser" :src="require('@/assets/imgs/user-avatar.png')" class="default-avatar" />
       <img v-else-if="loggedInUser.imgUrl" :src="loggedInUser.imgUrl" />
       <div v-else class="avatar">{{ avatarCapital }}</div>
     </div>
@@ -26,42 +18,37 @@
   </section>
 </template>
 
-<script>
+<script setup>
+import { computed, ref } from 'vue';
 import userMenu from './user-menu';
-export default {
-  name: 'app-header',
-  data() {
-    return {
-      isMenuOpen: false,
-    };
-  },
-  methods: {
-    back() {
-      let homeRoute = '/';
-      if (this.$route.path.includes('expense')) {
-        homeRoute = `/group/${this.$route.params.groupId}`;
-      } else if (this.$route.path.includes('group')) {
-        homeRoute = '/group';
-      }
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/modules/auth/store/auth.store';
 
-      this.$router.replace(homeRoute);
-    },
-  },
-  computed: {
-    hasBack() {
-      const noBackCmps = ['group-list', 'login-signup'];
-      return !noBackCmps.includes(this.$route.name);
-    },
-    loggedInUser() {
-      const user = this.$store.getters['authStore/loggedInUser'];
-      return user;
-    },
-    avatarCapital() {
-      return this.loggedInUser.username.charAt(0).toUpperCase();
-    },
-  },
-  components: {
-    userMenu,
-  },
-};
+const route = useRoute();
+const router = useRouter();
+const authStore = useAuthStore();
+
+const isMenuOpen = ref(false);
+
+// COMPUTED
+const hasBack = computed(() => {
+  const noBackCmps = ['group-list', 'login-signup'];
+  return !noBackCmps.includes(route.name);
+});
+
+const loggedInUser = computed(() => authStore.loggedInUser);
+
+const avatarCapital = computed(() => loggedInUser.value.username.charAt(0).toUpperCase());
+
+// FUNCTIONS
+function back() {
+  let homeRoute = '/';
+  if (route.path.includes('expense')) {
+    homeRoute = `/group/${route.params.groupId}`;
+  } else if (route.path.includes('group')) {
+    homeRoute = '/group';
+  }
+
+  router.replace(homeRoute);
+}
 </script>

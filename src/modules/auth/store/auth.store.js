@@ -1,45 +1,38 @@
+import { defineStore } from 'pinia'
+import { useCommonStore } from '@/modules/common/store';
 import { authService } from '../services/auth.service.js'
 import { getErrorMessage } from '../services/auth.error.js'
 import { loggerService } from '@/modules/common/services/logger.service.js'
 import { popupService } from '@/modules/common/services/popup.service.js'
 import { router } from '@/router'
 
-export default {
-  namespaced: true,
-  state: {
-    loggedInUser: authService.getLoggedinUser()
-  },
-  getters: {
-    loggedInUser({ loggedInUser }) { return loggedInUser }
-  },
-  mutations: {
-    setLoggedInUser(state, { loggedInUser }) {
-      state.loggedInUser = loggedInUser
-    }
 
-  },
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    loggedInUser: authService.getLoggedinUser()
+  }),
   actions: {
-    async login({ commit }, { userCreds }) {
-      commit({ type: 'setLoading', isLoading: true }, { root: true })
+    async login({ userCreds }) {
+      const commonStore = useCommonStore()
+      commonStore.isLoading = true
       try {
         const user = await authService.login(userCreds)
-        console.log('user:', user)
-        commit({ type: 'setLoggedInUser', loggedInUser: user })
+        this.loggedInUser = user
         router.push('/')
       } catch (err) {
         const msg = getErrorMessage(err.code)
         popupService.error(msg)
         loggerService.error(err)
       } finally {
-        commit({ type: 'setLoading', isLoading: false }, { root: true })
+        commonStore.isLoading = false
       }
     },
-    async signup({ commit }, { userCreds }) {
-      commit({ type: 'setLoading', isLoading: true }, { root: true })
+    async signup({ userCreds }) {
+      const commonStore = useCommonStore()
+      commonStore.isLoading = true
       try {
         const user = await authService.signup(userCreds)
-        console.log('user:', user)
-        commit({ type: 'setLoggedInUser', loggedInUser: user })
+        this.loggedInUser = user
         popupService.success('User registered successfuly')
         router.push('/')
 
@@ -48,18 +41,18 @@ export default {
         popupService.error(msg)
         loggerService.error(err)
       } finally {
-        commit({ type: 'setLoading', isLoading: false }, { root: true })
+        commonStore.isLoading = false
       }
     },
-    async signout({ commit },) {
+    async signout() {
       try {
         await authService.signout()
-        commit({ type: 'setLoggedInUser', loggedInUser: null })
+        this.loggedInUser = null
         router.push('/auth')
 
       } catch (err) {
         loggerService.error(err)
       }
     }
-  },
-};
+  }
+});

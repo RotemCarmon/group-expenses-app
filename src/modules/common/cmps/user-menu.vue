@@ -8,13 +8,7 @@
     </div>
     <div class="username-greet">
       Hello
-      <span>
-        {{
-          loggedInUser && loggedInUser.username
-            ? loggedInUser.username
-            : 'Guest'
-        }}</span
-      >
+      <span> {{ loggedInUser && loggedInUser.username ? loggedInUser.username : 'Guest' }}</span>
     </div>
     <ul class="menu-container">
       <li @click="navigate('group')">My Groups</li>
@@ -23,80 +17,72 @@
     </ul>
     <div class="currency">
       <p>Set default currency</p>
-      <multi-select
-        :items="currencyCodes"
-        :isMulti="false"
-        :topSelections="topSelections"
-        :hasSearch="true"
-        v-model="currency"
-        class="currency-select"
-      />
+      <multi-select :items="currencyCodes" :isMulti="false" :topSelections="topSelections" :hasSearch="true" v-model="currency" class="currency-select" />
+      
+      <!-- <select v-model="currency">
+        <option v-for="curr in currencyCodes" :value="curr" :key="curr">{{ curr }}</option>
+      </select> -->
       <transition name="fade">
-        <button
-          v-if="isCurrencyChange"
-          @click="updateCurrency"
-          class="btn save-btn"
-        >
-          Save
-        </button>
+        <button v-if="isCurrencyChange" @click="updateCurrency" class="btn save-btn">Save</button>
       </transition>
     </div>
   </section>
 </template>
 
-<script>
-import { eventBus } from '@/modules/common/services/event-bus.service.js';
+<script setup>
+// import { eventBus } from '@/modules/common/services/event-bus.service.js';
+import { computed, ref, onMounted, watch } from 'vue';
 import multiSelect from './multi-select.vue';
-export default {
-  name: 'user-menu',
-  data() {
-    return {
-      currency: this.loggedInUser && this.loggedInUser.prefs.currency,
-      topSelections: ['USD', 'EUR'],
-      isCurrencyChange: false,
-    };
-  },
-  methods: {
-    navigate(to) {
-      this.$router.push(`/${to}`);
-      this.$emit('close');
-    },
-    signout() {
-      this.$emit('close');
-      this.$store.dispatch({ type: 'authStore/signout' });
-    },
-    updateCurrency() {
-      const newUser = {
-        ...this.loggedInUser,
-        prefs: { ...this.loggedInUser?.prefs, currency: this.currency },
-      };
-      this.$store.dispatch({ type: 'userStore/updateUser', user: newUser });
-      this.isCurrencyChange = false;
-      eventBus.$emit('currency-updated', this.currency);
-    },
-  },
-  computed: {
-    loggedInUser() {
-      return this.$store.getters['authStore/loggedInUser'];
-    },
-    currencyCodes() {
-      return this.$store.getters['commonStore/currencyCodes'];
-    },
-  },
-  mounted() {
-    this.$refs.userMenu.focus();
-  },
-  created() {
-    this.currency = this.loggedInUser?.prefs?.currency;
-  },
-  components: {
-    multiSelect,
-  },
-  watch: {
-    currency(val) {
-      if (val === this.loggedInUser?.prefs?.currency) return;
-      this.isCurrencyChange = true;
-    },
-  },
-};
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+import { useUserStore } from '@/modules/auth/store/user.store';
+import { useCommonStore } from '@/modules/common/store/common.store';
+import { useRouter } from 'vue-router';
+
+const emit = defineEmits(['close']);
+
+const authStore = useAuthStore();
+const userStore = useUserStore();
+const commonStore = useCommonStore();
+
+const router = useRouter();
+
+// COMPUTED
+const loggedInUser = computed(() => authStore.loggedInUser);
+const currencyCodes = computed(() => commonStore.currencyCodes);
+
+// VARS
+const topSelections = ['USD', 'EUR'];
+
+const isCurrencyChange = ref(false);
+const userMenu = ref(null);
+const currency = ref(loggedInUser.value?.prefs?.currency);
+
+// FUNCTIONS
+function navigate(to) {
+  router.push(`/${to}`);
+  emit('close');
+}
+
+function signout() {
+  emit('close');
+  authStore.signout();
+}
+
+function updateCurrency() {
+  const newUser = {
+    ...loggedInUser.value,
+    prefs: { ...loggedInUser.value?.prefs, currency: currency.value },
+  };
+  userStore.updateUser({ user: newUser });
+  isCurrencyChange.value = false;
+  // eventBus.$emit('currency-updated', this.currency);
+}
+
+onMounted(() => {
+  userMenu.value.focus();
+});
+
+watch(currency, (newValue, oldValue) => {
+  if (oldValue !== newValue) isCurrencyChange.value = true;
+});
 </script>

@@ -1,7 +1,7 @@
-import authStore from './auth.store.js'
-import userStore from './user.store.js'
+import { useAuthStore } from './auth.store.js'
+import { useUserStore } from './user.store.js'
 
-export default {
-  authStore,
-  userStore
+export {
+  useAuthStore,
+  useUserStore
 };

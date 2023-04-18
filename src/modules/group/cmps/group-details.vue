@@ -39,110 +39,96 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import getSymbolFromCurrency from 'currency-symbol-map';
-import { eventBus } from '@/modules/common/services/event-bus.service.js';
+// import { eventBus } from '@/modules/common/services/event-bus.service.js';
 import { expenseService } from '@/modules/expense/services/expense.service';
-import { optionMenu } from '@/modules/common/cmps';
+import optionMenu from '@/modules/common/cmps/option-menu';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import { findNameByEmailInGroup } from '@/modules/common/services/util.service.js';
-export default {
-  name: 'group-details',
-  data() {
-    return {
-      group: null,
-      totalSpent: 0,
-      summary: null,
-      balances: null,
-      isMenuOpen: false,
-      getSymbolFromCurrency,
-    };
-  },
-  computed: {
-    loggedInUser() {
-      return this.$store.getters['authStore/loggedInUser'];
-    },
-    userCurrency() {
-      return this.loggedInUser?.prefs?.currency;
-    },
-  },
-  methods: {
-    findNameByEmailInGroup,
-    async getTotalExpenses(userCurrency) {
-      const { expenses } = this.group;
-      this.totalSpent = await expenseService.getTotalExpenses(expenses, userCurrency);
-    },
+import { ref, computed } from 'vue';
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+import { useGroupStore } from '../store/';
+import { useRouter, useRoute } from 'vue-router';
 
-    async getBalances(userCurrency) {
-      this.balances = await expenseService.getBalances(this.group, userCurrency);
-    },
-    getSummeryData(userCurrency = this.userCurrency) {
-      this.getBalances(userCurrency);
-      this.getTotalExpenses(userCurrency);
-    },
-    editGroup() {
-      this.$router.push(`/group/edit/${this.group.id}`);
-    },
-    async removeGroup() {
-      console.log('Removing group');
-      const isOwner = this.isGroupOwner();
-      if (!isOwner) {
-        popupService.warn('Only the group owner can delete');
-        return;
-      }
-      const group = this.group;
-      const isConfirm = await popupService.confirm(
-        `Are you sure you want to delete the group ${group.name}?`,
-        'Yes',
-        'No'
-      );
-      if (!isConfirm) return;
+const authStore = useAuthStore();
+const groupStore = useGroupStore();
 
-      await this.$store.dispatch({
-        type: 'groupStore/removeGroup',
-        groupId: group.id,
-      });
+const router = useRouter();
+const route = useRoute();
 
-      this.$router.push('/group/');
-    },
-    isGroupOwner() {
-      const loggedInUser = this.$store.getters['authStore/loggedInUser'];
-      const owner = Object.values(this.group.members).find((member) => member.isOwner);
+const group = ref(null);
+const totalSpent = ref(0);
+const summary = ref(null);
+const balances = ref(null);
+const isMenuOpen = ref(false);
 
-      const ownerEmail = owner?.email;
-      const userEmail = loggedInUser?.email;
-      return ownerEmail === userEmail;
-    },
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
-    },
-    goToExpenseList() {
-      this.$router.push(`/expense/${this.group.id}`);
-    },
-    goToAddExpense() {
-      this.$router.push(`/expense/edit/${this.group.id}`);
-    },
-    async getGroup() {
-      const { groupId } = this.$route.params;
-      if (!groupId) return;
-      const group = await this.$store.dispatch({
-        type: 'groupStore/getGroupById',
-        groupId,
-      });
-      this.group = group;
-      return group;
-    },
-  },
-  async created() {
-    await this.getGroup();
-    this.getSummeryData();
+const loggedInUser = computed(() => authStore.loggedInUser);
 
-    eventBus.$on('currency-updated', (userCurrency) => {
-      this.getSummeryData(userCurrency);
-    });
-  },
-  components: {
-    optionMenu,
-  },
-};
+const userCurrency = ref(loggedInUser.value?.prefs?.currency);
+
+const isGroupOwner = computed(() => {
+  const owner = Object.values(group.value?.members).find((member) => member.isOwner);
+  const ownerEmail = owner?.email;
+  const userEmail = loggedInUser.value?.email;
+  return ownerEmail === userEmail;
+});
+
+// FUNCTIONS
+async function getTotalExpenses(userCurrency) {
+  const { expenses } = group.value;
+  totalSpent.value = await expenseService.getTotalExpenses(expenses, userCurrency);
+}
+
+async function getBalances(userCurrency) {
+  balances.value = await expenseService.getBalances(group.value, userCurrency);
+}
+
+function getSummeryData(userCurrency = authStore.loggedInUser.prefs.currency) {
+  getBalances(userCurrency);
+  getTotalExpenses(userCurrency);
+}
+
+function editGroup() {
+  router.push(`/group/edit/${group.value.id}`);
+}
+
+async function removeGroup() {
+  const isOwner = isGroupOwner.value;
+  if (!isOwner) {
+    popupService.warn('Only the group owner can delete');
+    return;
+  }
+  const group = group.value;
+  const isConfirm = await popupService.confirm(`Are you sure you want to delete the group ${group.name}?`, 'Yes', 'No');
+  if (!isConfirm) return;
+
+  await groupStore.removeGroup({ groupId: group.id });
+
+  router.push('/group/');
+}
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value;
+}
+function goToExpenseList() {
+  router.push(`/expense/${group.value.id}`);
+}
+function goToAddExpense() {
+  router.push(`/expense/edit/${group.value.id}`);
+}
+async function getGroup() {
+  const { groupId } = route.params;
+  if (!groupId) return;
+  const group = await groupStore.getGroupById({ groupId });
+  return group;
+}
+
+(async function created() {
+  group.value = await getGroup();
+  getSummeryData();
+
+  // TODO:
+  // Listen to currency change and call getSummeryData with new currency
+})();
 </script>

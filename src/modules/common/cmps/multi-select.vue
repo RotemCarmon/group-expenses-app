@@ -1,50 +1,23 @@
 <template>
   <section class="multi-select-container">
     <div class="box" @click="toggleMenu">
-      <input
-        v-if="hasSearch"
-        type="search"
-        class="search-input"
-        :placeholder="isMulti ? placeholder : val"
-        v-model="searchTerm"
-        ref="search"
-      />
+      <input v-if="hasSearch" type="search" class="search-input" :placeholder="isMulti ? placeholder : val" v-model="searchTerm" ref="search" />
       <span v-else class="placeholder" :class="{ multi: isMulti }">
         {{ isMulti ? placeholder : val }}
       </span>
-      <img
-        :src="require('@/assets/icons/angle-down.svg')"
-        :class="{ open: isOpen }"
-      />
+      <img :src="require('@/assets/icons/angle-down.svg')" :class="{ open: isOpen }" />
     </div>
     <transition name="fade" mode="out-in">
       <div v-if="isOpen" class="drop-down-select">
         <div class="top-selection" v-if="topSelections && !searchTerm">
-          <label
-            class="drop-down-item"
-            v-for="item in topSelections"
-            :key="item"
-            :class="{ multi: isMulti }"
-          >
-            <input
-              type="checkbox"
-              @change="toggleCheck(item)"
-              :checked="val.includes(item)"
-            />
+          <label class="drop-down-item" v-for="item in topSelections" :key="item" :class="{ multi: isMulti }">
+            <input type="checkbox" @change="toggleCheck(item)" :checked="val.includes(item)" />
             {{ item }}
           </label>
         </div>
-        <label
-          class="drop-down-item"
-          v-for="item in itemsToShow"
-          :key="item"
-          :class="{ multi: isMulti }"
-        >
-          <input
-            type="checkbox"
-            @change="toggleCheck(item)"
-            :checked="val.includes(item)"
-          />
+
+        <label class="drop-down-item" v-for="item in itemsToShow" :key="item" :class="{ multi: isMulti }">
+          <input type="checkbox" @change="toggleCheck(item)" :checked="val.includes(item)" />
           {{ item }}
         </label>
       </div>
@@ -52,69 +25,68 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: 'multi-select',
-  props: {
-    hasSearch: { type: Boolean, default: false },
-    items: { type: Array, default: () => [] },
-    placeholder: { type: String },
-    isMulti: { type: Boolean, default: true },
-    value: { type: Array | String },
-    topSelections: { type: Array, required: false },
-  },
-  data() {
-    return {
-      isOpen: false,
-      val: [],
-      searchTerm: '',
-    };
-  },
-  computed: {
-    itemsToShow() {
-      return this.items.filter((item) => {
-        if (!this.searchTerm) return item;
-        return item.includes(this.searchTerm.toUpperCase());
-      });
-    },
-  },
-  methods: {
-    toggleMenu() {
-      if (this.$refs.search == document.activeElement) {
-        this.isOpen = true;
-        return;
-      }
-      this.isOpen = !this.isOpen;
-      if (this.isOpen) {
-        this.searchTerm = '';
-      }
-    },
+<script setup>
+import { computed, ref } from 'vue';
 
-    toggleCheck(item) {
-      if (!this.isMulti) {
-        this.val = item;
-        this.searchTerm = item
-      } else {
-        const idx = this.val.findIndex((c) => c === item);
-        if (idx === -1) {
-          this.val.push(item);
-        } else {
-          this.val.splice(idx, 1);
-        }
-      }
-      this.$emit('input', this.val);
+const props = defineProps({
+  items: { type: Array, default: () => [] },
+  modelValue: [String, Array],
+  hasSearch: { type: Boolean, default: false },
+  placeholder: { type: String },
+  isMulti: { type: Boolean, default: true },
+  topSelections: { type: Array, required: false },
+});
 
-      if (!this.isMulti) {
-        this.toggleMenu();
-      }
-    },
-  },
-  created() {
-    if (this.value) {
-      this.val = this.value;
+const emit = defineEmits(['update:modelValue']);
+
+const isOpen = ref(false);
+const val = ref([]);
+const searchTerm = ref('');
+const search = ref(null);
+
+const itemsToShow = computed(() =>
+  props.items.filter((item) => {
+    if (!searchTerm.value) return item;
+    return item.includes(searchTerm.value.toUpperCase());
+  })
+);
+
+// FUNCTIONS
+function toggleMenu() {
+  if (search.value == document.activeElement) {
+    isOpen.value = true;
+    return;
+  }
+  isOpen.value = !isOpen.value;
+  if (isOpen.value) {
+    searchTerm.value = '';
+  }
+}
+
+function toggleCheck(item) {
+  if (!props.isMulti) {
+    val.value = item;
+    searchTerm.value = item;
+  } else {
+    const idx = val.value.findIndex((c) => c === item);
+    if (idx === -1) {
+      val.value.push(item);
     } else {
-      this.val = this.isMulti ? [] : '';
+      val.value.splice(idx, 1);
     }
-  },
-};
+  }
+  emit('update:modelValue', val.value);
+
+  if (!props.isMulti) {
+    toggleMenu();
+  }
+}
+
+(function created() {
+  if (props.modelValue) {
+    val.value = props.modelValue;
+  } else {
+    val.value = props.isMulti ? [] : '';
+  }
+})();
 </script>

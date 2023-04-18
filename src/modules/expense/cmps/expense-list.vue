@@ -15,7 +15,7 @@
 
     <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
-      <option-menu v-if="selectedExpense" @edit="goToEditExpense" @remove="removeExpense" @close="toggleMenu"> </option-menu>
+      <option-menu v-if="selectedExpense" :title="selectedExpense.description" @edit="goToEditExpense" @remove="removeExpense" @close="toggleMenu"> </option-menu>
     </transition>
   </section>
 </template>

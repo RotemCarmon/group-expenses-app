@@ -27,7 +27,7 @@
 
     <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
-      <option-menu v-if="isMenuOpen" @remove="removeMember" @close="toggleMenu" :isShowEdit="false" />
+      <option-menu v-if="isMenuOpen" :title="memberSelected.name" @remove="removeMember" @close="toggleMenu" :isShowEdit="isEditEnabled" />
     </transition>
   </section>
 </template>

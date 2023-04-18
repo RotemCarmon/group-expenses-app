@@ -14,11 +14,7 @@
       <p class="add-group-instruction">Click <strong>Add +</strong> to create your first group</p>
     </div>
     <transition name="menu-bottom" mode="out-in">
-      <option-menu v-if="selectedGroup" @edit="editGroup" @remove="removeGroup" @close="toggleMenu">
-        <template #content-top>
-          <div @click="goToAddGroup" class="line">Add Group</div>
-        </template>
-      </option-menu>
+      <option-menu v-if="selectedGroup" :title="selectedGroup.name" @edit="editGroup" @remove="removeGroup" @close="toggleMenu" />
     </transition>
   </section>
 </template>

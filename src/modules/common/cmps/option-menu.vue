@@ -1,5 +1,6 @@
 <template>
   <section ref="optionMenu" tabindex="0" @blur="$emit('close')" class="option-menu-container">
+    <h3 v-if="title" class="option-menu-title">{{ title }}</h3>
     <div class="option-list">
       <slot name="content-top"></slot>
       <div v-if="isShowEdit" @click="$emit('edit')" class="line">Edit</div>
@@ -15,9 +16,8 @@ import { onMounted, ref } from 'vue';
 const props = defineProps({
   isShowEdit: { type: Boolean, default: true },
   isShowRemove: { type: Boolean, default: true },
+  title: { type: String, required: false },
 });
-
-// const emit = defineEmits(['edit', 'remove', 'close']);
 
 const optionMenu = ref(null);
 

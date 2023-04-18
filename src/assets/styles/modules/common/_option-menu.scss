@@ -1,32 +1,39 @@
 .option-menu-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: auto;
 
-    box-shadow: 0 -2px 4px 2px $gray-300;
-    border-radius: 12% 12% 0 0;
-    outline: none;
-    background-color: white;
-    z-index: 20;
+  box-shadow: 0 -2px 4px 2px $gray-300;
+  border-radius: 12% 12% 0 0;
+  outline: none;
+  background-color: white;
+  z-index: 20;
+
+  .option-menu-title {
+    text-align: center;
+    // font-weight: bold;
+    padding-top: 20px;
+    color: $regGray;
+  }
 }
 
 .option-list {
-    padding: 25px;
-    .line {
-        @include flex-center;
-        font-size: $fontSizeBig;
-        padding: 16px 0;
-        &:hover {
-            cursor: pointer;
-        }
-
-        &.delete {
-            color: $red;
-        }
-        &:not(:last-child) {
-            border-bottom: 1px solid $gray-200;
-        }
+  padding: 25px;
+  .line {
+    @include flex-center;
+    font-size: $fontSizeBig;
+    padding: 16px 0;
+    &:hover {
+      cursor: pointer;
     }
+
+    &.delete {
+      color: $red;
+    }
+    &:not(:last-child) {
+      border-bottom: 1px solid $gray-200;
+    }
+  }
 }

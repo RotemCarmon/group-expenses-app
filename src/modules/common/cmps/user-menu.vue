@@ -26,7 +26,6 @@
 </template>
 
 <script setup>
-// import { eventBus } from '@/modules/common/services/event-bus.service.js';
 import { computed, ref, onMounted, watch } from 'vue';
 import multiSelect from './multi-select.vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
@@ -71,7 +70,6 @@ function updateCurrency() {
   };
   userStore.updateUser({ user: newUser });
   isCurrencyChange.value = false;
-  // eventBus.$emit('currency-updated', this.currency);
 }
 
 onMounted(() => {

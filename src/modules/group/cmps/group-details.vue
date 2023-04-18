@@ -41,12 +41,11 @@
 
 <script setup>
 import getSymbolFromCurrency from 'currency-symbol-map';
-// import { eventBus } from '@/modules/common/services/event-bus.service.js';
 import { expenseService } from '@/modules/expense/services/expense.service';
 import optionMenu from '@/modules/common/cmps/option-menu';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import { findNameByEmailInGroup } from '@/modules/common/services/util.service.js';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { useGroupStore } from '../store/';
 import { useRouter, useRoute } from 'vue-router';
@@ -65,7 +64,7 @@ const isMenuOpen = ref(false);
 
 const loggedInUser = computed(() => authStore.loggedInUser);
 
-const userCurrency = ref(loggedInUser.value?.prefs?.currency);
+const userCurrency = computed(() => loggedInUser.value?.prefs?.currency);
 
 const isGroupOwner = computed(() => {
   const owner = Object.values(group.value?.members).find((member) => member.isOwner);
@@ -124,11 +123,14 @@ async function getGroup() {
   return group;
 }
 
-(async function created() {
+watch(userCurrency, (val) => {
+  getSummeryData(val);
+});
+
+async function created() {
   group.value = await getGroup();
   getSummeryData();
+}
 
-  // TODO:
-  // Listen to currency change and call getSummeryData with new currency
-})();
+created();
 </script>

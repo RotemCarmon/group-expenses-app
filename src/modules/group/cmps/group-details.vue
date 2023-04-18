@@ -12,9 +12,9 @@
           <div class="name">
             {{ findNameByEmailInGroup(member, group) }}
           </div>
-          <div class="break-down" :class="{ pos: amount >= 0, neg: amount < 0 }">
-            {{ parseFloat(amount.toFixed(2)) }}
+          <div class="break-down" :class="{ pos: amount > 0, neg: amount < 0 }">
             {{ getSymbolFromCurrency(userCurrency) }}
+            {{ parseFloat(amount.toFixed(2)) }}
           </div>
         </div>
       </template>
@@ -24,7 +24,7 @@
     </main>
     <div class="total-spent">
       Total Spent
-      <span>{{ parseFloat(totalSpent.toFixed(2)) }} {{ getSymbolFromCurrency(userCurrency) }}</span>
+      <span>{{ getSymbolFromCurrency(userCurrency) }} {{ parseFloat(totalSpent.toFixed(2)) }}</span>
     </div>
 
     <!-- OPTION MENU -->

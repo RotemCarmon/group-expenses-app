@@ -12,7 +12,8 @@ export const popupService = {
     success,
     error,
     confirm,
-    warn
+    warn,
+    info
 };
 
 var gConfirmShowing = null
@@ -31,15 +32,20 @@ function success(txt, time) {
     _showAlert(msg, time);
 }
 
-function error(txt, err) {
+function error(txt, err, time) {
     loggerService.error(err);
     const msg = { status: 'error', txt };
-    _showAlert(msg);
+    _showAlert(msg, time);
 }
 
-function warn(txt) {
+function warn(txt, time) {
     const msg = { status: 'warn', txt };
-    _showAlert(msg);
+    _showAlert(msg, time);
+}
+
+function info(txt, time) {
+    const msg = { status: 'info', txt };
+    _showAlert(msg, time);
 }
 
 function _showConfirm(msg, cb) {
@@ -59,10 +65,14 @@ function _showAlert(msg, time = 3000) {
     const id = utilService.makeId();
     const elAlert = createAlert(msg, id);
     elAlertContainer.appendChild(elAlert);
-    let alertTimeout = setTimeout(() => {
-        closeAlert(id);
-    }, time);
-    idTimeoutMap[id] = alertTimeout
+
+    if (time !== null) {
+        let alertTimeout = setTimeout(() => {
+            closeAlert(id);
+        }, time);
+
+        idTimeoutMap[id] = alertTimeout
+    }
 }
 
 

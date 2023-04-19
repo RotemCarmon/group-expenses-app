@@ -17,7 +17,8 @@ const commonStore = useCommonStore();
 const isLoading = computed(() => commonStore.isLoading);
 
 // CREATED
-(async function created() {
+async function created() {
   await commonStore.loadCurrencies();
-})();
+}
+created()
 </script>

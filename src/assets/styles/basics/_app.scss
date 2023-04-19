@@ -1,14 +1,20 @@
 ::-webkit-scrollbar {
-    margin-left: 2.5px;
-    padding: 1px;
-    width: 5px;
-    height: 5px;
+  margin-left: 15px;
+  padding: 1px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-thumb {
-    background-color: $gray-700;
-    border-radius: 10px;
+  background-color: rgba($gray-700, 0.3);
+  border-radius: 10px;
 }
 
 .main-app-container {
-    background-color: $white;
+  background-color: $white;
+}
+
+@include for-narrow-layout {
+  ::-webkit-scrollbar {
+    width: 0;
+  }
 }

@@ -1,44 +1,50 @@
 .group-details-container {
-    position: relative;
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+  position: relative;
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-        .title {
-            font-weight: normal;
-            color: $dark-aqua;
-            font-size: rem(20px);
-        }
-
-        .add-expense-btn {
-            height: 30px;
-            padding: 0 12px;
-        }
+    .title {
+      font-weight: normal;
+      color: $dark-aqua;
+      font-size: rem(20px);
     }
-    .member {
-        padding: 12px 0;
-        display: flex;
-        justify-content: space-between;
 
-        align-items: center;
-        border-bottom: 1px solid $gray-400;
+    .add-expense-btn {
+      height: 30px;
+      padding: 0 12px;
+    }
+  }
 
-        .break-down {
-            &.pos {
-                color: green;
-            }
-            &.neg {
-                color: red;
-            }
-        }
+  .member-list {
+    overflow-y: auto;
+    flex: 1 1 0;
+  }
+  .member {
+    padding-block: 12px;
+    padding-inline: 8px;
+    display: flex;
+    justify-content: space-between;
+
+    align-items: center;
+    border-bottom: 1px solid $gray-400;
+
+    .break-down {
+      &.pos {
+        color: green;
+      }
+      &.neg {
+        color: red;
+      }
     }
-    .total-spent {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        font-size: $font-size-large-1;
-        padding: 7px 12px;
-        border-radius: 4px;
-    }
+  }
+  .total-spent {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: $font-size-large-1;
+    padding: 16px 12px 7px;
+    border-radius: 4px;
+  }
 }

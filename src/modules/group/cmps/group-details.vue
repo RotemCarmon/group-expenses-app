@@ -7,7 +7,7 @@
           <img :src="require('@/assets/icons/ellipsis.svg')" />
         </div>
       </div>
-      <template v-if="balances">
+      <div class="member-list" v-if="balances">
         <div class="member" v-for="(amount, member) in balances" :key="member">
           <div class="name">
             {{ findNameByEmailInGroup(member, group) }}
@@ -17,7 +17,7 @@
             {{ parseFloat(amount.toFixed(2)) }}
           </div>
         </div>
-      </template>
+      </div>
       <div v-else class="loader-container">
         <div class="app-loader"></div>
       </div>

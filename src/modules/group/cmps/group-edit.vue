@@ -13,8 +13,10 @@
           <h3 class="members-title">Members</h3>
           <button @click="editMember()" class="add-member top-header-btn">Add <img :src="require('@/assets/icons/plus-solid.svg')" /></button>
         </div>
-        <div class="members-list">
-          <member-preview v-for="member in groupToEdit.members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
+        <div class="member-list-wrapper">
+          <div class="members-list">
+            <member-preview v-for="member in groupToEdit.members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
+          </div>
         </div>
       </div>
     </main>

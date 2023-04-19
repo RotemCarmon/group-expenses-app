@@ -1,48 +1,65 @@
 .group-edit-container {
-    .group-form {
-        display: flex;
-        flex-direction: column;
-        gap: rem(24px);
-        margin-bottom: rem(44px);
-    }
+  .group-form {
+    display: flex;
+    flex-direction: column;
+    gap: rem(24px);
+    margin-bottom: rem(44px);
+  }
 
-    .members-list-container {
-        .members-title {
-            font-size: $font-size-large-1;
-            font-weight: 500;
-        }
-        .member-preview-container {
-            .group-owner {
-                font-size: $font-size-x-small;
-                color: $gray-500;
-                padding-left: 20px;
-            }
-        }
-        .members-list {
-            margin-bottom: rem(35px);
+  .members-list-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    // background-color: lightblue;
+    
+    .members-title {
+        font-size: $font-size-large-1;
+        font-weight: 500;
+    }
+    .member-preview-container {
+        .group-owner {
+            font-size: $font-size-x-small;
+            color: $gray-500;
+            padding-left: 20px;
         }
     }
+    .member-list-wrapper {
+        position: relative;
+        display: flex;
+        overflow: auto;
+      flex: 1;
+      //   background-color: lightpink;
+    }
+    .members-list {
+      width: 100%;
+      position: absolute;
+      //   width: 1;
+      // overflow-y: hidden;
+      flex: 1;
+      margin-bottom: rem(35px);
+    }
+  }
 }
 
 .member-edit-container {
-    padding: 30px 20px 0;
-    height: 100vh;
-    height: $vh;
-    position: fixed;
-    inset: 0;
-    background-color: white;
+  padding: 30px 20px 0;
+  height: 100vh;
+  height: $vh;
+  position: fixed;
+  inset: 0;
+  background-color: white;
 
-    input:not(:last-child) {
-        margin-bottom: 20px;
-    }
-    .close-btn {
-        top:30px
-    }
+  input:not(:last-child) {
+    margin-bottom: 20px;
+  }
+  .close-btn {
+    top: 30px;
+  }
 }
 
 .list-header {
-    padding-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

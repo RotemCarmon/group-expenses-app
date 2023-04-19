@@ -3,20 +3,20 @@
         margin-bottom: rem(26px);
 
         .group-preview-container {
-            font-size: $fontSizeMedium;
+            font-size: $font-size-medium;
         }
 
     }
 
     .no-groups {
         text-align: center;
-        font-size: $fontSizeBig;
+        font-size: $font-size-large-1;
         margin-top: 80px;
         color: $gray-500;
         
         .add-group-instruction {
             margin-top: 10px;
-            font-size: $fontSizeNormal;
+            font-size: $font-size-normal;
 
             strong {
                 font-weight: 500;

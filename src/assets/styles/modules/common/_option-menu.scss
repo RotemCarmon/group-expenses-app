@@ -13,9 +13,8 @@
 
   .option-menu-title {
     text-align: center;
-    // font-weight: bold;
     padding-top: 20px;
-    color: $regGray;
+    color: $reg-gray;
   }
 }
 
@@ -23,7 +22,7 @@
   padding: 25px;
   .line {
     @include flex-center;
-    font-size: $fontSizeBig;
+    font-size: $font-size-large-1;
     padding: 16px 0;
     &:hover {
       cursor: pointer;

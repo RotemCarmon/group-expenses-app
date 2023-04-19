@@ -49,7 +49,7 @@
         color: #708a66;
     }
     .error {
-        background-color: rgba($danger, 0.95);
+        background-color: rgba($light-red, 0.95);
         color: #ad797a;
     }
     .warn {
@@ -58,7 +58,7 @@
     }
     .confirm {
         background-color: white;
-        color: $regGray;
+        color: $reg-gray;
         text-align: center;
         display: flex;
         flex-direction: column;

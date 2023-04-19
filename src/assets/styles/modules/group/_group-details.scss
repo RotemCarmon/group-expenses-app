@@ -7,7 +7,7 @@
 
         .title {
             font-weight: normal;
-            color: $darkAqua;
+            color: $dark-aqua;
             font-size: rem(20px);
         }
 
@@ -37,7 +37,7 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
-        font-size: $fontSizeBig;
+        font-size: $font-size-large-1;
         padding: 7px 12px;
         border-radius: 4px;
     }

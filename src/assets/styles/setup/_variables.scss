@@ -13,46 +13,35 @@ $gray-800: #343a40 !default;
 $gray-900: #212529 !default;
 $black: #000 !default;
 
-$smokedWhite: #edf0f6;
 $blue: #0d6efd !default;
 $red: #df5561 !default;
 $yellow: #fff3cd !default;
 $green: #d4edda !default;
 $cyan: #0dcaf0 !default;
-$darkBlue: #115fd3;
+$dark-blue: #115fd3;
+$light-red: #f8d7da;
 
-$messageRed: #f8d7da;
-
-$statusGreen: #00c388;
-$statusYellow: #ffd98f;
-$statusBlue: #7bb8ff;
-$statusGray: #b4b4b4;
-$statusRed: #ff5959;
-$statusMaroon: #a00000;
-
-$pop: #48cac0;
-
-$regGray: #7d7e80;
-$darkGray: #3d3d3d;
-$darkerGray: #222222;
-
+$reg-gray: #7d7e80;
+$dark-gray: #3d3d3d; // base color
+$darker-gray: #222222;
 
 // NEW COLORS
-$lightGray: #f2f2f2;
-$lightAqua: #eaf4f4;
+$light-gray: #f2f2f2;
+$light-aqua: #eaf4f4;
 $aqua: #04a7b6;
-$darkAqua: #027782;
+$dark-aqua: #027782;
 
-$darkText: #1a1f22; 
-$grayText: #737473; 
-
+$dark-text: #1a1f22;
+$gray-text: #737473;
 
 $primary: $blue !default;
 $secondary: $gray-600 !default;
 $success: $green !default;
 $info: $cyan !default;
 $warning: $yellow !default;
-$danger: $messageRed !default;
+$error: $red !default;
+
+$light-bgc: $light-aqua;
 
 // Breakpoints
 $mobile-breakpoint: 460px;
@@ -63,19 +52,19 @@ $wide-breakpoint: 1200px;
 // Layout
 $grid-columns: 12;
 
-$headerHeight: 65px;
+
 
 // Fonts
 $font-family-secular-one: 'secularOne', sans-serif;
 $font-family-arial: Arial, Helvetica, sans-serif;
 
-$fontStizeXSmall: 0.75rem; //12px;
-$fontStizeSmall: 0.875rem; //14px;
-$fontSizeNormal: 1rem; //16px;
-$fontSizeMedium: 1.125rem; //18px;
-$fontSizeBig: 1.375rem; //22px;
-$fontSizeBig2: 1.75rem; //28px;
-$fontSizeBigger: 2.125rem; //34px;
-$fontSizeHuge: 2.5rem; //40px;
+$font-size-x-small: 0.75rem; //12px;
+$font-size-small: 0.875rem; //14px;
+$font-size-normal: 1rem; //16px;
+$font-size-medium: 1.125rem; //18px;
+$font-size-large-1: 1.375rem; //22px;
+$font-size-large-2: 1.75rem; //28px;
+$font-size-x-large-1: 2.125rem; //34px;
+$font-size-x-large-2: 2.5rem; //40px;
 
 $vh: calc(var(--vh, 1vh) * 100);

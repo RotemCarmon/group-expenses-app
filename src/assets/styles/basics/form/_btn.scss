@@ -11,7 +11,7 @@
 
     &.light {
         font-weight: 500;
-        border: 1px solid $darkGray;
+        border: 1px solid $dark-gray;
     }
     &.secondary {
         background-color: $gray-300;
@@ -44,7 +44,7 @@
 .bottom-btn {
     width: 100%;
     margin-bottom: rem(43px);
-    font-size: $fontSizeBig;
+    font-size: $font-size-large-1;
 }
 
 .close-btn {
@@ -59,7 +59,7 @@
     padding: 6px;
     color: $gray-600;
     font-weight: 500;
-    font-size: $fontSizeMedium;
+    font-size: $font-size-medium;
     border-radius: 4px;
     img {
         position: relative;

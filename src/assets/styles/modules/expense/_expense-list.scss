@@ -11,7 +11,7 @@
 
     .title {
         padding: 12px 0;
-        color: $darkAqua;
+        color: $dark-aqua;
     }
 
 
@@ -19,8 +19,8 @@
         position: relative;
         overflow-y: auto;
         flex: 1;
-        border-block: 2px solid $lightGray;
-        background-color: $lightAqua;
+        border-block: 2px solid $light-gray;
+        background-color: $light-bgc;
 
     }
     
@@ -41,17 +41,17 @@
 
         display: grid;
         grid-template-columns: 3fr 1fr;
-        color: $darkText;
+        color: $dark-text;
         column-gap: 8px;
         row-gap: 9px;
 
         .name,
         .date,
         .exclude {
-            color: $grayText;
+            color: $gray-text;
         }
         .exclude {
-            font-size: $fontStizeSmall;
+            font-size: $font-size-small;
             grid-row: 3/4;
         }
         .ellipsis-icon {

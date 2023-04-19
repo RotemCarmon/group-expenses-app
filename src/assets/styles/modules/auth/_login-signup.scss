@@ -6,7 +6,7 @@
         margin-bottom: 26px;
     }
     label {
-        font-size: $fontSizeMedium;
+        font-size: $font-size-medium;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -18,14 +18,14 @@
         padding: 0 6px;
 
         span {
-            color: $darkBlue;
+            color: $dark-blue;
             cursor: pointer;
         }
     }
 
     .error {
-        color: $statusMaroon;
-        font-size: $fontSizeNormal;
+        color: $red;
+        font-size: $font-size-normal;
     }
     .password-field {
         position: relative;

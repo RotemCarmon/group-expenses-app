@@ -1,7 +1,7 @@
 .expense-edit-container {
     .group-name {
-        font-size: $fontSizeNormal;
-        color: $grayText;
+        font-size: $font-size-normal;
+        color: $gray-text;
         span {
             font-weight: 500;
         }
@@ -11,7 +11,7 @@
         padding-block: 16px;
         flex: 1;
         gap: 16px;
-        background-color: $lightAqua;
+        background-color: $light-bgc;
         align-items: flex-start;
     }
 
@@ -33,7 +33,7 @@
     }
 
     .sub-title {
-        font-size: $fontSizeMedium;
+        font-size: $font-size-medium;
         font-weight: 500;
         margin-bottom: 6px;
     }

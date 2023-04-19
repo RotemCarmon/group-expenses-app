@@ -1,7 +1,7 @@
 <template>
-  <section class="expense-edit-container container" v-if="group && expenseToEdit">
+  <section class="expense-edit-container" v-if="group && expenseToEdit">
     <main>
-      <div class="expense-header section-app-container">
+      <div class="expense-header container">
         <div class="page-header">
           <div class="title">{{ edit ? 'Edit' : 'Add' }} Expense</div>
         </div>
@@ -9,8 +9,8 @@
           Group <span>{{ group.name }}</span>
         </div>
       </div>
-      <div class="expense-container section-app-container">
-        <div class="card-section">
+      <div class="expense-container">
+        <div class="card-section container">
           <input type="text" class="form-input form-row" placeholder="Enter Amount" v-model.number="expenseToEdit.amount" />
           <input type="text" class="form-input form-row" placeholder="Enter Description" v-model="expenseToEdit.description" />
           <div class="currency-select form-row">
@@ -18,7 +18,7 @@
             <multi-select :items="currencyCodes" :isMulti="false" :hasSearch="true" :topSelections="['USD', 'EUR']" v-model="expenseToEdit.currency" />
           </div>
         </div>
-        <div class="card-section">
+        <div class="card-section container">
           <h3 class="sub-title">Who is the spender?</h3>
           <multi-select :items="members" :isMulti="false" class="form-row" v-model="spender" />
           <h3 class="sub-title">Exclude</h3>
@@ -26,7 +26,7 @@
         </div>
       </div>
     </main>
-    <div class="footer section-app-container">
+    <div class="footer container">
       <button @click="saveExpense" class="btn dark bottom-btn">Save</button>
     </div>
   </section>

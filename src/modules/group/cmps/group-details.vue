@@ -1,13 +1,13 @@
 <template>
-  <section class="group-details-container container" v-if="group">
+  <section class="group-details-container" v-if="group">
     <main>
-      <div class="page-header">
+      <div class="page-header container">
         <h3 class="title">{{ group.name }}</h3>
         <div class="ellipsis-icon" @click.stop="toggleMenu">
           <img :src="require('@/assets/icons/ellipsis.svg')" />
         </div>
       </div>
-      <div class="member-list" v-if="balances">
+      <div class="member-list container" v-if="balances">
         <div class="member" v-for="(amount, member) in balances" :key="member">
           <div class="name">
             {{ findNameByEmailInGroup(member, group) }}
@@ -22,7 +22,7 @@
         <div class="app-loader"></div>
       </div>
     </main>
-    <div class="total-spent">
+    <div class="total-spent container">
       Total Spent
       <span>{{ getSymbolFromCurrency(userCurrency) }} {{ parseFloat(totalSpent.toFixed(2)) }}</span>
     </div>

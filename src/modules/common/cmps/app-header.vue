@@ -1,5 +1,5 @@
 <template>
-  <section class="app-header-container">
+  <section class="app-header-container container">
     <div class="left-container">
       <div class="back" @click="back" v-if="hasBack">
         <img :src="require('@/assets/icons/arrow-left.svg')" />

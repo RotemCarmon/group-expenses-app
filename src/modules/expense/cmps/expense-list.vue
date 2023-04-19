@@ -1,6 +1,6 @@
 <template>
   <section class="expense-list-container" v-if="expenses && group">
-    <div class="title section-app-container">
+    <div class="title container">
       <h3 class="group-name">{{ group.name }}</h3>
     </div>
 
@@ -9,7 +9,7 @@
         <expense-preview v-for="expense in expenses" :key="expense.id" :expense="expense" @openMenu="toggleMenu" />
       </div>
     </main>
-    <div class="footer section-app-container">
+    <div class="footer container">
       <button @click="exportExpenses" class="btn dark bottom-btn">Export</button>
     </div>
 

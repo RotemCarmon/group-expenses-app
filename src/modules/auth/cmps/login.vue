@@ -1,5 +1,5 @@
 <template>
-  <section class="login-signup-container container">
+  <section class="login-signup-container">
     <div class="page-header">
       <div class="title">Sign In</div>
     </div>

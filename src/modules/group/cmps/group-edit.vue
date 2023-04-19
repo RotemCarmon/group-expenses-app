@@ -1,26 +1,30 @@
 <template>
-  <section class="group-edit-container container" v-if="groupToEdit">
+  <section class="group-edit-container" v-if="groupToEdit">
     <main>
-      <div class="page-header">
+      <div class="page-header container">
         <div class="title">{{ edit ? 'Edit' : 'Add' }} Group</div>
       </div>
-      <div class="group-form">
-        <input class="form-input" type="text" v-model="groupToEdit.name" placeholder="Group Name" />
-        <textarea class="form-textarea" v-model="groupToEdit.description" placeholder="Group Description" />
-      </div>
-      <div class="members-list-container">
-        <div class="list-header">
-          <h3 class="members-title">Members</h3>
-          <button @click="editMember()" class="add-member top-header-btn">Add <img :src="require('@/assets/icons/plus-solid.svg')" /></button>
+      <div class="group-edit-form">
+        <div class="group-form container">
+          <input class="form-input" type="text" v-model="groupToEdit.name" placeholder="Group Name" />
+          <textarea class="form-textarea" v-model="groupToEdit.description" placeholder="Group Description" />
         </div>
-        <div class="member-list-wrapper">
-          <div class="members-list">
-            <member-preview v-for="member in groupToEdit.members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
+        <div class="members-list-container">
+          <div class="list-header container">
+            <h3 class="members-title">Members</h3>
+            <button @click="editMember()" class="add-member top-header-btn">Add <img :src="require('@/assets/icons/plus-solid.svg')" /></button>
+          </div>
+          <div class="member-list-wrapper container">
+            <div class="members-list">
+              <member-preview v-for="member in groupToEdit.members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
+            </div>
+      </div>
           </div>
         </div>
-      </div>
     </main>
-    <button @click="saveGroup" class="btn dark bottom-btn create-btn">Save</button>
+    <div class="footer container">
+      <button @click="saveGroup" class="btn dark bottom-btn create-btn">Save</button>
+    </div>
 
     <!-- MEMBER EDIT -->
     <transition name="slide-down" mode="out-in">

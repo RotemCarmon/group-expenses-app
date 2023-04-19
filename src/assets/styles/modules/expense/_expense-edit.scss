@@ -8,11 +8,15 @@
         margin-bottom: 16px;
     }
     .expense-container {
-        padding-block: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content:space-evenly;
+        // padding-block: 16px;
         flex: 1;
-        gap: 16px;
+        // gap: 16px;
         background-color: $light-bgc;
-        align-items: flex-start;
+
+        // align-items: flex-start;
     }
 
     .card-section {
@@ -20,6 +24,7 @@
         border-radius: 4px;
         padding: 16px;
         box-shadow: 0 0 5px rgba($gray-800, 0.2);
+        
     }
     .currency-select {
         display: flex;

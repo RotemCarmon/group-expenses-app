@@ -1,16 +1,20 @@
 <template>
-  <section class="member-edit-container container" v-if="memberToEdit">
+  <section class="member-edit-container main-container" v-if="memberToEdit">
     <main>
       <button @click="$emit('close')" class="close-btn">
         <img :src="require('@/assets/icons/close.svg')" />
       </button>
-      <div class="page-header">
+      <div class="page-header container">
         <div class="title">{{ isEdit ? 'Edit' : 'Add' }} Member</div>
       </div>
-      <input type="text" class="form-input" placeholder="Enter Name" v-model="memberToEdit.name" />
-      <input type="text" class="form-input" placeholder="Enter Email" v-model="memberToEdit.email" />
+      <div class="form container">
+        <input type="text" class="form-input" placeholder="Enter Name" v-model="memberToEdit.name" />
+        <input type="text" class="form-input" placeholder="Enter Email" v-model="memberToEdit.email" />
+      </div>
     </main>
-    <button @click="save" class="btn dark bottom-btn create-btn">Save</button>
+    <div class="footer container">
+      <button @click="save" class="btn dark bottom-btn create-btn">Save</button>
+    </div>
   </section>
 </template>
 

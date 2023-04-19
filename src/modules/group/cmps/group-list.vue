@@ -1,12 +1,12 @@
 <template>
   <section class="group-list-container">
-    <div class="page-header">
+    <div class="page-header container">
       <div class="list-header">
         <div class="title">My Groups</div>
         <button @click="goToAddGroup" class="add-group top-header-btn">Add <img :src="require('@/assets/icons/plus-solid.svg')" /></button>
       </div>
     </div>
-    <div class="group-list">
+    <div class="group-list container">
       <group-preview v-for="group in groups" :key="group.id" :group="group" @openMenu="toggleMenu" />
     </div>
     <div v-if="!groups || !groups.length" class="no-groups no-data">

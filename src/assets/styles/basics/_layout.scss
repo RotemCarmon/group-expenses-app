@@ -1,123 +1,131 @@
 .container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-
-    main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
+  margin-inline: 20px;
 }
 
 .main-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  > * {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+  }
+
+  main {
+    flex: 1;
     display: flex;
     flex-direction: column;
+  }
 }
 
 .main-app-container {
-    height: 100vh;
-    height: $vh;
-    display: grid;
-    grid-template-columns: 20px 1fr 20px;
-    grid-template-rows: 80px auto;
+  height: 100vh;
+  height: $vh;
+  display: flex;
+  flex-direction: column;
+  // display: grid;
+  // grid-template-columns: 20px 1fr 20px;
+  // grid-template-rows: 80px auto;
 
-    > * {
-        grid-column: 2;
+  // > * {
+  //     grid-column: 2;
 
-        &.full {
-            grid-column: 1 /-1;
-        }
-    }
+  //     &.full {
+  //         grid-column: 1 /-1;
+  //     }
+  // }
 
-    @include for-wide-layout {
-        grid-template-columns:
-            minmax(20px, 1fr)
-            minmax(auto, $normal-breakpoint)
-            minmax(20px, 1fr);
-    }
+  // @include for-wide-layout {
+  //     grid-template-columns:
+  //         minmax(20px, 1fr)
+  //         minmax(auto, $normal-breakpoint)
+  //         minmax(20px, 1fr);
+  // }
 
-    @include for-normal-layout {
-        grid-template-columns:
-            minmax(20px, 1fr)
-            minmax(auto, $narrow-breakpoint)
-            minmax(20px, 1fr);
-    }
+  // @include for-normal-layout {
+  //     grid-template-columns:
+  //         minmax(20px, 1fr)
+  //         minmax(auto, $narrow-breakpoint)
+  //         minmax(20px, 1fr);
+  // }
 
-    @include for-narrow-layout {
-        grid-template-columns:
-            minmax(20px, 1fr)
-            minmax(auto, $mobile-breakpoint)
-            minmax(20px, 1fr);
-    }
+  // @include for-narrow-layout {
+  //     grid-template-columns:
+  //         minmax(20px, 1fr)
+  //         minmax(auto, $mobile-breakpoint)
+  //         minmax(20px, 1fr);
+  // }
 
-    @include for-mobile-layout {
-        grid-template-columns:
-            minmax(20px, 1fr)
-            minmax(auto, $mobile-breakpoint - 10)
-            minmax(20px, 1fr);
-    }
+  // @include for-mobile-layout {
+  //     grid-template-columns:
+  //         minmax(20px, 1fr)
+  //         minmax(auto, $mobile-breakpoint - 10)
+  //         minmax(20px, 1fr);
+  // }
 }
 
 .section-app-container {
-    display: grid;
-    grid-template-columns: 20px 1fr 20px;
-    grid-auto-rows: min-content;
+  // display: grid;
+  // grid-template-columns: 20px 1fr 20px;
+  // grid-auto-rows: min-content;
 
-    > * {
-        grid-column: 2;
-    }
+  // > * {
+  //     grid-column: 2;
+  // }
 
-    @include for-wide-layout {
-        grid-template-columns:
-            minmax(20px, 1fr)
-            minmax(auto, $normal-breakpoint)
-            minmax(20px, 1fr);
-    }
+  // @include for-wide-layout {
+  //     grid-template-columns:
+  //         minmax(20px, 1fr)
+  //         minmax(auto, $normal-breakpoint)
+  //         minmax(20px, 1fr);
+  // }
 
-    @include for-normal-layout {
-        grid-template-columns:
-            minmax(20px, 1fr)
-            minmax(auto, $narrow-breakpoint)
-            minmax(20px, 1fr);
-    }
+  // @include for-normal-layout {
+  //     grid-template-columns:
+  //         minmax(20px, 1fr)
+  //         minmax(auto, $narrow-breakpoint)
+  //         minmax(20px, 1fr);
+  // }
 
-    @include for-narrow-layout {
-        grid-template-columns:
-            minmax(20px, 1fr)
-            minmax(auto, $mobile-breakpoint)
-            minmax(20px, 1fr);
-    }
+  // @include for-narrow-layout {
+  //     grid-template-columns:
+  //         minmax(20px, 1fr)
+  //         minmax(auto, $mobile-breakpoint)
+  //         minmax(20px, 1fr);
+  // }
 
-    @include for-mobile-layout {
-        grid-template-columns:
-            minmax(20px, 1fr)
-            minmax(auto, $mobile-breakpoint - 10)
-            minmax(20px, 1fr);
-    }
+  // @include for-mobile-layout {
+  //     grid-template-columns:
+  //         minmax(20px, 1fr)
+  //         minmax(auto, $mobile-breakpoint - 10)
+  //         minmax(20px, 1fr);
+  // }
 }
 
 .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    grid-gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  grid-gap: 20px;
 }
 
 $columns: $grid-columns;
 $spacer: 12px;
 
 @mixin make-col($size, $columns) {
-    width: 100%;
-    padding: $spacer;
-    flex: 0 0 percentage($size / $columns);
-    max-width: percentage($size / $columns);
+  width: 100%;
+  padding: $spacer;
+  flex: 0 0 percentage($size / $columns);
+  max-width: percentage($size / $columns);
 }
 
 .row {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 1 1 auto;
-    margin-bottom: $spacer;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  margin-bottom: $spacer;
 }
 
 // columns

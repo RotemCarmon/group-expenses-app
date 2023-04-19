@@ -7,7 +7,7 @@
           <img :src="require('@/assets/icons/ellipsis.svg')" />
         </div>
       </div>
-      <div class="member-list container" v-if="balances">
+      <div class="member-list" v-if="balances">
         <div class="member" v-for="(amount, member) in balances" :key="member">
           <div class="name">
             {{ findNameByEmailInGroup(member, group) }}
@@ -22,7 +22,7 @@
         <div class="app-loader"></div>
       </div>
     </main>
-    <div class="total-spent container">
+    <div class="total-spent">
       Total Spent
       <span>{{ getSymbolFromCurrency(userCurrency) }} {{ parseFloat(totalSpent.toFixed(2)) }}</span>
     </div>

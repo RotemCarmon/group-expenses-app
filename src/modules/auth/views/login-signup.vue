@@ -1,5 +1,5 @@
 <template>
-  <section class="login-signup-container">
+  <section class="login-signup-container container">
     <login v-if="isLogin" @toggle="toggleSignPage" />
     <signup v-else @toggle="toggleSignPage" />
   </section>

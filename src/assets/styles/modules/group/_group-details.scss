@@ -20,15 +20,17 @@
   .member-list {
     overflow-y: auto;
     flex: 1 1 0;
+    background-color: $light-bgc;
   }
   .member {
     padding-block: 12px;
-    padding-inline: 8px;
+    padding-inline: 20px;
     display: flex;
     justify-content: space-between;
 
     align-items: center;
     border-bottom: 1px solid $gray-400;
+    background-color: $white;
 
     .break-down {
       &.pos {
@@ -40,11 +42,11 @@
     }
   }
   .total-spent {
+    background-color: $dark-aqua;
+    color: $white;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
-    font-size: $font-size-large-1;
-    padding: 16px 12px 7px;
-    border-radius: 4px;
+    font-size: $font-size-medium;
+    padding: em(20px) em(28px);
   }
 }

@@ -1,34 +1,35 @@
 .group-list-container {
-    .group-list {
-        margin-bottom: rem(26px);
+  .group-list {
+    background-color: $light-bgc;
+    flex: 1;
 
-        .group-preview-container {
-            font-size: $font-size-medium;
-        }
-
+    .group-preview-container {
+      font-size: $font-size-medium;
+      background-color: $white;
+      padding-inline: 20px;
     }
+  }
 
-    .no-groups {
-        text-align: center;
-        font-size: $font-size-large-1;
-        margin-top: 80px;
-        color: $gray-500;
-        
-        .add-group-instruction {
-            margin-top: 10px;
-            font-size: $font-size-normal;
+  .no-groups {
+    text-align: center;
+    font-size: $font-size-large-1;
+    margin-top: 80px;
+    color: $gray-500;
 
-            strong {
-                font-weight: 500;
-            }
-        }
+    .add-group-instruction {
+      margin-top: 10px;
+      font-size: $font-size-normal;
+
+      strong {
+        font-weight: 500;
+      }
     }
+  }
 }
 
 .ellipsis-icon {
-    padding: 4px;
-    img {
-        height: 25px;
-    }
-
+  padding: 4px;
+  img {
+    height: 25px;
+  }
 }

@@ -70,3 +70,9 @@
     filter: invert(49%) sepia(6%) saturate(677%) hue-rotate(167deg) brightness(90%) contrast(91%);
   }
 }
+
+.select-toggle-btn {
+    color: $dark-blue;
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -1,7 +1,7 @@
 <template>
   <div class="expense-preview-container" :class="{ selectable: isSelectable }">
     <div class="select-box-wrapper" v-if="isSelectable">
-      <input type="checkbox" :checked="isSelected" @change="$emit('select', expense.id)" />
+      <check-box :isChecked="isSelected" @update:isChecked="$emit('select', expense.id)" />
     </div>
     <div class="name">{{ expense.name }}</div>
     <div class="date">
@@ -19,6 +19,7 @@
 
 <script setup>
 import { formatDate } from '@/modules/common/services/util.service';
+import checkBox from '@/modules/common/cmps/check-box.vue';
 import getSymbolFromCurrency from 'currency-symbol-map';
 
 const props = defineProps({

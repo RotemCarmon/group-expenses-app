@@ -31,15 +31,17 @@ import { useRoute, useRouter } from 'vue-router';
 import { useExpenseStore } from '../store';
 import { useGroupStore } from '../../group/store';
 
+// SETUPS
 const expenseStore = useExpenseStore();
 const groupStore = useGroupStore();
-
 const route = useRoute();
 const router = useRouter();
 
+// VARIABLES
 const group = ref(null);
 const selectedExpense = ref(null);
 
+// COMPUTED
 const expenses = computed(() => {
   if (!group.value) return null;
   const res = group.value?.expenses?.reduce((expenses, expense) => {

@@ -97,6 +97,15 @@
 
     .description {
       padding-bottom: 12px;
+      line-height: 1.6em;
+      font-size: $font-size-medium;
+      
     }
+  }
+
+  .select-all {
+    padding-inline-start: 20px;
+    padding-block: 6px;
+    background-color: $white;
   }
 }

@@ -40,7 +40,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -73,8 +73,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.125rem;
+      font-size: $font-size-medium;
       padding-block-end: 12px;
+    }
+    h3 {
+      font-weight: 500;
+      text-transform: none;
     }
   }
   .confirm-action-btns {
@@ -90,14 +94,15 @@
       border-radius: 4px;
       @include flex-center;
     }
+    font-size: $font-size-medium;
 
     .approve-btn {
-      background-color: $aqua;
+      background-color: $dark-aqua;
       color: white;
     }
     .cancel-btn {
-      border: 2px solid $aqua;
-      color: $aqua;
+      border: 2px solid $dark-aqua;
+      color: $dark-aqua;
     }
   }
 }

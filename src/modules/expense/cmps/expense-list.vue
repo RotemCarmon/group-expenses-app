@@ -81,7 +81,7 @@ function goToEditExpense() {
 async function removeExpense() {
   const expense = selectedExpense.value;
 
-  const isConfirm = await popupService.confirm(`Are you sure you want to delete this expense?\n ${expense.description} ${getSymbolFromCurrency(expense.currency)}${expense.amount}`, 'Yes', 'No');
+  const isConfirm = await popupService.confirm({ title: 'Delete Expense', txt: `Are you sure you want to delete this expense?\n ${expense.description} ${getSymbolFromCurrency(expense.currency)}${expense.amount}`, approveTxt: 'Yes', cancelTxt: 'No' });
   if (!isConfirm) return;
 
   expenseStore.removeExpense({ expense, group: group.value });

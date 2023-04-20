@@ -104,7 +104,7 @@ async function saveMember(member) {
     popupService.error('Member already exist with this email');
   } else {
     if (isGroupActive.value) {
-      const confirm = await popupService.confirm('You are about to add a new member to an active group.\nYou will have to choose in which expenses the new member should be included in.');
+      const confirm = await popupService.confirm({ title: 'Add New Member', txt: "In order to add a new member to an active group, you'll need to select which expenses to include them in." });
       if (!confirm) closeEditMember();
 
       newMemberEmail.value = member.email;
@@ -129,7 +129,7 @@ async function removeMember() {
   }
 
   const member = memberSelected.value;
-  const isConfirm = await popupService.confirm(`Are you sure you want to remove the member ${member.name}?`, 'Yes', 'No');
+  const isConfirm = await popupService.confirm({ title: 'Remove member?', txt: `Are you sure you want to remove the member ${member.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
 
   if (!isConfirm) return;
   delete groupToEdit.value.members[member.email];

@@ -98,11 +98,11 @@ async function removeGroup() {
     popupService.warn('Only the group owner can delete');
     return;
   }
-  const group = group.value;
-  const isConfirm = await popupService.confirm(`Are you sure you want to delete the group ${group.name}?`, 'Yes', 'No');
+  const _group = group.value;
+  const isConfirm = await popupService.confirm({title: 'Delete Group', txt: `Are you sure you want to delete the group ${_group.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
   if (!isConfirm) return;
 
-  await groupStore.removeGroup({ groupId: group.id });
+  await groupStore.removeGroup({ groupId: _group.id });
 
   router.push('/group/');
 }

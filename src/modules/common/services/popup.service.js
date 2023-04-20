@@ -18,10 +18,10 @@ export const popupService = {
 
 var gConfirmShowing = null
 
-function confirm(txt, approveTxt = 'ok', cancelTxt = 'cancel') {
+function confirm({title, txt, approveTxt = 'ok', cancelTxt = 'cancel'}) {
     return new Promise((resolve) => {
 
-        const msg = { status: 'confirm', txt, approveTxt, cancelTxt };
+        const msg = { status: 'confirm',title, txt, approveTxt, cancelTxt };
         elAlertContainer.classList.add('full-screen');
         _showConfirm(msg, resolve);
     })
@@ -116,12 +116,15 @@ function createConfirm(msg, id, cb) {
     elAlert.id = id;
 
 
+    var elTitle = document.createElement('h3');
     var elTxt = document.createElement('p');
+    elTitle.innerText = msg.title;
     elTxt.innerText = msg.txt;
 
 
     const elBtns = _createBtns(msg, id, cb)
 
+    elAlert.appendChild(elTitle);
     elAlert.appendChild(elTxt);
     elAlert.appendChild(elBtns);
     return elAlert;

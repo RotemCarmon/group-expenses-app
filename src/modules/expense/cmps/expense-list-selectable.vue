@@ -60,8 +60,8 @@ async function close() {
   if (!isTouched.value) {
     return emit('close');
   }
-  const isConfirm = await popupService.confirm('Are you sure you wish to close?\nIf you close now the member will be excluded of all expenses');
   if (isConfirm) emit('close');
+  const isConfirm = await popupService.confirm({ title: 'Are you sure?', txt: 'If you close now the member won\'t be added.' });
 }
 
 function saveSelectedExpenses() {

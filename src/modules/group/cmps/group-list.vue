@@ -69,7 +69,7 @@ async function removeGroup() {
     return;
   }
   const group = selectedGroup.value;
-  const isConfirm = await popupService.confirm(`Are you sure you want to delete the group ${group.name}?`, 'Yes', 'No');
+  const isConfirm = await popupService.confirm({ title: 'Delete Group', txt: `Are you sure you want to delete the group ${group.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
   if (!isConfirm) return;
 
   groupStore.removeGroup({ groupId: group.id });

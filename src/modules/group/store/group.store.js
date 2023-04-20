@@ -43,9 +43,9 @@ export const useGroupStore = defineStore('group', {
         if (!!group.id) {
           const idx = this.groups.findIndex(g => g.id === group.id)
           if (idx === -1) return
-          this.groups.splice(idx, 1, group)
+          this.groups.splice(idx, 1, savedGroup)
         } else {
-          this.groups.push(group)
+          this.groups.push(savedGroup)
         }
 
         return savedGroup

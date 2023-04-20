@@ -18,9 +18,9 @@
             <div class="members-list">
               <member-preview v-for="member in groupToEdit.members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
             </div>
-      </div>
           </div>
         </div>
+      </div>
     </main>
     <div class="footer container">
       <button @click="saveGroup" class="btn dark bottom-btn create-btn">Save</button>
@@ -29,6 +29,11 @@
     <!-- MEMBER EDIT -->
     <transition name="slide-down" mode="out-in">
       <member-edit v-if="isEditMember" @close="toggleEditMember" @save="saveMember" :member="memberSelected" />
+    </transition>
+
+    <!-- EXPENSE LIST - EDIT MODE -->
+    <transition name="slide-down" mode="out-in">
+      <expense-list-selectable v-if="newMemberEmail" :expenses="groupToEdit.expenses" :memberEmail="newMemberEmail" @close="newMemberEmail = null" />
     </transition>
 
     <!-- OPTION MENU -->
@@ -46,6 +51,8 @@ import { groupService } from '../services/group.service.js';
 import memberPreview from './member-preview';
 import memberEdit from './member-edit';
 import optionMenu from '@/modules/common/cmps/option-menu';
+import expenseList from '@/modules/expense/cmps/expense-list';
+import expenseListSelectable from '@/modules/expense/cmps/expense-list-selectable';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -62,9 +69,11 @@ const isEditMember = ref(false);
 const isMenuOpen = ref(false);
 const memberSelected = ref(null);
 
+const newMemberEmail = ref(null);
+
 // COMPUTED
 const isGroupOwner = computed(() => {
-  return memberSelected.value.isOwner;
+  return memberSelected.value?.isOwner;
 });
 const isGroupActive = computed(() => {
   return groupToEdit.value.expenses && groupToEdit.value.expenses.length;
@@ -94,10 +103,16 @@ async function saveMember(member) {
   if (isMemeberExist) {
     popupService.error('Member already exist with this email');
   } else {
+    if (isGroupActive.value) {
+      const confirm = await popupService.confirm('You are about to add a new member to an active group.\nYou will have to choose in which expenses the new member should be included in.');
+      if (!confirm) closeEditMember();
+
+      newMemberEmail.value = member.email;
+    }
+
     groupToEdit.value.members[member.email] = member;
     groupToEdit.value.memberEmails.push(member.email);
   }
-
   closeEditMember();
 }
 

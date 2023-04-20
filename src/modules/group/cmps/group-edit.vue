@@ -33,7 +33,7 @@
 
     <!-- EXPENSE LIST - EDIT MODE -->
     <transition name="slide-down" mode="out-in">
-      <expense-list-selectable v-if="newMemberEmail" :group="groupToEdit" :memberEmail="newMemberEmail" @close="newMemberEmail = null" />
+      <expense-list-selectable v-if="newMemberEmail" :group="groupToEdit" :memberEmail="newMemberEmail" @close="newMemberEmail = null" @closeAndRemove="closeAndRemoveNewMember" />
     </transition>
 
     <!-- OPTION MENU -->
@@ -113,6 +113,15 @@ async function saveMember(member) {
     groupToEdit.value.members[member.email] = member;
     groupToEdit.value.memberEmails.push(member.email);
   }
+  closeEditMember();
+}
+
+function closeAndRemoveNewMember(memberEmail) {
+  delete groupToEdit.value.members[memberEmail];
+  const idx = groupToEdit.value.memberEmails.indexOf(memberEmail);
+  if (idx !== -1) groupToEdit.value.memberEmails.splice(idx, 1);
+
+  newMemberEmail.value = null;
   closeEditMember();
 }
 

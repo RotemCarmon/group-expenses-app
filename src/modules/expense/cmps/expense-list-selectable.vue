@@ -33,7 +33,7 @@ const props = defineProps({
   memberEmail: { type: String, required: true },
 });
 
-const emit = defineEmits(['close', 'save']);
+const emit = defineEmits(['close', 'closeAndRemove']);
 
 const selectedExpenses = ref(new Set());
 const isTouched = ref(true);
@@ -60,8 +60,8 @@ async function close() {
   if (!isTouched.value) {
     return emit('close');
   }
-  if (isConfirm) emit('close');
   const isConfirm = await popupService.confirm({ title: 'Are you sure?', txt: 'If you close now the member won\'t be added.' });
+  if (isConfirm) emit('closeAndRemove', props.memberEmail);
 }
 
 function saveSelectedExpenses() {

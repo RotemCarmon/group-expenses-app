@@ -49,6 +49,6 @@ function back() {
     homeRoute = '/group';
   }
 
-  router.replace(homeRoute);
+  router.replace({ path: homeRoute });
 }
 </script>

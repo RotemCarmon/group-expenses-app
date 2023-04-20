@@ -5,7 +5,10 @@
     </div>
 
     <main class="list-container">
-      <div class="expense-list">
+      <div v-if="!expenses || !expenses.length" class="no-expenses no-data">
+        <p>You have no expenses yet</p>
+      </div>
+      <div v-else class="expense-list">
         <expense-preview v-for="expense in expenses" :key="expense.id" :expense="expense" @openMenu="toggleMenu" />
       </div>
     </main>

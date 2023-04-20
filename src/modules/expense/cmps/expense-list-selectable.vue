@@ -1,5 +1,5 @@
 <template>
-  <section class="expense-list-container selectable">
+  <section class="expense-list-container selectable main-app-container">
     <div class="title container">
       <h3 class="group-name">Expense List</h3>
       <button @click="close" class="close-btn">

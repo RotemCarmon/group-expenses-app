@@ -1,5 +1,5 @@
 <template>
-  <section ref="optionMenu" tabindex="0" @blur="$emit('close')" class="option-menu-container">
+  <section ref="optionMenu" tabindex="0" @blur="$emit('close')" class="option-menu-container main-app-container">
     <h3 v-if="title" class="option-menu-title">{{ title }}</h3>
     <div class="option-list">
       <slot name="content-top"></slot>

@@ -1,5 +1,5 @@
 <template>
-  <section class="member-edit-container main-container" v-if="memberToEdit">
+  <section class="member-edit-container main-app-container" v-if="memberToEdit">
     <main>
       <button @click="$emit('close')" class="close-btn">
         <img :src="require('@/assets/icons/close.svg')" />

@@ -33,7 +33,7 @@
 
     <!-- EXPENSE LIST - EDIT MODE -->
     <transition name="slide-down" mode="out-in">
-      <expense-list-selectable v-if="newMemberEmail" :expenses="groupToEdit.expenses" :memberEmail="newMemberEmail" @close="newMemberEmail = null" />
+      <expense-list-selectable v-if="newMemberEmail" :group="groupToEdit" :memberEmail="newMemberEmail" @close="newMemberEmail = null" />
     </transition>
 
     <!-- OPTION MENU -->

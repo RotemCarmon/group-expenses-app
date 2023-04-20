@@ -31,7 +31,7 @@ async function signup(creds) {
 
 async function signout() {
   await signOut(auth)
-  clearLoggedUser
+  clearLoggedUser()
 }
 
 export const authService = {

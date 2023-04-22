@@ -72,6 +72,7 @@ function saveSelectedExpenses() {
   });
 
   isTouched.value = false;
+  props.group.expenses = expenses.value
   close();
 }
 

@@ -3,7 +3,7 @@
     <div class="page-header container">
       <div class="list-header">
         <div class="title">My Groups</div>
-        <button @click="goToAddGroup" class="add-group top-header-btn">Add <img :src="require('@/assets/icons/plus-solid.svg')" /></button>
+        <button @click="goToAddGroup" class="add-group top-header-btn">Add <img src="@/assets/icons/plus-solid.svg" /></button>
       </div>
     </div>
     <div v-if="!groups || !groups.length" class="no-groups no-data">
@@ -25,8 +25,8 @@ import { computed, ref } from 'vue';
 import { useGroupStore } from '../store/';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 
-import groupPreview from './group-preview';
-import optionMenu from '@/modules/common/cmps/option-menu';
+import groupPreview from './group-preview.vue';
+import optionMenu from '@/modules/common/cmps/option-menu.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
 
 const router = useRouter();

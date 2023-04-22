@@ -3,7 +3,7 @@
     <div class="title container">
       <h3 class="group-name">Expense List</h3>
       <button @click="close" class="close-btn">
-        <img :src="require('@/assets/icons/close.svg')" />
+        <img src="@/assets/icons/close.svg" />
       </button>
     </div>
     <div class="description container">

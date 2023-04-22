@@ -2,11 +2,11 @@
   <section class="app-header-container container">
     <div class="left-container">
       <div class="back" @click="back" v-if="hasBack">
-        <img :src="require('@/assets/icons/arrow-left.svg')" />
+        <img src="@/assets/icons/arrow-left.svg" />
       </div>
     </div>
     <div class="avatar-container" @click="isMenuOpen = true" :class="{ 'letter-avatar': loggedInUser && !loggedInUser.imgUrl }">
-      <img v-if="!loggedInUser" :src="require('@/assets/imgs/user-avatar.png')" class="default-avatar" />
+      <img v-if="!loggedInUser" src="@/assets/imgs/user-avatar.png" class="default-avatar" />
       <img v-else-if="loggedInUser.imgUrl" :src="loggedInUser.imgUrl" />
       <div v-else class="avatar">{{ avatarCapital }}</div>
     </div>
@@ -20,7 +20,7 @@
 
 <script setup>
 import { computed, ref } from 'vue';
-import userMenu from './user-menu';
+import userMenu from './user-menu.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 

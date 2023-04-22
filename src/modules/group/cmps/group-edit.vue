@@ -12,7 +12,7 @@
         <div class="members-list-container">
           <div class="list-header container">
             <h3 class="members-title">Members</h3>
-            <button @click="editMember()" class="add-member top-header-btn">Add <img :src="require('@/assets/icons/plus-solid.svg')" /></button>
+            <button @click="editMember()" class="add-member top-header-btn">Add <img src="@/assets/icons/plus-solid.svg" /></button>
           </div>
           <div class="member-list-wrapper container">
             <div class="members-list">
@@ -48,11 +48,11 @@ import { useGroupStore } from '../store/';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 
 import { groupService } from '../services/group.service.js';
-import memberPreview from './member-preview';
-import memberEdit from './member-edit';
-import optionMenu from '@/modules/common/cmps/option-menu';
-import expenseList from '@/modules/expense/cmps/expense-list';
-import expenseListSelectable from '@/modules/expense/cmps/expense-list-selectable';
+import memberPreview from './member-preview.vue';
+import memberEdit from './member-edit.vue';
+import optionMenu from '@/modules/common/cmps/option-menu.vue';
+import expenseList from '@/modules/expense/cmps/expense-list.vue';
+import expenseListSelectable from '@/modules/expense/cmps/expense-list-selectable.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';

@@ -5,7 +5,7 @@
       <span v-else class="placeholder" :class="{ multi: isMulti }">
         {{ isMulti ? isShowSelectedOpts? val.join(', ') :placeholder : val }}
       </span>
-      <img :src="require('@/assets/icons/angle-down.svg')" :class="{ open: isOpen }" />
+      <img src="@/assets/icons/angle-down.svg" :class="{ open: isOpen }" />
     </div>
     <transition name="fade" mode="out-in">
       <div v-if="isOpen" class="drop-down-select">

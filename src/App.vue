@@ -11,7 +11,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useCommonStore } from './modules/common/store';
-import appHeader from '@/modules/common/cmps/app-header';
+import appHeader from '@/modules/common/cmps/app-header.vue';
 
 const commonStore = useCommonStore();
 const isLoading = computed(() => commonStore.isLoading);

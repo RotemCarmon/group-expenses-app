@@ -2,7 +2,7 @@
   <section class="member-edit-container main-app-container" v-if="memberToEdit">
     <main>
       <button @click="$emit('close')" class="close-btn">
-        <img :src="require('@/assets/icons/close.svg')" />
+        <img src="@/assets/icons/close.svg" />
       </button>
       <div class="page-header container">
         <div class="title">{{ isEdit ? 'Edit' : 'Add' }} Member</div>

@@ -1,5 +1,5 @@
-import expenseEdit from './expense-edit'
-import expenseList from './expense-list'
+import expenseEdit from './expense-edit.vue'
+import expenseList from './expense-list.vue'
 
 
 

@@ -4,7 +4,7 @@
       <div class="page-header container">
         <h3 class="title">{{ group.name }}</h3>
         <div class="ellipsis-icon" @click.stop="toggleMenu">
-          <img :src="require('@/assets/icons/ellipsis.svg')" />
+          <img src="@/assets/icons/ellipsis.svg" />
         </div>
       </div>
       <div class="member-list" v-if="balances">
@@ -42,7 +42,7 @@
 <script setup>
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { expenseService } from '@/modules/expense/services/expense.service';
-import optionMenu from '@/modules/common/cmps/option-menu';
+import optionMenu from '@/modules/common/cmps/option-menu.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import { findNameByEmailInGroup } from '@/modules/common/services/util.service.js';
 import { ref, computed, watch } from 'vue';

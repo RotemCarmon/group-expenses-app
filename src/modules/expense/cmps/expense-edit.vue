@@ -41,7 +41,7 @@ import { useAuthStore } from '../../auth/store/auth.store';
 import { useRoute, useRouter } from 'vue-router';
 import { useGroupStore } from '../../group/store';
 import { useExpenseStore } from '../../expense/store';
-import multiSelect from '@/modules/common/cmps/multi-select';
+import multiSelect from '@/modules/common/cmps/multi-select.vue';
 
 const commonStore = useCommonStore();
 const authStore = useAuthStore();

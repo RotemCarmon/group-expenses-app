@@ -3,7 +3,7 @@
   <section ref="userMenu" tabindex="0" class="user-menu-container">
     <div class="menu-header">
       <button @click="$emit('close')" class="close-btn">
-        <img :src="require('@/assets/icons/close.svg')" />
+        <img src="@/assets/icons/close.svg" />
       </button>
     </div>
     <div class="username-greet">

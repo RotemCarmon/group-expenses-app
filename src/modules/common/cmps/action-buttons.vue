@@ -1,7 +1,7 @@
 <template>
   <section class="action-buttons-container">
-    <img @click.stop="edit" :src="require('@/assets/icons/edit.svg')" />
-    <img @click.stop="remove" :src="require('@/assets/icons/delete.svg')" />
+    <img @click.stop="edit" src="@/assets/icons/edit.svg" />
+    <img @click.stop="remove" src="@/assets/icons/delete.svg" />
   </section>
 </template>
 

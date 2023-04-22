@@ -7,8 +7,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import login from '../cmps/login';
-import signup from '../cmps/signup';
+import login from '../cmps/login.vue';
+import signup from '../cmps/signup.vue';
 
 const isLogin = ref(true);
 function toggleSignPage() {

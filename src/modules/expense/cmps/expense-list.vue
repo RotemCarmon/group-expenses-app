@@ -24,8 +24,8 @@
 </template>
 
 <script setup>
-import expensePreview from './expense-preview';
-import optionMenu from '@/modules/common/cmps/option-menu';
+import expensePreview from './expense-preview.vue';
+import optionMenu from '@/modules/common/cmps/option-menu.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { expenseService } from '../services/expense.service';

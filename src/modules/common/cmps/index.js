@@ -1,8 +1,8 @@
-const appHeader = () => import('./app-header')
-const actionButtons = () => import('./action-buttons')
-const multiSelect = () => import('./multi-select')
-const userMenu = () => import('./user-menu')
-const optionMenu = () => import('./option-menu')
+const appHeader = () => import('./app-header.vue')
+const actionButtons = () => import('./action-buttons.vue')
+const multiSelect = () => import('./multi-select.vue')
+const userMenu = () => import('./user-menu.vue')
+const optionMenu = () => import('./option-menu.vue')
 
 export {
   appHeader,

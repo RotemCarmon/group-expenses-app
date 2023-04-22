@@ -22,7 +22,7 @@
           <h3 class="sub-title">Who is the spender?</h3>
           <multi-select :items="members" :isMulti="false" class="form-row" v-model="expenseSpender" />
           <h3 class="sub-title">Exclude</h3>
-          <multi-select :items="members" placeholder="Who to exclude?" v-model="expenseToEdit.exclude" />
+          <multi-select :items="members" placeholder="Who to exclude?" v-model="expenseToEdit.exclude" :isShowSelectedOpts="true" />
         </div>
       </div>
     </main>

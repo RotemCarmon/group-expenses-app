@@ -65,14 +65,13 @@ async function close() {
 }
 
 function saveSelectedExpenses() {
-  expenses.value.forEach((exp) => {
+  props.group.expenses.forEach((exp) => {
     if (!selectedExpenses.value.has(exp.id)) {
       exp.exclude.push(props.memberEmail);
     }
   });
 
   isTouched.value = false;
-  props.group.expenses = expenses.value
   close();
 }
 

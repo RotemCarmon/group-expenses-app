@@ -1,68 +1,69 @@
 $header-height: 80px;
 
 .app-header-container {
-    padding: 20px 0;
-    max-height: $header-height;
+  padding: 20px 0;
+  max-height: $header-height;
+  display: flex;
+  justify-content: space-between;
+
+  .back {
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .avatar-container {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    overflow: hidden;
     display: flex;
-    justify-content: space-between;
-
-    .back {
-        img {
-            width: 24px;
-            height: 24px;
-        }
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $gray-500;
+    &.letter-avatar {
+      background-color: $orange;
+      border: none;
     }
 
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+    .default-avatar {
+      position: relative;
+      top: 4px;
+      object-fit: cover;
+      background-color: white;
+    }
+    .avatar {
+      font-size: $font-size-large-1;
+      font-weight: 500;
+      color: $white;
+    }
+  }
+
+  .left-container {
+    min-width: 1px;
+  }
+
+  .screen {
+    position: fixed;
+    inset: 0;
+    transition: background-color 0.3s;
+    z-index: -100;
+    &.open {
+      background-color: rgba(0, 0, 0, 0.438);
+      z-index: 98;
+    }
+  }
+
+  &.load {
+    z-index: 98;
     .avatar-container {
-        width: 35px;
-        height: 35px;
-        border-radius: 100%;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid $gray-500;
-        &.letter-avatar {    
-            background-color: $orange;
-        }
-        
-        img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-        }
-        .default-avatar {
-            position:relative;
-            top: 4px;
-            object-fit: cover;
-            background-color: white;
-        }
-        .avatar {
-            font-size: $font-size-large-1;
-            font-weight: 500;
-            color: $white;
-        }
+      opacity: 0.7;
     }
-
-    .left-container {
-        min-width: 1px;
-    }
-
-    .screen {
-        position: fixed;
-        inset: 0;
-        transition: background-color 0.3s;
-        z-index: -100;
-        &.open {
-            background-color: rgba(0, 0, 0, 0.438);
-            z-index: 98;
-        }
-    }
-
-    &.load {
-        z-index: 98;
-        .avatar-container {
-            opacity: 0.7;
-        }
-    }
+  }
 }

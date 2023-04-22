@@ -20,7 +20,7 @@
         </div>
         <div class="card-section container">
           <h3 class="sub-title">Who is the spender?</h3>
-          <multi-select :items="members" :isMulti="false" class="form-row" v-model="spender" />
+          <multi-select :items="members" :isMulti="false" class="form-row" v-model="expenseSpender" />
           <h3 class="sub-title">Exclude</h3>
           <multi-select :items="members" placeholder="Who to exclude?" v-model="expenseToEdit.exclude" />
         </div>
@@ -60,7 +60,7 @@ const userCurrency = computed(() => loggedInUser.value?.prefs?.currency);
 const edit = ref(false);
 const group = ref(null);
 const expenseToEdit = ref(null);
-const spender = ref(loggedInUser.value?.username);
+const expenseSpender = ref(loggedInUser.value?.username);
 
 // FUNCTIONS
 async function getGroup() {
@@ -85,7 +85,7 @@ function prepareExpenseToEdit(expenseId, spender) {
   const expense = group.value.expenses.find((exp) => exp.id === expenseId);
   expense.exclude = expense.exclude.map((exc) => findNameByEmailInGroup(exc));
 
-  spender.value = findNameByEmailInGroup(spender);
+  expenseSpender.value = findNameByEmailInGroup(spender);
   expenseToEdit.value = expense;
 }
 function findEmailByNameInGroup(name) {
@@ -102,7 +102,7 @@ async function saveExpense() {
 
   // this can happen in the expense service
   expenseToEdit.value = convertExcludesNamesToEmails(expenseToEdit.value);
-  expenseToEdit.value.spender = findEmailByNameInGroup(spender.value);
+  expenseToEdit.value.spender = findEmailByNameInGroup(expenseSpender.value);
 
   const { expenseId } = route.params;
 

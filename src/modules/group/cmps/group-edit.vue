@@ -16,7 +16,7 @@
           </div>
           <div class="member-list-wrapper container">
             <div class="members-list">
-              <member-preview v-for="member in groupToEdit.members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
+              <member-preview v-for="member in members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
             </div>
           </div>
         </div>
@@ -72,6 +72,14 @@ const memberSelected = ref(null);
 const newMemberEmail = ref(null);
 
 // COMPUTED
+const members = computed(() => {
+  return Object.values(groupToEdit.value.members).sort((a, b) => {
+    if (a.isOwner) return -1;
+    if (b.isOwner) return 1;
+    return b.name > a.name ? -1 : 1;
+  });
+});
+
 const isGroupOwner = computed(() => {
   return memberSelected.value?.isOwner;
 });
@@ -89,13 +97,6 @@ function editMember() {
   }
   isEditMember.value = true;
   isMenuOpen.value = false;
-}
-
-function toggleEditMember() {
-  isEditMember.value = !isEditMember.value;
-  if (!isEditMember.value) {
-    memberSelected.value = null;
-  }
 }
 
 async function saveMember(member) {
@@ -143,6 +144,13 @@ async function removeMember() {
   if (!isConfirm) return;
   delete groupToEdit.value.members[member.email];
   groupToEdit.value.memberEmails = groupToEdit.value.memberEmails.filter((email) => email !== member.email);
+}
+
+function toggleEditMember() {
+  isEditMember.value = !isEditMember.value;
+  if (!isEditMember.value) {
+    memberSelected.value = null;
+  }
 }
 
 function closeEditMember() {

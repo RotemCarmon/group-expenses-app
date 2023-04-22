@@ -1,5 +1,10 @@
+// import { describe, expect, test, beforeEach, vi } from 'vitest'
+
 import { groupService } from '@/modules/group/services/group.service';
 import { utilService } from '@/modules/common/services/util.service';
+
+// mocking firebase service
+vi.mock('@/modules/common/services/firestore.service.js', () => ({}))
 
 describe('GROUP SERVICE', () => {
 
@@ -7,7 +12,7 @@ describe('GROUP SERVICE', () => {
   describe('createMember', () => {
     let spyOnMakeId
     beforeEach(() => {
-      spyOnMakeId = jest.spyOn(utilService, 'makeId').mockImplementation(() => 'abcd1234')
+      spyOnMakeId = vi.spyOn(utilService, 'makeId').mockImplementation(() => 'abcd1234')
     })
     const emptyMember = {
       name: '',

@@ -1,3 +1,5 @@
+// import { describe, expect, test, beforeEach ,vi} from 'vitest'
+
 import { expenseService } from '@/modules/expense/services/expense.service';
 import { utilService } from '@/modules/common/services/util.service';
 
@@ -7,7 +9,7 @@ describe('EXPENSE SERVICE', () => {
   describe('getEmptyExpense', () => {
     let spyOnMakeId
     beforeEach(() => {
-      spyOnMakeId = jest.spyOn(utilService, 'makeId').mockImplementation(() => 'abcd1234')
+      spyOnMakeId = vi.spyOn(utilService, 'makeId').mockImplementation(() => 'abcd1234')
     })
 
     const emptyExpense = {

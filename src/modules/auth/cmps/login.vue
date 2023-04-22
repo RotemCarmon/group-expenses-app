@@ -16,7 +16,7 @@
         <p class="error" v-show="errors.passwordError">{{ errors.passwordError }}</p>
       </label>
 
-      <button @click="doLogin" class="btn dark bottom-btn">Sign in</button>
+      <button @click.prevent="doLogin" class="btn dark bottom-btn">Sign in</button>
 
       <div class="no-account">
         <p>Don’t have an account yet?</p>

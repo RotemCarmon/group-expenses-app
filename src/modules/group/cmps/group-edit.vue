@@ -132,18 +132,21 @@ async function removeMember() {
     return;
   }
 
-  if (isGroupActive.value) {
-    // group is active
-    popupService.warn("Can't remove a member from an active group");
-    return;
-  }
-
   const member = memberSelected.value;
   const isConfirm = await popupService.confirm({ title: 'Remove member?', txt: `Are you sure you want to remove the member ${member.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
 
   if (!isConfirm) return;
   delete groupToEdit.value.members[member.email];
   groupToEdit.value.memberEmails = groupToEdit.value.memberEmails.filter((email) => email !== member.email);
+
+  groupToEdit.value.expenses = groupToEdit.value.expenses.filter((expense) => {
+    // Removes the member email from the exclude of all expenses
+    if (expense.exclude && expense.exclude.includes(member.email)) {
+      expense.exclude.splice(expense.exclude.indexOf(member.email), 1);
+    }
+    // Removes all the expenses the removed member is the spender
+    return expense.spender != member.email;
+  });
 }
 
 function toggleEditMember() {
@@ -193,7 +196,6 @@ async function saveGroup() {
     popupService.warn('Please enter group name');
     return;
   }
-
   const { id } = await groupStore.saveGroup({ group: groupToEdit.value });
   router.push('/group/' + id);
 }

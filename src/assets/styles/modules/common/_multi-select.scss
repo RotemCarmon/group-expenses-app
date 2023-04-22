@@ -23,6 +23,7 @@
         border: 1px solid $gray-400;
         display: flex;
         padding-inline-start: 6px;
+        padding-inline-end: 40px;
         align-items: center;
         background-color: white;
 
@@ -42,6 +43,9 @@
             font-weight: 400;
             &.multi {
                 color: $gray-600;
+                overflow-x: clip;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
         }
     }

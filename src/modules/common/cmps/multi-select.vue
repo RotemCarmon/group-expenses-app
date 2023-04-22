@@ -3,7 +3,7 @@
     <div class="box" @click="toggleMenu">
       <input v-if="hasSearch" type="search" class="search-input" :placeholder="isMulti ? placeholder : val" v-model="searchTerm" ref="search" />
       <span v-else class="placeholder" :class="{ multi: isMulti }">
-        {{ isMulti ? placeholder : val }}
+        {{ isMulti ? isShowSelectedOpts? val.join(', ') :placeholder : val }}
       </span>
       <img :src="require('@/assets/icons/angle-down.svg')" :class="{ open: isOpen }" />
     </div>
@@ -35,6 +35,7 @@ const props = defineProps({
   placeholder: { type: String },
   isMulti: { type: Boolean, default: true },
   topSelections: { type: Array, required: false },
+  isShowSelectedOpts: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(['update:modelValue']);

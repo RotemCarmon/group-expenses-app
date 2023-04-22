@@ -23,7 +23,7 @@ $header-height: 80px;
         align-items: center;
         border: 1px solid $gray-500;
         &.letter-avatar {    
-            background-color: #E0F5D7;
+            background-color: $orange;
         }
         
         img {
@@ -40,7 +40,7 @@ $header-height: 80px;
         .avatar {
             font-size: $font-size-large-1;
             font-weight: 500;
-            color: #65CA37;
+            color: $white;
         }
     }
 

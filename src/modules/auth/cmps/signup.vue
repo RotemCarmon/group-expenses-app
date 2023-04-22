@@ -6,7 +6,7 @@
     <form>
       <label class="form-row">
         <span>Username </span>
-        <input type="text" v-model="creds.username" autocomplete="username" class="form-input" ref="username" />
+        <input type="text" v-model="creds.username" autocomplete="username" class="form-input" ref="input" />
         <p class="error" v-show="errors.usernameError">{{ errors.usernameError }}</p>
       </label>
       <label class="form-row">
@@ -34,9 +34,14 @@
 <script setup>
 import { onMounted, reactive, ref, computed } from 'vue';
 import { useAuthStore } from '../store/auth.store';
+import { showPassword, focusInput } from '@/composables/auth.composable.js';
 
 const authStore = useAuthStore();
-const emit = defineEmits(['toggle']);
+
+const { isPasswordShowen, eyeImgUrl } = showPassword();
+const { input } = focusInput();
+
+const emit = defineEmits(['toggle'])
 
 const creds = reactive({
   username: '',
@@ -49,11 +54,6 @@ const errors = reactive({
   emailError: '',
   passwordError: '',
 });
-
-const isPasswordShowen = ref(false);
-const username = ref(null);
-
-onMounted(() => username.value.focus());
 
 // FUNCTIONS
 async function doSignup() {
@@ -90,6 +90,4 @@ function validate() {
 function goToSignin() {
   emit('toggle');
 }
-
-const eyeImg = computed(() => (isPasswordShowen.value ? 'eye-slash-light' : 'eye-light'));
 </script>

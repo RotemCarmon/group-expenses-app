@@ -27,9 +27,11 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@testing-library/vue": "^7.0.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "jsdom": "^21.1.1",
     "sass": "^1.58.3",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "vitest": "^0.30.1"
   }
 }

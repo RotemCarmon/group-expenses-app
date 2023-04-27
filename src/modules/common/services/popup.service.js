@@ -95,6 +95,7 @@ function createAlert(msg, id) {
     const elAlert = document.createElement('div');
     elAlert.className = `alert ${msg.status}`;
     elAlert.id = id;
+    elAlert.dataset.testid = 'alert'
 
     var elTxt = document.createElement('p');
     elTxt.innerText = msg.txt;
@@ -136,14 +137,16 @@ function _createBtns(msg, id, cb) {
     var elCancelBtn = document.createElement('button');
     elCancelBtn.className = 'cancel-btn';
     elCancelBtn.innerText = msg.cancelTxt;
+    elCancelBtn.dataset.testid = 'cancel-btn'
     elCancelBtn.onclick = () => {
         cb(false)
         closeAlert(id, true)
     }
-
+    
     var elApproveBtn = document.createElement('button');
     elApproveBtn.className = 'approve-btn';
     elApproveBtn.innerText = msg.approveTxt;
+    elApproveBtn.dataset.testid = 'approve-btn'
     elApproveBtn.onclick = () => {
         cb(true)
         closeAlert(id, true)

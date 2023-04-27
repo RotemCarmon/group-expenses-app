@@ -3,7 +3,7 @@
     <div class="page-header container">
       <div class="list-header">
         <div class="title">My Groups</div>
-        <button @click="goToAddGroup" class="add-group top-header-btn">Add <img src="@/assets/icons/plus-solid.svg" /></button>
+        <button @click="goToAddGroup" class="add-group top-header-btn" data-testId="add-group-btn">Add <img src="@/assets/icons/plus-solid.svg" /></button>
       </div>
     </div>
     <div v-if="!groups || !groups.length" class="no-groups no-data">

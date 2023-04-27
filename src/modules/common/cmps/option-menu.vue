@@ -1,10 +1,10 @@
 <template>
-  <section ref="optionMenu" tabindex="0" @blur="$emit('close')" class="option-menu-container main-app-container">
+  <section ref="optionMenu" tabindex="0" @blur="$emit('close')" class="option-menu-container main-app-container" data-testid="option-menu">
     <h3 v-if="title" class="option-menu-title">{{ title }}</h3>
     <div class="option-list">
       <slot name="content-top"></slot>
-      <div v-if="isShowEdit" @click="$emit('edit')" class="line">Edit</div>
-      <div v-if="isShowRemove" @click="$emit('remove')" class="line delete">Delete</div>
+      <div v-if="isShowEdit" @click="$emit('edit')" class="line" data-testId="edit-btn">Edit</div>
+      <div v-if="isShowRemove" @click="$emit('remove')" class="line delete" data-testId="delete-btn">Delete</div>
       <slot name="content-bottom"></slot>
     </div>
   </section>

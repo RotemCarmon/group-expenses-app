@@ -56,7 +56,7 @@ function toggleMenu(group) {
 }
 
 function editGroup() {
-  if (!isGroupOwner) {
+  if (!isGroupOwner.value) {
     popupService.warn('Only the group owner can edit');
     return;
   }
@@ -64,7 +64,7 @@ function editGroup() {
 }
 
 async function removeGroup() {
-  if (!isGroupOwner) {
+  if (!isGroupOwner.value) {
     popupService.warn('Only the group owner can delete');
     return;
   }
@@ -72,7 +72,7 @@ async function removeGroup() {
   const isConfirm = await popupService.confirm({ title: 'Delete Group', txt: `Are you sure you want to delete the group ${group.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
   if (!isConfirm) return;
 
-  groupStore.removeGroup({ groupId: group.id });
+  await groupStore.removeGroup({ groupId: group.id });
 }
 </script>
 

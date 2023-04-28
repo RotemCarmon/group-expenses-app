@@ -6,6 +6,7 @@ import { currencyService } from '@/modules/common/services/currency.service';
 import { group, member1, member2, currencyData } from '../../../data/';
 import { router } from '@/router';
 import groupDetails from '@/modules/group/cmps/group-details.vue';
+import { popupService } from '@/modules/common/services/popup.service';
 
 // mocking firebase service
 vi.mock('@/modules/common/services/firestore.service.js', () => ({}))
@@ -145,6 +146,7 @@ describe('Group Details', () => {
 
       describe('clicking on edit in option menu', () => {
 
+
         test('should navigate to the group edit page if user is the group owner', async () => {
           const { findByTestId, getByText } = render(groupDetails, renderOptions);
 
@@ -165,20 +167,46 @@ describe('Group Details', () => {
           expect(spyOnRouterPush).not.toHaveBeenCalled()
         })
       })
+
+      describe('clicking on delete in option menu', () => {
+
+        beforeEach(() => {
+          vi.spyOn(groupStore, 'removeGroup').mockImplementation(function ({ groupId }) {
+            this.groups = this.groups.filter(group => group.id !== groupId)
+            return groupId
+          })
+        })
+
+        test('should remove the group and navigate to group list, if user is the group owner', async () => {
+          const { findByTestId, getByTestId } = render(groupDetails, renderOptions);
+
+          const optionsMenu = await findByTestId('group-menu')
+          await fireEvent.click(optionsMenu)
+          await fireEvent.click(getByTestId('delete-btn'))
+
+
+          await fireEvent.click(getByTestId('approve-btn'))
+
+          await waitFor(() => expect(spyOnRouterPush).toHaveBeenCalledWith('/group/'))
+
+        })
+        test('should not allow to remove the group if user is not the group owner', async () => {
+          authStore.loggedInUser = { ...member2, prefs: { currency: 'USD' } }
+          const spyOnConfirm = vi.spyOn(popupService, 'confirm')
+          const spyOnWarn = vi.spyOn(popupService, 'warn')
+
+          const { findByTestId, getByTestId } = render(groupDetails, renderOptions);
+
+          const optionsMenu = await findByTestId('group-menu')
+          await fireEvent.click(optionsMenu)
+          await fireEvent.click(getByTestId('delete-btn'))
+
+          expect(spyOnWarn).toHaveBeenCalledWith('Only the group owner can delete')
+          expect(spyOnConfirm).not.toHaveBeenCalled()
+
+        })
+      })
     })
   })
-
-  // RENDER
-
-  //  member amont is in the correct color
-
-  // SCRIPT
-
-  // should navigate to the group edit page when clicking on edit in option menu - owner
-  // should delete group when clicking on delete in option menu
-  // should delete group when clicking on delete in option menu - owner
-
-
-
 
 })

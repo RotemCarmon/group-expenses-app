@@ -17,8 +17,6 @@ const renderOptions = {
 }
 
 
-
-
 describe('Group List', () => {
 
   let groupStore

@@ -5,7 +5,7 @@ export const member1 = {
   id: 'M1001',
   isOwner: true,
   expenses: [],
-  amountSpent: 0
+  amountSpent: 20
 }
 export const member2 = {
   name: 'Test Member 2',
@@ -13,5 +13,5 @@ export const member2 = {
   id: 'M1002',
   isOwner: false,
   expenses: [],
-  amountSpent: 0
+  amountSpent: 20
 }

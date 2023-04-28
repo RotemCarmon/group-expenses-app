@@ -23,28 +23,19 @@
 import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
 import { useGroupStore } from '../store/';
-import { useAuthStore } from '@/modules/auth/store/auth.store';
 
 import groupPreview from './group-preview.vue';
 import optionMenu from '@/modules/common/cmps/option-menu.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
+import { useRemoveGroup, goToEditGroup } from '@/composables/group.composable.js';
 
 const router = useRouter();
 const groupStore = useGroupStore();
-const authStore = useAuthStore();
 
 const selectedGroup = ref(null);
 
 // COMPUTED
 const groups = computed(() => groupStore.groups);
-
-const isGroupOwner = computed(() => {
-  const loggedInUser = authStore.loggedInUser;
-  const owner = Object.values(selectedGroup.value?.members).find((member) => member.isOwner);
-  const ownerEmail = owner?.email;
-  const userEmail = loggedInUser?.email;
-  return ownerEmail === userEmail;
-});
 
 // FUNCTIONS
 function goToAddGroup() {
@@ -56,23 +47,11 @@ function toggleMenu(group) {
 }
 
 function editGroup() {
-  if (!isGroupOwner.value) {
-    popupService.warn('Only the group owner can edit');
-    return;
-  }
-  router.push(`/group/edit/${selectedGroup.value.id}`);
+  goToEditGroup(selectedGroup, router);
 }
 
 async function removeGroup() {
-  if (!isGroupOwner.value) {
-    popupService.warn('Only the group owner can delete');
-    return;
-  }
-  const group = selectedGroup.value;
-  const isConfirm = await popupService.confirm({ title: 'Delete Group', txt: `Are you sure you want to delete the group ${group.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
-  if (!isConfirm) return;
-
-  await groupStore.removeGroup({ groupId: group.id });
+  useRemoveGroup(selectedGroup);
 }
 </script>
 

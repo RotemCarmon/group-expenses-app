@@ -61,7 +61,8 @@ export const useGroupStore = defineStore('group', {
       try {
         await groupService.removeGroup(groupId)
         this.groups = this.groups.filter(group => group.id !== groupId)
-
+        
+        return groupId
       } catch (err) {
         loggerService.error(err)
       } finally {

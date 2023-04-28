@@ -45,6 +45,7 @@ import { expenseService } from '@/modules/expense/services/expense.service';
 import optionMenu from '@/modules/common/cmps/option-menu.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import { findNameByEmailInGroup } from '@/modules/common/services/util.service.js';
+import { useRemoveGroup, goToEditGroup } from '@/composables/group.composable.js';
 import { ref, computed, watch } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { useGroupStore } from '../store/';
@@ -66,13 +67,6 @@ const loggedInUser = computed(() => authStore.loggedInUser);
 
 const userCurrency = computed(() => loggedInUser.value?.prefs?.currency);
 
-const isGroupOwner = computed(() => {
-  const owner = Object.values(group.value?.members).find((member) => member.isOwner);
-  const ownerEmail = owner?.email;
-  const userEmail = loggedInUser.value?.email;
-  return ownerEmail === userEmail;
-});
-
 // FUNCTIONS
 async function getTotalExpenses(userCurrency) {
   const { expenses } = group.value;
@@ -89,26 +83,12 @@ function getSummeryData(userCurrency = authStore.loggedInUser.prefs.currency) {
 }
 
 function editGroup() {
-  if (!isGroupOwner.value) {
-    popupService.warn('Only the group owner can edit');
-    return;
-  }
-  router.push(`/group/edit/${group.value.id}`);
+  goToEditGroup(group, router);
 }
 
 async function removeGroup() {
-  const isOwner = isGroupOwner.value;
-  if (!isOwner) {
-    popupService.warn('Only the group owner can delete');
-    return;
-  }
-  const _group = group.value;
-  const isConfirm = await popupService.confirm({ title: 'Delete Group', txt: `Are you sure you want to delete the group ${_group.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
-  if (!isConfirm) return;
-
-  await groupStore.removeGroup({ groupId: _group.id });
-
-  router.push('/group/');
+  const isRemoved = await useRemoveGroup(group);
+  if(isRemoved) router.push('/group/');
 }
 
 function toggleMenu() {

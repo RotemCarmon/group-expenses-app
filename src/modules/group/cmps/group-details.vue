@@ -1,18 +1,18 @@
 <template>
-  <section class="group-details-container" v-if="group">
+  <section class="group-details-container" data-testid="group-details-container" v-if="group">
     <main>
       <div class="page-header container">
-        <h3 class="title">{{ group.name }}</h3>
-        <div class="ellipsis-icon" @click.stop="toggleMenu">
+        <h3 class="title" data-testid="group-name">{{ group.name }}</h3>
+        <div class="ellipsis-icon" @click.stop="toggleMenu" data-testid="group-menu">
           <img src="@/assets/icons/ellipsis.svg" />
         </div>
       </div>
       <div class="member-list" v-if="balances">
         <div class="member" v-for="(amount, member) in balances" :key="member">
-          <div class="name">
+          <div class="name" data-testid="member-name">
             {{ findNameByEmailInGroup(member, group) }}
           </div>
-          <div class="break-down" :class="{ pos: amount > 0, neg: amount < 0 }">
+          <div class="break-down" :class="{ pos: amount > 0, neg: amount < 0 }" data-testid="member-amount">
             {{ getSymbolFromCurrency(userCurrency) }}
             {{ parseFloat(amount.toFixed(2)) }}
           </div>
@@ -22,7 +22,7 @@
         <div class="app-loader"></div>
       </div>
     </main>
-    <div class="total-spent">
+    <div v-if="balances" class="total-spent" data-testid="total-spent">
       Total Spent
       <span>{{ getSymbolFromCurrency(userCurrency) }} {{ parseFloat(totalSpent.toFixed(2)) }}</span>
     </div>
@@ -99,7 +99,7 @@ async function removeGroup() {
     return;
   }
   const _group = group.value;
-  const isConfirm = await popupService.confirm({title: 'Delete Group', txt: `Are you sure you want to delete the group ${_group.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
+  const isConfirm = await popupService.confirm({ title: 'Delete Group', txt: `Are you sure you want to delete the group ${_group.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
   if (!isConfirm) return;
 
   await groupStore.removeGroup({ groupId: _group.id });

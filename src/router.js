@@ -8,7 +8,7 @@ import { expenseRoutes } from '@/modules/expense/routes'
 
 
 
-const routes = [
+export const routes = [
   {
     path: '/',
     redirect: 'group'

@@ -89,6 +89,10 @@ function getSummeryData(userCurrency = authStore.loggedInUser.prefs.currency) {
 }
 
 function editGroup() {
+  if (!isGroupOwner.value) {
+    popupService.warn('Only the group owner can edit');
+    return;
+  }
   router.push(`/group/edit/${group.value.id}`);
 }
 

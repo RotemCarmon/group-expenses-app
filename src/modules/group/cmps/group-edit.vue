@@ -6,8 +6,8 @@
       </div>
       <div class="group-edit-form">
         <div class="group-form container">
-          <input class="form-input" type="text" v-model="groupToEdit.name" placeholder="Group Name" />
-          <textarea class="form-textarea" v-model="groupToEdit.description" placeholder="Group Description" />
+          <input class="form-input" type="text" v-model="groupToEdit.name" aria-label="group name" placeholder="Group Name" />
+          <textarea class="form-textarea" v-model="groupToEdit.description" aria-label="group description" placeholder="Group Description" />
         </div>
         <div class="members-list-container">
           <div class="list-header container">
@@ -15,7 +15,7 @@
             <button @click="editMember()" class="add-member top-header-btn">Add <img src="@/assets/icons/plus-solid.svg" /></button>
           </div>
           <div class="member-list-wrapper container">
-            <div class="members-list">
+            <div class="members-list" aria-label="members-list">
               <member-preview v-for="member in members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
             </div>
           </div>

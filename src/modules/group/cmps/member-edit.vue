@@ -1,5 +1,5 @@
 <template>
-  <section class="member-edit-container main-app-container" v-if="memberToEdit">
+  <form @submit.prevent="save" class="member-edit-container main-app-container" aria-label="form" data-testId="edit-member-form" v-if="memberToEdit">
     <main>
       <button @click="$emit('close')" class="close-btn">
         <img src="@/assets/icons/close.svg" />
@@ -8,14 +8,14 @@
         <div class="title">{{ isEdit ? 'Edit' : 'Add' }} Member</div>
       </div>
       <div class="form container">
-        <input type="text" class="form-input" placeholder="Enter Name" v-model="memberToEdit.name" />
-        <input type="text" class="form-input" placeholder="Enter Email" v-model="memberToEdit.email" />
+        <input aria-label="member-name" type="text" class="form-input" placeholder="Enter Name" v-model="memberToEdit.name" />
+        <input aria-label="member-email" type="text" class="form-input" placeholder="Enter Email" v-model="memberToEdit.email" />
       </div>
     </main>
     <div class="footer container">
-      <button @click="save" class="btn dark bottom-btn create-btn">Save</button>
+      <button type="submit" class="btn dark bottom-btn create-btn">Save</button>
     </div>
-  </section>
+  </form>
 </template>
 
 <script setup>

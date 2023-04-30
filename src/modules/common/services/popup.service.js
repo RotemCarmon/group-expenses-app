@@ -20,7 +20,6 @@ var gConfirmShowing = null
 
 function confirm({title, txt, approveTxt = 'ok', cancelTxt = 'cancel'}) {
     return new Promise((resolve) => {
-
         const msg = { status: 'confirm',title, txt, approveTxt, cancelTxt };
         elAlertContainer.classList.add('full-screen');
         _showConfirm(msg, resolve);
@@ -96,18 +95,18 @@ function createAlert(msg, id) {
     elAlert.className = `alert ${msg.status}`;
     elAlert.id = id;
     elAlert.dataset.testid = 'alert'
-
+    
     var elTxt = document.createElement('p');
     elTxt.innerText = msg.txt;
-
+    
     var elCloseBtn = document.createElement('button');
     elCloseBtn.className = 'close-btn';
     elCloseBtn.innerText = 'X';
     elCloseBtn.onclick = () => closeAlert(id);
-
+    
     elAlert.appendChild(elTxt);
     elAlert.appendChild(elCloseBtn);
-
+    
     return elAlert;
 }
 
@@ -115,6 +114,7 @@ function createConfirm(msg, id, cb) {
     const elAlert = document.createElement('div');
     elAlert.className = `alert ${msg.status}`;
     elAlert.id = id;
+    elAlert.dataset.testid = 'confirm'
 
 
     var elTitle = document.createElement('h3');

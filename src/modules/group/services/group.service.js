@@ -1,5 +1,4 @@
 import { firebaseService } from '@/modules/common/services/firestore.service.js';
-import { utilService } from '@/modules/common/services/util.service.js'
 
 const COLLECTION_NAME = 'group'
 
@@ -28,7 +27,6 @@ export const groupService = {
   getEmptyGroup,
   saveGroup,
   removeGroup,
-  createMember,
 
 }
 
@@ -43,14 +41,3 @@ function getEmptyGroup() {
 }
 
 
-function createMember(options = {}) {
-  const { username = '', email = '', id = utilService.makeId(8), isOwner = false } = options
-  return {
-    name: username,
-    email,
-    id,
-    isOwner,
-    expenses: [],
-    amountSpent: 0
-  }
-}

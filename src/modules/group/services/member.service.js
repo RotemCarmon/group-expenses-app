@@ -3,6 +3,7 @@ import { utilService } from '@/modules/common/services/util.service.js'
 function addMember(member, group) {
   group.members[member.email] = member;
   group.memberEmails.push(member.email);
+  return group
 }
 
 function removeMember(member, group) {
@@ -18,6 +19,8 @@ function removeMember(member, group) {
     // Removes all the expenses the removed member is the spender
     return expense.spender != member.email;
   });
+
+  return group
 }
 
 function createMember(options = {}) {

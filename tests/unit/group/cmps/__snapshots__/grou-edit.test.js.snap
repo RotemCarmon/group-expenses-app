@@ -1,0 +1,54 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Group Edit > Render > script > add member > should render empty edit member form 1`] = `
+<form
+  aria-label="form"
+  class="member-edit-container main-app-container"
+  data-testid="edit-member-form"
+>
+  <main>
+    <button
+      class="close-btn"
+    >
+      <img
+        src="/src/assets/icons/close.svg"
+      />
+    </button>
+    <div
+      class="page-header container"
+    >
+      <div
+        class="title"
+      >
+        Add Member
+      </div>
+    </div>
+    <div
+      class="form container"
+    >
+      <input
+        aria-label="member-name"
+        class="form-input"
+        placeholder="Enter Name"
+        type="text"
+      />
+      <input
+        aria-label="member-email"
+        class="form-input"
+        placeholder="Enter Email"
+        type="text"
+      />
+    </div>
+  </main>
+  <div
+    class="footer container"
+  >
+    <button
+      class="btn dark bottom-btn create-btn"
+      type="submit"
+    >
+      Save
+    </button>
+  </div>
+</form>
+`;

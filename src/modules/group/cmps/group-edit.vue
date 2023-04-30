@@ -54,6 +54,7 @@ import optionMenu from '@/modules/common/cmps/option-menu.vue';
 import expenseList from '@/modules/expense/cmps/expense-list.vue';
 import expenseListSelectable from '@/modules/expense/cmps/expense-list-selectable.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
+import { memberService } from '@/modules/group/services/member.service.js';
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -93,7 +94,7 @@ const isEditEnabled = computed(() => {
 // FUNCTIONS
 function editMember() {
   if (!memberSelected.value) {
-    memberSelected.value = groupService.createMember();
+    memberSelected.value = memberService.createMember();
   }
   isEditMember.value = true;
   isMenuOpen.value = false;
@@ -110,18 +111,16 @@ async function saveMember(member) {
 
       newMemberEmail.value = member.email;
     }
-
-    groupToEdit.value.members[member.email] = member;
-    groupToEdit.value.memberEmails.push(member.email);
+    memberService.addMember(member, groupToEdit.value);
   }
   closeEditMember();
 }
 
 function closeAndRemoveNewMember(memberEmail) {
-  delete groupToEdit.value.members[memberEmail];
-  const idx = groupToEdit.value.memberEmails.indexOf(memberEmail);
-  if (idx !== -1) groupToEdit.value.memberEmails.splice(idx, 1);
+  const member = groupToEdit.value.members[memberEmail];
+  if (!member) return;
 
+  groupToEdit.value = memberService.removeMember(member, groupToEdit.value);
   newMemberEmail.value = null;
   closeEditMember();
 }
@@ -134,19 +133,9 @@ async function removeMember() {
 
   const member = memberSelected.value;
   const isConfirm = await popupService.confirm({ title: 'Remove member?', txt: `Are you sure you want to remove the member ${member.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
-
   if (!isConfirm) return;
-  delete groupToEdit.value.members[member.email];
-  groupToEdit.value.memberEmails = groupToEdit.value.memberEmails.filter((email) => email !== member.email);
 
-  groupToEdit.value.expenses = groupToEdit.value.expenses.filter((expense) => {
-    // Removes the member email from the exclude of all expenses
-    if (expense.exclude && expense.exclude.includes(member.email)) {
-      expense.exclude.splice(expense.exclude.indexOf(member.email), 1);
-    }
-    // Removes all the expenses the removed member is the spender
-    return expense.spender != member.email;
-  });
+  groupToEdit.value = memberService.removeMember(member, groupToEdit.value);
 }
 
 function toggleEditMember() {
@@ -182,12 +171,9 @@ function getNewGroup() {
 
   // create a member from the loggedin user
   const { username, email, id } = authStore.loggedInUser;
-  const member = groupService.createMember({ username, email, id, isOwner: true });
+  const member = memberService.createMember({ username, email, id, isOwner: true });
 
-  // add member to group
-  group.members[email] = member;
-  group.memberEmails = [email];
-
+  memberService.addMember(member, group);
   groupToEdit.value = group;
 }
 

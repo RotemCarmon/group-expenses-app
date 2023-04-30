@@ -107,7 +107,7 @@ async function saveMember(member) {
   } else {
     if (isGroupActive.value) {
       const confirm = await popupService.confirm({ title: 'Add New Member', txt: "In order to add a new member to an active group, you'll need to select which expenses to include them in." });
-      if (!confirm) closeEditMember();
+      if (!confirm) return closeEditMember();
 
       newMemberEmail.value = member.email;
     }

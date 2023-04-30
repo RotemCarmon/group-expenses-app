@@ -1,12 +1,10 @@
-// import { describe, expect, test, beforeEach, vi } from 'vitest'
-
-import { groupService } from '@/modules/group/services/group.service';
+import { memberService } from '@/modules/group/services/member.service';
 import { utilService } from '@/modules/common/services/util.service';
 
 // mocking firebase service
 vi.mock('@/modules/common/services/firestore.service.js', () => ({}))
 
-describe('GROUP SERVICE', () => {
+describe('MEMBER SERVICE', () => {
 
 
   describe('createMember', () => {
@@ -24,12 +22,12 @@ describe('GROUP SERVICE', () => {
     }
 
     test('Should return an empty member if no values were added', () => {
-      const member = groupService.createMember()
+      const member = memberService.createMember()
 
       expect(member).toEqual(emptyMember)
     })
     test('Should return an empty expense with default values for the values not specified', () => {
-      const member = groupService.createMember({ username: 'Popo', email: 'popo@gmail.com' })
+      const member = memberService.createMember({ username: 'Popo', email: 'popo@gmail.com' })
 
       expect(member).toEqual({ ...emptyMember, name: 'Popo', email: 'popo@gmail.com' })
     })

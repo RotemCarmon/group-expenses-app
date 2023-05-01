@@ -2,7 +2,7 @@
   <form @submit.prevent="save" class="member-edit-container main-app-container" aria-label="form" data-testId="edit-member-form" v-if="memberToEdit">
     <main>
       <button @click="$emit('close')" class="close-btn">
-        <img src="@/assets/icons/close.svg" />
+        <img src="@/assets/icons/close.svg" alt="close button" />
       </button>
       <div class="page-header container">
         <div class="title">{{ isEdit ? 'Edit' : 'Add' }} Member</div>

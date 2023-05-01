@@ -4,7 +4,7 @@
       <div class="page-header container">
         <h3 class="title" data-testid="group-name">{{ group.name }}</h3>
         <div class="ellipsis-icon" @click.stop="toggleMenu" data-testid="group-menu">
-          <img src="@/assets/icons/ellipsis.svg" />
+          <img src="@/assets/icons/ellipsis.svg" alt="ellipsis" />
         </div>
       </div>
       <div class="member-list" v-if="balances">

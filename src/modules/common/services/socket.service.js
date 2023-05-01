@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-const BASE_URL = process.env.NODE_ENV === 'production' ?
+const BASE_URL = import.meta.env.MODE === 'production' ?
     '/' :
     '//localhost:3030'
 var socket;

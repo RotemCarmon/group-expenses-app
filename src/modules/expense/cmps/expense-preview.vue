@@ -12,7 +12,7 @@
     <div class="exclude" v-if="expense.exclude && expense.exclude.length">Exclude: {{ expense.exclude.join(', ') }}</div>
 
     <div class="ellipsis-icon" v-if="!isSelectable" @click.stop="$emit('openMenu', expense)">
-      <img src="@/assets/icons/ellipsis.svg" />
+      <img src="@/assets/icons/ellipsis.svg" alt="ellipsis" />
     </div>
   </div>
 </template>

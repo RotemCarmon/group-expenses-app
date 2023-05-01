@@ -16,7 +16,7 @@
       </label>
       <label class="form-row password-field">
         <span>Password </span>
-        <img :src="eyeImgUrl" class="toggle-password" @click="isPasswordShowen = !isPasswordShowen" />
+        <img :src="eyeImgUrl" class="toggle-password" @click="isPasswordShowen = !isPasswordShowen" alt="toggle hide/show password"/>
         <input :type="isPasswordShowen ? 'text' : 'password'" autocomplete="new-password" v-model="creds.password" class="form-input" />
         <p class="error" v-show="errors.passwordError">{{ errors.passwordError }}</p>
       </label>

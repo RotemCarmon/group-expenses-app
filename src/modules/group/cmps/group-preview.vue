@@ -2,7 +2,7 @@
   <section class="group-preview-container preview-grid" @click.stop="goToGroupDetails" data-testid="group-preview">
     <div class="group-name" data-testid="group-name">{{ group.name }}</div>
     <div class="ellipsis-icon" @click.stop="$emit('openMenu', group)" data-testid="group-menu" >
-      <img src="@/assets/icons/ellipsis.svg" />
+      <img src="@/assets/icons/ellipsis.svg" alt="ellipsis" />
     </div>
   </section>
 </template>

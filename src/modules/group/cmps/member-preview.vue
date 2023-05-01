@@ -5,7 +5,7 @@
       <span class="group-owner" data-testId="group-owner" v-if="member.isOwner">Owner</span>
     </div>
     <div class="ellipsis-icon" @click.stop="$emit('toggleMenu', member)">
-      <img src="@/assets/icons/ellipsis.svg" />
+      <img src="@/assets/icons/ellipsis.svg" alt="ellipsis" />
     </div>
   </section>
 </template>

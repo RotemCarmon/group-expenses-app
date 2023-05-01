@@ -1,5 +1,5 @@
-import expenseEdit from './expense-edit.vue'
-import expenseList from './expense-list.vue'
+const expenseEdit = () => import('./expense-edit.vue')
+const expenseList = () => import('./expense-list.vue')
 
 
 

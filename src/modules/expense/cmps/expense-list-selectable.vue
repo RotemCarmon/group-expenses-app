@@ -3,7 +3,7 @@
     <div class="title container">
       <h3 class="group-name">Expense List</h3>
       <button @click="close" class="close-btn">
-        <img src="@/assets/icons/close.svg" />
+        <img src="@/assets/icons/close.svg" alt="close button"/>
       </button>
     </div>
     <div class="description container">
@@ -26,8 +26,9 @@
 
 <script setup>
 import { computed, ref } from 'vue';
-import expensePreview from './expense-preview.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
+import expensePreview from './expense-preview.vue';
+
 const props = defineProps({
   group: { type: Object, required: true },
   memberEmail: { type: String, required: true },

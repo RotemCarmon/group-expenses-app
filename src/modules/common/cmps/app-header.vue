@@ -2,12 +2,12 @@
   <section class="app-header-container container">
     <div class="left-container">
       <div class="back" @click="back" v-if="hasBack">
-        <img src="@/assets/icons/arrow-left.svg" />
+        <img src="@/assets/icons/arrow-left.svg" alt="arrow back"/>
       </div>
     </div>
     <div class="avatar-container" @click="isMenuOpen = true" :class="{ 'letter-avatar': loggedInUser && !loggedInUser.imgUrl }">
-      <img v-if="!loggedInUser" src="@/assets/imgs/user-avatar.png" class="default-avatar" />
-      <img v-else-if="loggedInUser.imgUrl" :src="loggedInUser.imgUrl" />
+      <img v-if="!loggedInUser" src="@/assets/imgs/user-avatar.png" class="default-avatar" alt="user avatar image" />
+      <img v-else-if="loggedInUser.imgUrl" :src="loggedInUser.imgUrl" alt="user custom image"/>
       <div v-else class="avatar">{{ avatarCapital }}</div>
     </div>
 

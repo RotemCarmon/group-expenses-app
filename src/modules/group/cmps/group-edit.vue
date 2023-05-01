@@ -12,7 +12,7 @@
         <div class="members-list-container">
           <div class="list-header container">
             <h3 class="members-title">Members</h3>
-            <button aria-lable="add member" @click="editMember()" class="add-member top-header-btn">Add <img src="@/assets/icons/plus-solid.svg" /></button>
+            <button aria-lable="add member" @click="editMember()" class="add-member top-header-btn">Add <img src="@/assets/icons/plus-solid.svg" alt="plus sign" /></button>
           </div>
           <div class="member-list-wrapper container">
             <div class="members-list" aria-label="members-list">
@@ -44,19 +44,22 @@
 </template>
 
 <script setup>
+import { ref, computed, defineAsyncComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 import { useGroupStore } from '../store/';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 
 import { groupService } from '../services/group.service.js';
-import memberPreview from './member-preview.vue';
-import memberEdit from './member-edit.vue';
-import optionMenu from '@/modules/common/cmps/option-menu.vue';
-import expenseList from '@/modules/expense/cmps/expense-list.vue';
-import expenseListSelectable from '@/modules/expense/cmps/expense-list-selectable.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import { memberService } from '@/modules/group/services/member.service.js';
-import { ref, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+
+const memberPreview = defineAsyncComponent(() => import('./member-preview.vue'));
+const memberEdit = defineAsyncComponent(() => import('./member-edit.vue'));
+const optionMenu = defineAsyncComponent(() => import('@/modules/common/cmps/option-menu.vue'));
+const expenseList = defineAsyncComponent(() => import('@/modules/expense/cmps/expense-list.vue'));
+const expenseListSelectable = defineAsyncComponent(() => import('@/modules/expense/cmps/expense-list-selectable.vue'));
+
 
 const groupStore = useGroupStore();
 const authStore = useAuthStore();

@@ -1,4 +1,5 @@
-import expensePage from '../views/expense-page.vue'
+const expensePage = () => import('../views/expense-page.vue')
+
 import { expenseList, expenseEdit } from '../cmps';
 
 export const expenseRoutes = [

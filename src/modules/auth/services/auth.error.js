@@ -6,6 +6,8 @@ export function getErrorMessage(errCode) {
     case 'auth/user-not-found':
     case 'auth/wrong-password':
       return 'Email or password is wrong'
+    case 'auth/email-already-in-use':
+      return 'Email is already in use'
     default:
       return 'Login failed please try again'
   }

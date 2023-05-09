@@ -6,13 +6,19 @@
     <form>
       <label class="form-row">
         <span>Email </span>
-        <input type="text" v-model="creds.email" class="form-input" ref="input" />
+        <div class="input-wrapper">
+          <font-awesome-icon icon="fa-thin fa-at" class="form-icon" />
+          <input type="text" v-model="creds.email" class="form-input" ref="input" />
+        </div>
         <p class="error" v-show="errors.emailError">{{ errors.emailError }}</p>
       </label>
       <label class="form-row password-field">
         <span>Password </span>
         <img :src="eyeImgUrl" class="toggle-password" @click="isPasswordShowen = !isPasswordShowen" alt="toggle hide/show password" />
-        <input :type="isPasswordShowen ? 'text' : 'password'" autocomplete v-model="creds.password" class="form-input" />
+        <div class="input-wrapper">
+          <font-awesome-icon icon="fa-thin fa-lock" class="form-icon" />
+          <input :type="isPasswordShowen ? 'text' : 'password'" autocomplete v-model="creds.password" class="form-input" />
+        </div>
         <p class="error" v-show="errors.passwordError">{{ errors.passwordError }}</p>
       </label>
 

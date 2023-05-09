@@ -3,7 +3,7 @@
   <section ref="userMenu" tabindex="0" class="user-menu-container">
     <div class="menu-header">
       <button @click="$emit('close')" class="close-btn">
-        <img src="@/assets/icons/close.svg" alt="close button"/>
+        <img src="@/assets/icons/close.svg" alt="close button" />
       </button>
     </div>
     <div class="username-greet">
@@ -11,9 +11,18 @@
       <span> {{ loggedInUser && loggedInUser.username ? loggedInUser.username : 'Guest' }}</span>
     </div>
     <ul class="menu-container">
-      <li @click="navigate('group')">My Groups</li>
-      <li v-if="loggedInUser" @click="signout">Signout</li>
-      <li v-else @click="navigate('auth')">Signin</li>
+      <li @click="navigate('group')">
+        <font-awesome-icon icon="fa-thin fa-users" class="menu-icon" />
+        <span>My Groups</span>
+      </li>
+      <li v-if="loggedInUser" @click="signout">
+        <font-awesome-icon icon="fa-thin fa-right-from-bracket" class="menu-icon" />
+        <span>Signout</span>
+      </li>
+      <li v-else @click="navigate('auth')">
+        <font-awesome-icon icon="fa-thin fa-right-to-bracket" class="menu-icon" />
+        <span>Signin</span>
+      </li>
     </ul>
     <div class="currency">
       <p>Set default currency</p>

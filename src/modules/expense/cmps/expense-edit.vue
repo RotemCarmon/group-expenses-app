@@ -11,8 +11,15 @@
       </div>
       <div class="expense-container">
         <div class="card-section container">
-          <input type="text" class="form-input form-row" placeholder="Enter Amount" v-model.number="expenseToEdit.amount" />
-          <input type="text" class="form-input form-row" placeholder="Enter Description" v-model="expenseToEdit.description" />
+          <div class="input-wrapper form-row">
+            <font-awesome-icon icon="fa-thin fa-coins" class="form-icon" />
+            <input type="text" class="form-input" placeholder="Enter Amount" v-model.number="expenseToEdit.amount" />
+          </div>
+          
+          <div class="input-wrapper form-row">
+            <font-awesome-icon icon="fa-thin fa-message-lines" class="form-icon" />
+            <input type="text" class="form-input" placeholder="Enter Description" v-model="expenseToEdit.description" />
+          </div>
           <div class="currency-select form-row">
             Currency
             <multi-select :items="currencyCodes" :isMulti="false" :hasSearch="true" :topSelections="['USD', 'EUR']" v-model="expenseToEdit.currency" />

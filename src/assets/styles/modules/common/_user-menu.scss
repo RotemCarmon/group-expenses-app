@@ -1,58 +1,61 @@
 .user-menu-container {
-    position: fixed;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 99;
+  right: 0;
+  top: 0;
+  width: 80%;
+  height: 100vh;
+  height: $vh;
+  padding: 6px 20px;
+  background-color: rgb(255, 255, 255);
+
+  box-shadow: -2px 0px 8px 3px #00000045;
+  outline: none;
+
+  .menu-header {
+    height: 40px;
+    margin-bottom: 20px;
+  }
+
+  .username-greet {
+    padding: 8px 0;
+    border-bottom: 1px solid $gray-400;
+    font-size: $font-size-large-1;
+    span {
+      font-weight: 500;
+      text-transform: capitalize;
+    }
+  }
+
+  .menu-container {
     display: flex;
     flex-direction: column;
-    z-index: 99;
-    right: 0;
-    top: 0;
-    width: 80%;
-    height: 100vh;
-    height: $vh;
-    padding: 6px 20px;
-    background-color: rgb(255, 255, 255);
-
-    box-shadow: -2px 0px 8px 3px #00000045;
-    outline: none;
-
-    .menu-header {
-        height: 40px;
-        margin-bottom: 20px;
+    border-bottom: 1px solid $gray-400;
+    & > * {
+      margin: 20px 0;
+      font-size: $font-size-medium;
     }
-
-    .username-greet {
-        padding: 8px 0;
-        border-bottom: 1px solid $gray-400;
-        font-size: $font-size-large-1;
-        span {
-            font-weight: 500;
-            text-transform: capitalize;
-        }
+    .menu-icon {
+      margin-inline-end: em(14px);
     }
-
-    .menu-container {
-        display: flex;
-        flex-direction: column;
-        border-bottom: 1px solid $gray-400;
-        & > * {
-            margin: 20px 0;
-            font-size: $font-size-medium;
-        }
+  }
+  .currency {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    p {
+      margin-bottom: 6px;
     }
-    .currency {
-        padding: 20px 0;
-        display: flex;
-        flex-direction: column;
-        p {
-            margin-bottom: 6px;
-        }
-        .currency-select {
-          margin-bottom: 15px;
-        }
-        .save-btn {
-            background-color: $primary;
-            color: white;
-            height: 40px;
-            align-self: flex-start;
-        }
+    .currency-select {
+      margin-bottom: 15px;
     }
+    .save-btn {
+      background-color: $primary;
+      color: white;
+      height: 40px;
+      align-self: flex-start;
+    }
+  }
 }

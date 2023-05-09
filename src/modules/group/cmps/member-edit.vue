@@ -8,8 +8,14 @@
         <div class="title">{{ isEdit ? 'Edit' : 'Add' }} Member</div>
       </div>
       <div class="form container">
-        <input aria-label="member-name" type="text" class="form-input" placeholder="Enter Name" v-model="memberToEdit.name" />
-        <input aria-label="member-email" type="text" class="form-input" placeholder="Enter Email" v-model="memberToEdit.email" />
+        <div class="input-wrapper form-row">
+          <font-awesome-icon icon="fa-thin fa-user" class="form-icon" />
+          <input aria-label="member-name" type="text" class="form-input" placeholder="Enter Name" v-model="memberToEdit.name" />
+        </div>
+        <div class="input-wrapper form-row">
+          <font-awesome-icon icon="fa-thin fa-at" class="form-icon" />
+          <input aria-label="member-email" type="text" class="form-input" placeholder="Enter Email" v-model="memberToEdit.email" />
+        </div>
       </div>
     </main>
     <div class="footer container">

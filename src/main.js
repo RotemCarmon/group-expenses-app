@@ -6,6 +6,7 @@ import "./registerServiceWorker";
 import App from "./App.vue";
 import { router } from './router';
 import './assets/styles/main.scss';
+import { FontAwesomeIcon } from './plugins/font-awesome';
 
 
 // initStoreForRouter(store);
@@ -22,5 +23,7 @@ auth.onAuthStateChanged(() => {
     const pinia = createPinia()
     app = createApp(App)
     app.use(pinia).use(router).mount('#app')
+
+    app.component('font-awesome-icon', FontAwesomeIcon)
   }
 })

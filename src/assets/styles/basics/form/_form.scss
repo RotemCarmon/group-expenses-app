@@ -1,34 +1,6 @@
 @import "form-control";
 @import "btn";
-@import "input";
 @import "textarea";
 @import "select";
 @import "form-input";
 
-
-.basic-form {
-    display: flex;
-    flex-direction: column;
-    // flex-wrap: wrap;
-    // align-items: center;
-    color: $dark-gray;
-    align-items: flex-start;
-    width: 400px;
-    // margin: 70px 0;
-    margin-bottom: 40px;
-    padding: 20px;
-    border-radius: 5px;
-    border: 1px solid gray;
-    background-color: rgba(255, 255, 255, 0.8);
-    .form-input {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 45px;
-      width: 100%;
-      .input {
-        width: 240px;
-      }
-    }
-    gap: 5px;
-  }

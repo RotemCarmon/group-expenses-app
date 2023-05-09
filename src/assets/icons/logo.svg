@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="633px" height="249px" viewBox="0 0 633 249" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>logo</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#026269" offset="0%"></stop>
+            <stop stop-color="#026C74" offset="60.3073177%"></stop>
+            <stop stop-color="#03818C" offset="86.3948706%"></stop>
+            <stop stop-color="#04A7B6" offset="100%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="logo">
+            <rect id="Rectangle" fill="url(#linearGradient-1)" x="0" y="0" width="633" height="249"></rect>
+            <path d="M92,70 L120.808,115.465 L120.819,115.448 L122.606,118.302 L123.326849,119.439185 L124.456,116.677 L123.333,119.465 L124.230063,120.897298 L120.59,126.638 L120.627,126.698 L120.589,126.639 L95,167 L99.5,167 L122.848,130.175 L121.862,128.631 L122.849,130.174 L161,70 L179.5,70 L146.977628,121.142051 L143.035,127.34 L147.022107,121.141635 L141.294468,130.260992 L163,164 L156.5,164 L137.953,135.336 L135.420159,139.323021 L135.418,139.32 L137.952,135.334 L137.923,135.29 L137.928,135.282 L137.599,134.789 L137.923,135.29 L137.917,135.299 L137.28,134.311 L134.373469,129.953013 L169,75.5 L164.5,75.5 L126.301,135.571 L128.538554,139.069495 L128.557,139.099 L131.860159,133.905395 L135.065,138.783 L132,134 L135.243,139.054 L135.37,139.248 L137.917,135.299 L135.374,139.253 L135.418,139.32 L135.416,139.323 L153.5,167.5 L170,167.5 L146,130.5 L149.659233,125.288565 L180,173 L150.5,173 L132.089,144.555 L114,173 L107,173 L128.553,139.105 L126.298,135.575 L102.5,173 L84.5,173 L117.254,121.097 L112.968445,113.980913 L85,70 L92,70 Z M114.5,70 L129.756575,93.9912553 L126.5,99 L111.5,75.5 L106.5,75.5 L126.483,106.473 L149.5,70 L156.5,70 L126.700316,117.001127 L125.208,114.84 L124.456,116.677 L125.201,114.829 L123.116423,111.810606 L123.013,111.972 L123.177,111.713 L96,70 L114.5,70 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+            <text id="PENSEUS" font-family="KannadaMN-Bold, Kannada MN" font-size="65" font-weight="bold" letter-spacing="9" fill="#FFFFFF">
+                <tspan x="196" y="144">PENSEUS</tspan>
+            </text>
+            <g id="circle" transform="translate(40.500000, 30.000000)" stroke="#FFFFFF" stroke-width="3">
+                <path d="M165.768752,50.4417317 C151.272927,24.5227898 123.557797,7 91.75,7 C44.9438675,7 7,44.9438675 7,91.75 C7,138.556133 44.9438675,176.5 91.75,176.5 C123.718861,176.5 151.553501,158.799302 165.987939,132.66389" id="Path"></path>
+                <path d="M173.698293,50.4440641 C158.585333,20.5199153 127.564008,0 91.75,0 C41.0778742,0 0,41.0778742 0,91.75 C0,142.422126 41.0778742,183.5 91.75,183.5 C127.507588,183.5 158.487581,163.044687 173.626749,133.197291" id="Path"></path>
+            </g>
+            <text id="Sharethe-cost,-not-t" font-family="LaoSangamMN, Lao Sangam MN" font-size="24" font-weight="normal" letter-spacing="1.1" fill="#FFFFFF">
+                <tspan x="225" y="180">Sharethe cost, not the hassle</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

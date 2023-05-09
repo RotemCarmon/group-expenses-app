@@ -29,19 +29,20 @@
         color: $gray-500;
         padding-left: 20px;
       }
+
+      .member-icon {
+        margin-inline-end: 10px;
+      }
     }
     .member-list-wrapper {
       position: relative;
       display: flex;
       overflow: auto;
       flex: 1;
-      //   background-color: lightpink;
     }
     .members-list {
       width: 100%;
       position: absolute;
-      //   width: 1;
-      // overflow-y: hidden;
       flex: 1;
       margin-bottom: rem(35px);
     }

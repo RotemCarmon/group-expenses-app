@@ -11,6 +11,7 @@ exports[`Group Edit > Render > script > add member > should render empty edit me
       class="close-btn"
     >
       <img
+        alt="close button"
         src="/src/assets/icons/close.svg"
       />
     </button>
@@ -26,18 +27,104 @@ exports[`Group Edit > Render > script > add member > should render empty edit me
     <div
       class="form container"
     >
-      <input
-        aria-label="member-name"
-        class="form-input"
-        placeholder="Enter Name"
-        type="text"
+      <div
+        class="input-wrapper form-row"
+      >
+        <font-awesome-icon-stub
+          class="form-icon"
+          icon="fa-thin fa-user"
+        />
+        <input
+          aria-label="member-name"
+          class="form-input"
+          placeholder="Enter Name"
+          type="text"
+        />
+      </div>
+      <div
+        class="input-wrapper form-row"
+      >
+        <font-awesome-icon-stub
+          class="form-icon"
+          icon="fa-thin fa-at"
+        />
+        <input
+          aria-label="member-email"
+          class="form-input"
+          placeholder="Enter Email"
+          type="text"
+        />
+      </div>
+    </div>
+  </main>
+  <div
+    class="footer container"
+  >
+    <button
+      class="btn dark bottom-btn create-btn"
+      type="submit"
+    >
+      Save
+    </button>
+  </div>
+</form>
+`;
+
+exports[`Group Edit > Script > add member > should render empty edit member form 1`] = `
+<form
+  aria-label="form"
+  class="member-edit-container main-app-container"
+  data-testid="edit-member-form"
+>
+  <main>
+    <button
+      class="close-btn"
+    >
+      <img
+        alt="close button"
+        src="/src/assets/icons/close.svg"
       />
-      <input
-        aria-label="member-email"
-        class="form-input"
-        placeholder="Enter Email"
-        type="text"
-      />
+    </button>
+    <div
+      class="page-header container"
+    >
+      <div
+        class="title"
+      >
+        Add Member
+      </div>
+    </div>
+    <div
+      class="form container"
+    >
+      <div
+        class="input-wrapper form-row"
+      >
+        <font-awesome-icon-stub
+          class="form-icon"
+          icon="fa-thin fa-user"
+        />
+        <input
+          aria-label="member-name"
+          class="form-input"
+          placeholder="Enter Name"
+          type="text"
+        />
+      </div>
+      <div
+        class="input-wrapper form-row"
+      >
+        <font-awesome-icon-stub
+          class="form-icon"
+          icon="fa-thin fa-at"
+        />
+        <input
+          aria-label="member-email"
+          class="form-input"
+          placeholder="Enter Email"
+          type="text"
+        />
+      </div>
     </div>
   </main>
   <div

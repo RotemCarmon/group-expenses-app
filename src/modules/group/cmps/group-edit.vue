@@ -12,7 +12,7 @@
         <div class="members-list-container">
           <div class="list-header container">
             <h3 class="members-title">Members</h3>
-            <button aria-lable="add member" @click="editMember()" class="add-member top-header-btn">Add <img src="@/assets/icons/plus-solid.svg" alt="plus sign" /></button>
+            <button aria-lable="add member" data-testId="add-member" @click="editMember()" class="add-member top-header-btn">Add <img src="@/assets/icons/plus-solid.svg" alt="plus sign" /></button>
           </div>
           <div class="member-list-wrapper container">
             <div class="members-list" aria-label="members-list">
@@ -78,8 +78,8 @@ const newMemberEmail = ref(null);
 // COMPUTED
 const members = computed(() => {
   return Object.values(groupToEdit.value.members).sort((a, b) => {
-    if (a.isOwner) return -1;
-    if (b.isOwner) return 1;
+    if (a?.isOwner) return -1;
+    if (b?.isOwner) return 1;
     return b.name > a.name ? -1 : 1;
   });
 });

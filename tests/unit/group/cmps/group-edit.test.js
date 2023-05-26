@@ -24,6 +24,9 @@ vi.mock('vue-router', async () => {
 const renderOptions = {
   global: {
     plugins: [router],
+    stubs: [
+      'font-awesome-icon'
+    ]
   },
 }
 
@@ -91,14 +94,12 @@ describe('Group Edit', () => {
       })
 
       test('should render a list of members in the group', async () => {
-        const { findByRole } = render(groupEdit, renderOptions);
+        const { findByRole, debug } = render(groupEdit, renderOptions);
         const expectedMemberNames = ['Test Member', 'Test Member 2']
 
-
         const members = await findByRole('generic', { name: 'members-list' })
-        const memberNamesEls = within(members).getAllByTestId('member-name')
+        const memberNamesEls = await within(members).findAllByTestId('member-name')
         const memberNames = memberNamesEls.map(m => m.textContent)
-
 
         expect(memberNames).toHaveLength(2)
         expect(memberNames).toEqual(expectedMemberNames)
@@ -107,7 +108,7 @@ describe('Group Edit', () => {
         const { findByRole } = render(groupEdit, renderOptions);
 
         const members = await findByRole('generic', { name: 'members-list' })
-        const ownerMemberDiv = within(members).getByText('Test Member').closest("div")
+        const ownerMemberDiv = (await within(members).findByText('Test Member')).closest("div")
         const groupOwnerEl = within(ownerMemberDiv).getByTestId('group-owner')
 
         expect(groupOwnerEl.textContent).toBe('Owner')
@@ -122,7 +123,7 @@ describe('Group Edit', () => {
         const { findByRole, debug } = render(groupEdit, renderOptions);
 
         const members = await findByRole('generic', { name: 'members-list' })
-        const memberNamesEls = within(members).getAllByTestId('member-name')
+        const memberNamesEls = await within(members).findAllByTestId('member-name')
 
         expect(memberNamesEls).toHaveLength(1)
         expect(memberNamesEls[0].textContent).toBe('Test Member')
@@ -130,57 +131,83 @@ describe('Group Edit', () => {
       })
     })
 
-    describe('script', () => {
-      describe('add member', () => {
+  })
+  describe('Script', () => {
+    describe('add member', () => {
 
-        test('should render empty edit member form', async () => {
-          const { findByRole } = render(groupEdit, renderOptions);
+      test('should render empty edit member form', async () => {
+        const { findByRole, findByTestId } = render(groupEdit, renderOptions);
 
-          const addMemberBtn = await findByRole('button', { name: 'Add' })
-          await fireEvent.click(addMemberBtn)
+        const addMemberBtn = await findByTestId('add-member')
+        await fireEvent.click(addMemberBtn)
 
-          const elMemberForm = await findByRole('form')
-          const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
-          const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
+        const elMemberForm = await findByRole('form')
+        const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
+        const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
 
-          expect(elMemberForm).toMatchSnapshot()
-          expect(elName.value).toBe('')
-          expect(elEmail.value).toBe('')
-        })
+        expect(elMemberForm).toMatchSnapshot()
+        expect(elName.value).toBe('')
+        expect(elEmail.value).toBe('')
+      })
 
-        test('should popup an error if member already exists', async () => {
-          const spyOnError = vi.spyOn(popupService, 'error')
-          const { findByRole } = render(groupEdit, renderOptions);
+      test('should popup an error if member already exists', async () => {
+        const spyOnError = vi.spyOn(popupService, 'error')
+        const { findByRole, findByTestId } = render(groupEdit, renderOptions);
 
-          const newMemberName = 'New Member'
-          const existingMemberEmail = 'test2@example.com'
-          const expectedError = 'Member already exist with this email'
+        const newMemberName = 'New Member'
+        const existingMemberEmail = 'test2@example.com'
+        const expectedError = 'Member already exist with this email'
 
-          const addMemberBtn = await findByRole('button', { name: 'Add' })
-          await fireEvent.click(addMemberBtn)
+        const addMemberBtn = await findByTestId('add-member')
 
-          const elMemberForm = await findByRole('form')
-          const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
-          const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
+        await fireEvent.click(addMemberBtn)
 
-          await fireEvent.update(elName, newMemberName)
-          await fireEvent.update(elEmail, existingMemberEmail)
+        const elMemberForm = await findByRole('form')
+        const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
+        const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
 
-          await fireEvent.submit(elMemberForm)
+        await fireEvent.update(elName, newMemberName)
+        await fireEvent.update(elEmail, existingMemberEmail)
+
+        await fireEvent.submit(elMemberForm)
 
 
-          expect(spyOnError).toHaveBeenCalledWith(expectedError)
-        })
+        expect(spyOnError).toHaveBeenCalledWith(expectedError)
+      })
 
-        test('should add the member to the to the group', async () => {
-          vi.spyOn(groupStore, 'getGroupById').mockResolvedValue({ ...group, expenses: [] })
+      test('should add the member to the to the group', async () => {
+        vi.spyOn(groupStore, 'getGroupById').mockResolvedValue({ ...group, expenses: [] })
 
-          const { findByRole } = render(groupEdit, renderOptions);
+        const { findByRole, findByTestId } = render(groupEdit, renderOptions);
+
+        const newMemberName = 'New Member'
+        const existingMemberEmail = 'new_member@example.com'
+
+        const addMemberBtn = await findByTestId('add-member')
+        await fireEvent.click(addMemberBtn)
+
+        const elMemberForm = await findByRole('form')
+        const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
+        const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
+
+        await fireEvent.update(elName, newMemberName)
+        await fireEvent.update(elEmail, existingMemberEmail)
+
+        await fireEvent.submit(elMemberForm)
+
+
+        expect(spyOnAddMember).toHaveBeenCalled()
+      })
+
+      describe('To active group', () => {
+        test('should inform the user that neeed to select expenses for the new member', async () => {
+          const { findByRole, findByTestId } = render(groupEdit, renderOptions);
+          const expectedConfirmObj = { title: 'Add New Member', txt: "In order to add a new member to an active group, you'll need to select which expenses to include them in." }
 
           const newMemberName = 'New Member'
           const existingMemberEmail = 'new_member@example.com'
 
-          const addMemberBtn = await findByRole('button', { name: 'Add' })
+          const addMemberBtn = await findByTestId('add-member')
           await fireEvent.click(addMemberBtn)
 
           const elMemberForm = await findByRole('form')
@@ -193,91 +220,65 @@ describe('Group Edit', () => {
           await fireEvent.submit(elMemberForm)
 
 
-          expect(spyOnAddMember).toHaveBeenCalled()
+          const elConfirm = await findByTestId('confirm')
+          const elCancelBtn = await within(elConfirm).findByTestId('cancel-btn')
+          await fireEvent.click(elCancelBtn)
+          await waitForElementToBeRemoved(elConfirm)
+
+          expect(spyOnConfirm).toHaveBeenCalledWith(expectedConfirmObj)
         })
 
-        describe('To active group', () => {
-          test('should inform the user that neeed to select expenses for the new member', async () => {
-            const { findByRole, findByTestId } = render(groupEdit, renderOptions);
-            const expectedConfirmObj = { title: 'Add New Member', txt: "In order to add a new member to an active group, you'll need to select which expenses to include them in." }
+        test('should not add member if user choose not to select expenses', async () => {
+          const { findByRole, findByTestId } = render(groupEdit, renderOptions);
 
-            const newMemberName = 'New Member'
-            const existingMemberEmail = 'new_member@example.com'
+          const newMemberName = 'New Member'
+          const existingMemberEmail = 'new_member@example.com'
 
-            const addMemberBtn = await findByRole('button', { name: 'Add' })
-            await fireEvent.click(addMemberBtn)
+          const addMemberBtn = await findByTestId('add-member')
+          await fireEvent.click(addMemberBtn)
 
-            const elMemberForm = await findByRole('form')
-            const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
-            const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
+          const elMemberForm = await findByRole('form')
+          const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
+          const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
 
-            await fireEvent.update(elName, newMemberName)
-            await fireEvent.update(elEmail, existingMemberEmail)
+          await fireEvent.update(elName, newMemberName)
+          await fireEvent.update(elEmail, existingMemberEmail)
 
-            await fireEvent.submit(elMemberForm)
+          await fireEvent.submit(elMemberForm)
 
+          const elConfirm = await findByTestId('confirm')
+          const elCancelBtn = await within(elConfirm).findByTestId('cancel-btn')
+          await fireEvent.click(elCancelBtn)
 
-            const elConfirm = await findByTestId('confirm')
-            const elCancelBtn = await within(elConfirm).findByTestId('cancel-btn')
-            await fireEvent.click(elCancelBtn)
-            await waitForElementToBeRemoved(elConfirm)
+          await waitForElementToBeRemoved(elConfirm)
+          expect(spyOnAddMember).not.toHaveBeenCalled()
+        })
+        test('should render expense list selectable component', async () => {
 
-            expect(spyOnConfirm).toHaveBeenCalledWith(expectedConfirmObj)
-          })
+          const { findByRole, findByTestId, findByText } = render(groupEdit, renderOptions);
 
-          test('should not add member if user choose not to select expenses', async () => {
-            const { findByRole, findByTestId } = render(groupEdit, renderOptions);
+          const newMemberName = 'New Member'
+          const existingMemberEmail = 'new_member@example.com'
 
-            const newMemberName = 'New Member'
-            const existingMemberEmail = 'new_member@example.com'
+          const addMemberBtn = await findByTestId('add-member')
+          await fireEvent.click(addMemberBtn)
 
-            const addMemberBtn = await findByRole('button', { name: 'Add' })
-            await fireEvent.click(addMemberBtn)
+          const elMemberForm = await findByRole('form')
+          const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
+          const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
 
-            const elMemberForm = await findByRole('form')
-            const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
-            const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
+          await fireEvent.update(elName, newMemberName)
+          await fireEvent.update(elEmail, existingMemberEmail)
 
-            await fireEvent.update(elName, newMemberName)
-            await fireEvent.update(elEmail, existingMemberEmail)
+          await fireEvent.submit(elMemberForm)
 
-            await fireEvent.submit(elMemberForm)
+          const elConfirm = await findByTestId('confirm')
+          const elApproveBtn = await within(elConfirm).findByTestId('approve-btn')
+          await fireEvent.click(elApproveBtn)
+          await waitForElementToBeRemoved(elConfirm)
 
-            const elConfirm = await findByTestId('confirm')
-            const elCancelBtn = await within(elConfirm).findByTestId('cancel-btn')
-            await fireEvent.click(elCancelBtn)
-
-            await waitForElementToBeRemoved(elConfirm)
-            expect(spyOnAddMember).not.toHaveBeenCalled()
-          })
-          test('should render expense list selectable component', async () => {
-
-            const { findByRole, findByTestId, findByText, debug } = render(groupEdit, renderOptions);
-
-            const newMemberName = 'New Member'
-            const existingMemberEmail = 'new_member@example.com'
-
-            const addMemberBtn = await findByRole('button', { name: 'Add' })
-            await fireEvent.click(addMemberBtn)
-
-            const elMemberForm = await findByRole('form')
-            const elName = within(elMemberForm).getByRole('textbox', { name: 'member-name' })
-            const elEmail = within(elMemberForm).getByRole('textbox', { name: 'member-email' })
-
-            await fireEvent.update(elName, newMemberName)
-            await fireEvent.update(elEmail, existingMemberEmail)
-
-            await fireEvent.submit(elMemberForm)
-
-            const elConfirm = await findByTestId('confirm')
-            const elApproveBtn = await within(elConfirm).findByTestId('approve-btn')
-            await fireEvent.click(elApproveBtn)
-            await waitForElementToBeRemoved(elConfirm)
-
-            const elExpenseListElextable = await findByText('Please select which expenses the new member should be included in.')
-            debug(elExpenseListElextable)
-            expect(elExpenseListElextable).toBeTruthy()
-          })
+          const elExpenseListElextable = await findByText('Please select which expenses the new member should be included in.')
+          expect(elExpenseListElextable).toBeTruthy()
         })
       })
     })
@@ -288,7 +289,7 @@ describe('Group Edit', () => {
 
   // Adding new member to active group - 
 
-    // closing the exepnse list selecable before saving will remove the member from the group
+  // closing the exepnse list selecable before saving will remove the member from the group
 
   // removeing a member - 
   // not an owner - should warn that only the owner can delete

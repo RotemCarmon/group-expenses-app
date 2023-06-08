@@ -3,7 +3,7 @@
     <main>
       <div class="expense-header container">
         <div class="page-header">
-          <div class="title">{{ edit ? 'Edit' : 'Add' }} Expense</div>
+          <div class="header-title">{{ edit ? 'Edit' : 'Add' }} Expense</div>
         </div>
         <div class="group-name">
           Group <span>{{ group.name }}</span>

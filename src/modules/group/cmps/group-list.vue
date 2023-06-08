@@ -2,7 +2,7 @@
   <section class="group-list-container">
     <div class="page-header container">
       <div class="list-header">
-        <div class="title">My Groups</div>
+        <div class="header-title">My Groups</div>
         <button @click="goToAddGroup" class="add-group top-header-btn" data-testId="add-group-btn" title="add group"><font-awesome-icon icon="fa-regular fa-plus" /></button>
       </div>
     </div>

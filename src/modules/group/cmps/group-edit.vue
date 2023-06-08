@@ -2,7 +2,7 @@
   <section class="group-edit-container" v-if="groupToEdit">
     <main>
       <div class="page-header container">
-        <div class="title">{{ edit ? 'Edit' : 'Add' }} Group</div>
+        <div class="header-title">{{ edit ? 'Edit' : 'Add' }} Group</div>
       </div>
       <div class="group-edit-form">
         <div class="group-form container">
@@ -11,7 +11,7 @@
         </div>
         <div class="members-list-container">
           <div class="list-header container">
-            <h3 class="members-title">Members</h3>
+            <h3 class="members-title header-title">Members</h3>
             <button aria-lable="add member" data-testId="add-member" @click="editMember()" class="add-member top-header-btn" title="add member"><font-awesome-icon icon="fa-regular fa-plus" /></button>
           </div>
           <div class="member-list-wrapper container">

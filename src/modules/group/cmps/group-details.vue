@@ -2,7 +2,7 @@
   <section class="group-details-container" data-testid="group-details-container" v-if="group">
     <main>
       <div class="page-header container">
-        <h3 class="title" data-testid="group-name">{{ group.name }}</h3>
+        <h3 class="header-title" data-testid="group-name">{{ group.name }}</h3>
         <div class="ellipsis-icon" @click.stop="toggleMenu" data-testid="group-menu">
           <img src="@/assets/icons/ellipsis.svg" alt="ellipsis" />
         </div>

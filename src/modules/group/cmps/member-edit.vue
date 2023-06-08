@@ -5,7 +5,7 @@
         <img src="@/assets/icons/close.svg" alt="close button" />
       </button>
       <div class="page-header container">
-        <div class="title">{{ isEdit ? 'Edit' : 'Add' }} Member</div>
+        <div class="header-title">{{ isEdit ? 'Edit' : 'Add' }} Member</div>
       </div>
       <div class="form container">
         <div class="input-wrapper form-row">

@@ -3,12 +3,12 @@
     <div class="page-header container">
       <div class="list-header">
         <div class="title">My Groups</div>
-        <button @click="goToAddGroup" class="add-group top-header-btn" data-testId="add-group-btn">Add <img src="@/assets/icons/plus-solid.svg" alt="plus sign" /></button>
+        <button @click="goToAddGroup" class="add-group top-header-btn" data-testId="add-group-btn" title="add group"><font-awesome-icon icon="fa-regular fa-plus" /></button>
       </div>
     </div>
     <div v-if="!groups || !groups.length" class="no-groups no-data">
       <p>You have no groups</p>
-      <p class="add-group-instruction">Click <strong>Add +</strong> to create your first group</p>
+      <p class="add-group-instruction">Click the <font-awesome-icon icon="fa-regular fa-plus" size="sm"/> to create your first group</p>
     </div>
     <div v-else class="group-list">
       <group-preview v-for="group in groups" :key="group.id" :group="group" @openMenu="toggleMenu" />

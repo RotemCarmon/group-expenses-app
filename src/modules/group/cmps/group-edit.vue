@@ -12,7 +12,7 @@
         <div class="members-list-container">
           <div class="list-header container">
             <h3 class="members-title">Members</h3>
-            <button aria-lable="add member" data-testId="add-member" @click="editMember()" class="add-member top-header-btn">Add <img src="@/assets/icons/plus-solid.svg" alt="plus sign" /></button>
+            <button aria-lable="add member" data-testId="add-member" @click="editMember()" class="add-member top-header-btn" title="add member"><font-awesome-icon icon="fa-regular fa-plus" /></button>
           </div>
           <div class="member-list-wrapper container">
             <div class="members-list" aria-label="members-list">

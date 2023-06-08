@@ -18,11 +18,15 @@
     color: $gray-500;
 
     .add-group-instruction {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.4em;
       margin-top: 10px;
       font-size: $font-size-normal;
 
-      strong {
-        font-weight: 500;
+      svg {
+        color: $gray-550;
       }
     }
   }

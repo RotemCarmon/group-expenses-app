@@ -22,8 +22,8 @@ auth.onAuthStateChanged(() => {
   if (!app) {
     const pinia = createPinia()
     app = createApp(App)
+    app.component('font-awesome-icon', FontAwesomeIcon)
     app.use(pinia).use(router).mount('#app')
 
-    app.component('font-awesome-icon', FontAwesomeIcon)
   }
 })

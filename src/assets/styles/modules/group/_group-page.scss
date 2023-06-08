@@ -1,20 +1,44 @@
 .group-list-container {
   position: relative;
+
+  .page-header {
+    margin-bottom: em(13px);
+  }
   .group-list {
     background-color: $light-bgc;
     flex: 1;
 
+    .search-group {
+      padding-inline: 1.25em;
+      padding-block-end: 10px;
+      background-color: $white;
+      position: relative;
+      .search-input {
+        height: 30px;
+        border-radius: 0.5em;
+        background-color: $gray-200;
+        padding-inline-start: 32px;
+      }
+      .magnifying-glass {
+        position: absolute;
+        left: calc(1.25em + 8px);
+        top: calc(50% - 5px);
+        transform: translateY(-50%);
+        color: $gray-550;
+      }
+    }
+
     .group-preview-container {
       font-size: $font-size-medium;
       background-color: $white;
-      padding-inline: 20px;
+      padding-inline: 1.25em;
     }
   }
 
   .no-groups {
     text-align: center;
     font-size: $font-size-large-1;
-    margin-top: 80px;
+    margin-top: 30px;
     color: $gray-500;
 
     .add-group-instruction {

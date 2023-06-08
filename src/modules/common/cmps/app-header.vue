@@ -2,7 +2,7 @@
   <section class="app-header-container container">
     <div class="left-container">
       <div class="back" @click="back" v-if="hasBack">
-        <img src="@/assets/icons/arrow-left.svg" alt="arrow back" />
+        <font-awesome-icon icon="fa-regular fa-arrow-left"  />
       </div>
     </div>
     <div v-if="!isAuthPage" class="avatar-container" @click="isMenuOpen = true" :class="{ 'letter-avatar': loggedInUser && !loggedInUser.imgUrl }">
@@ -35,7 +35,6 @@ const hasBack = computed(() => {
   const noBackCmps = ['group-list', 'login-signup'];
   return !noBackCmps.includes(route.name);
 });
-
 
 const isAuthPage = computed(() => {
   return route.name === 'login-signup';

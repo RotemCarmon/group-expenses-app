@@ -22,11 +22,11 @@
         <p class="error" v-show="errors.passwordError">{{ errors.passwordError }}</p>
       </label>
 
-      <button @click.prevent="doLogin" class="btn dark bottom-btn">Sign in</button>
+      <button :disabled="!isButtonEnabled" @click.prevent="doLogin" class="btn dark bottom-btn">Sign in</button>
 
       <div class="no-account">
         <p>Don’t have an account yet?</p>
-        <span @click.prevent="goToRegister">Register</span>
+        <span @click.prevent="goToRegister">Sign up</span>
       </div>
     </form>
   </section>
@@ -48,6 +48,10 @@ const creds = reactive({
   email: '',
   password: '',
 });
+
+const isButtonEnabled = computed(()=> {
+  return creds.email && creds.password
+})
 
 const errors = reactive({
   emailError: '',

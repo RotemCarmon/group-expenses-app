@@ -33,7 +33,7 @@
         <p class="error" v-show="errors.passwordError">{{ errors.passwordError }}</p>
       </label>
 
-      <button @click.prevent="doSignup" class="btn dark bottom-btn">Create Account</button>
+      <button :disabled="!isButtonEnabled" @click.prevent="doSignup" class="btn dark bottom-btn">Create Account</button>
 
       <div class="no-account">
         <p>Already have an account?</p>
@@ -60,6 +60,10 @@ const creds = reactive({
   email: '',
   password: '',
 });
+
+const isButtonEnabled = computed(()=> {
+  return creds.username && creds.email && creds.password && creds.password.length >=6
+})
 
 const errors = reactive({
   usernameError: '',

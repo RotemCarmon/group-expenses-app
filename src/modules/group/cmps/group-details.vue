@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 import { useAuthStore } from '@/modules/auth/store/auth.store';

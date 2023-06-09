@@ -25,6 +25,9 @@
   &.wide {
     width: 100%;
   }
+  &.no-height {
+    height: unset;
+  }
 
   &:disabled {
     cursor: default;
@@ -72,7 +75,7 @@
 }
 
 .select-toggle-btn {
-    color: $dark-blue;
-    text-decoration: underline;
-    cursor: pointer;
+  color: $dark-blue;
+  text-decoration: underline;
+  cursor: pointer;
 }

@@ -1,52 +1,55 @@
 .expense-edit-container {
-    .group-name {
-        font-size: $font-size-normal;
-        color: $gray-text;
-        span {
-            font-weight: 500;
-        }
-        margin-bottom: 16px;
+  .group-name {
+    font-size: $font-size-normal;
+    color: $gray-text;
+    span {
+      font-weight: 500;
     }
-    .expense-container {
-        display: flex;
-        flex-direction: column;
-        justify-content:space-evenly;
-        // padding-block: 16px;
-        flex: 1;
-        // gap: 16px;
-        background-color: $light-bgc;
+    margin-bottom: 16px;
+  }
+  .expense-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex: 1;
+    background-color: $light-bgc;
+  }
 
-        // align-items: flex-start;
+  .card-section {
+    background-color: $white;
+    border-radius: 4px;
+    padding: 16px;
+    box-shadow: 0 0 5px rgba($gray-800, 0.2);
+  }
+  .currency-select {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-weight: 500;
+
+    .multi-select-container {
+      flex: 1;
+    }
+  }
+
+  .sub-title {
+    font-size: $font-size-medium;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .footer {
+    padding-block-end: em(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .bottom-btn {   
+      margin-bottom: 0;
     }
 
-    .card-section {
-        background-color: $white;
-        border-radius: 4px;
-        padding: 16px;
-        box-shadow: 0 0 5px rgba($gray-800, 0.2);
-        
+    .delete-btn {
+      color: $red;
+      padding-block: em(6px) em(10px);
     }
-    .currency-select {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        font-weight: 500;
-
-        .multi-select-container {
-            flex: 1;
-        }
-    }
-
-    .sub-title {
-        font-size: $font-size-medium;
-        font-weight: 500;
-        margin-bottom: 6px;
-    }
-
-    .footer {
-        padding-block: rem(24px);
-        .bottom-btn {
-            margin-bottom: 0;
-        }
-    }
+  }
 }

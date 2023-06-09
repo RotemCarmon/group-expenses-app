@@ -34,6 +34,7 @@
       </div>
     </main>
     <div class="footer container">
+      <button v-if="edit" class="btn scondary delete-btn no-height" @click="removeExpense">Delete</button>
       <button @click="saveExpense" class="btn dark bottom-btn">Save</button>
     </div>
   </section>
@@ -49,6 +50,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useGroupStore } from '../../group/store';
 import { useExpenseStore } from '../../expense/store';
 import multiSelect from '@/modules/common/cmps/multi-select.vue';
+import getSymbolFromCurrency from 'currency-symbol-map';
 
 const commonStore = useCommonStore();
 const authStore = useAuthStore();
@@ -79,9 +81,12 @@ async function getGroup() {
 async function getExpense() {
   const { expenseId } = route.params;
   const { spender } = route.query;
+
   if (expenseId && spender) {
+    edit.value = true
     prepareExpenseToEdit(expenseId, spender);
   } else {
+    edit.value = false
     expenseToEdit.value = expenseService.getEmptyExpense();
     expenseToEdit.value.currency = userCurrency.value;
   }
@@ -103,7 +108,7 @@ function findNameByEmailInGroup(email) {
 }
 async function saveExpense() {
   if (!validateAmount(expenseToEdit.value.amount)) {
-    popupService.warn('Please enter a valide amount');
+    popupService.warn('Please enter a valid amount');
     return;
   }
 
@@ -126,6 +131,15 @@ async function saveExpense() {
   });
 
   // NAVIGATE BACK TO GROUP PAGE
+  router.go(-1);
+}
+async function removeExpense() {
+  const expense = expenseToEdit.value;
+  
+  const isConfirm = await popupService.confirm({ title: 'Delete Expense', txt: `Are you sure you want to delete this expense?\n ${expense.description} ${getSymbolFromCurrency(expense.currency)}${expense.amount}`, approveTxt: 'Yes', cancelTxt: 'No' });
+  if (!isConfirm) return;
+  
+  expenseStore.removeExpense({ expense, group: group.value });
   router.go(-1);
 }
 

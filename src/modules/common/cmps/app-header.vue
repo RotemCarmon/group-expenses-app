@@ -2,7 +2,7 @@
   <section class="app-header-container container">
     <div class="left-container">
       <div class="back" @click="back" v-if="hasBack">
-        <font-awesome-icon icon="fa-regular fa-arrow-left"  />
+        <font-awesome-icon icon="fa-regular fa-arrow-left" />
       </div>
     </div>
     <div v-if="!isAuthPage" class="avatar-container" @click="isMenuOpen = true" :class="{ 'letter-avatar': loggedInUser && !loggedInUser.imgUrl }">
@@ -46,13 +46,10 @@ const avatarCapital = computed(() => loggedInUser.value.username.charAt(0).toUpp
 
 // FUNCTIONS
 function back() {
-  let homeRoute = '/';
-  if (route.path.includes('expense')) {
-    homeRoute = `/group/${route.params.groupId}`;
-  } else if (route.path.includes('group')) {
-    homeRoute = '/group';
+  if (route.name === 'group-details') {
+    return router.replace({ path: `/group/${route.params.groupId}` });
   }
 
-  router.replace({ path: homeRoute });
+  router.go(-1);
 }
 </script>

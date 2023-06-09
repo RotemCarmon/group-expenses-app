@@ -17,6 +17,6 @@ const props = defineProps({
 });
 
 function goToGroupDetails() {
-  router.push('group/' + props.group.id);
+  router.push('group/' + props.group.id + '/expenses');
 }
 </script>

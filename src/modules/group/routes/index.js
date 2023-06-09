@@ -24,12 +24,6 @@ export const groupRoutes = [
         name: 'group-details',
         children: [
           {
-            path: '',
-            redirect: to => {
-              return 'expenses'
-            },
-          },
-          {
             path: 'expenses',
             component: expenseList,
             name: 'expense-list'

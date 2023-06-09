@@ -1,6 +1,9 @@
 <template>
   <section class="member-balance-list-container">
     <div class="member" v-for="(amount, member) in balances" :key="member">
+      <div class="avatar-container letter-avatar">
+        <div class="avatar">{{ findNameByEmailInGroup(member, group)?.charAt(0).toUpperCase() }}</div>
+      </div>
       <div class="name" data-testid="member-name">
         {{ findNameByEmailInGroup(member, group) }}
       </div>
@@ -8,12 +11,13 @@
         {{ getSymbolFromCurrency(currency) }}
         {{ parseFloat(amount.toFixed(2)) }}
       </div>
+      <div class="amount-spent">Spent: {{ getSymbolFromCurrency(currency) }}{{ parseFloat(getMemberAmountSpent(member).toFixed(2)) }}</div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
 import { expenseService } from '@/modules/expense/services/expense.service';
 import { findNameByEmailInGroup } from '@/modules/common/services/util.service.js';
@@ -31,9 +35,9 @@ async function getBalances(userCurrency) {
   balances.value = await expenseService.getBalances(props.group, userCurrency);
 }
 
-getBalances(props.currency);
 
-// watch(props.currency, (val) => {
-//   getBalances(val);
-// });
+function getMemberAmountSpent(memberEmail) {
+  return props.group.members[memberEmail]?.amountSpent
+}
+getBalances(props.currency);
 </script>

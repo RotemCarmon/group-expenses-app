@@ -10,10 +10,6 @@
     <div class="description">{{ expense.description }}</div>
     <div class="amount">{{ getSymbolFromCurrency(expense.currency) }}{{ expense.amount.toFixed(2) }}</div>
     <div class="exclude" v-if="expense.exclude && expense.exclude.length">Exclude: {{ expense.exclude.join(', ') }}</div>
-
-    <div class="ellipsis-icon" v-if="!isSelectable" @click.stop="$emit('openMenu', expense)">
-      <img src="@/assets/icons/ellipsis.svg" alt="ellipsis" />
-    </div>
   </div>
 </template>
 

@@ -24,10 +24,14 @@ export const useGroupStore = defineStore('group', {
       }
     },
     async getGroupById({ groupId }) {
+      const commonStore = useCommonStore()
+      commonStore.isLoading = true
       try {
         return await groupService.getGroupById(groupId)
       } catch (err) {
         loggerService.error(err)
+      } finally {
+        commonStore.isLoading = false
       }
     },
     async saveGroup({ group }) {

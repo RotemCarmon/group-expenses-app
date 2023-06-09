@@ -46,8 +46,8 @@ const avatarCapital = computed(() => loggedInUser.value.username.charAt(0).toUpp
 
 // FUNCTIONS
 function back() {
-  if (route.name === 'group-details') {
-    return router.replace({ path: `/group/${route.params.groupId}` });
+  if (['expense-list', 'member-balance-list'].includes(route.name)) {
+    return router.replace({ path: '/group' });
   }
 
   router.go(-1);

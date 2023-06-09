@@ -8,6 +8,8 @@
         </div>
       </div>
       <div class="member-list" v-if="balances">
+      <tab-nav />
+      <router-view />
         <div class="member" v-for="(amount, member) in balances" :key="member">
           <div class="name" data-testid="member-name">
             {{ findNameByEmailInGroup(member, group) }}
@@ -43,6 +45,7 @@
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { expenseService } from '@/modules/expense/services/expense.service';
 import optionMenu from '@/modules/common/cmps/option-menu.vue';
+import tabNav from '@/modules/common/cmps/tab-nav.vue';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import { findNameByEmailInGroup } from '@/modules/common/services/util.service.js';
 import { useRemoveGroup, goToEditGroup } from '@/composables/group.composable.js';

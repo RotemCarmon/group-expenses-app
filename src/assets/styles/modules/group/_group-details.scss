@@ -4,6 +4,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 0;
 
     .title {
       font-weight: normal;
@@ -16,31 +17,6 @@
       padding: 0 12px;
     }
   }
-
-  .member-list {
-    overflow-y: auto;
-    flex: 1 1 0;
-    background-color: $light-bgc;
-  }
-  .member {
-    padding-block: 12px;
-    padding-inline: 20px;
-    display: flex;
-    justify-content: space-between;
-
-    align-items: center;
-    border-bottom: 1px solid $gray-400;
-    background-color: $white;
-
-    .break-down {
-      &.pos {
-        color: green;
-      }
-      &.neg {
-        color: red;
-      }
-    }
-  }
   .total-spent {
     background-color: $dark-aqua;
     color: $white;
@@ -48,5 +24,12 @@
     justify-content: space-between;
     font-size: $font-size-medium;
     padding: em(20px) em(28px);
+  }
+
+  .group-expense-summary {
+    padding-inline-start: rem(20px);
+    color: $gray-500;
+    font-size: $font-size-x-small;
+    margin-bottom: 20px;
   }
 }

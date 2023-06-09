@@ -1,0 +1,25 @@
+
+  .member-list {
+    overflow-y: auto;
+    flex: 1 1 0;
+    background-color: $light-bgc;
+  }
+  .member {
+    padding-block: 12px;
+    padding-inline: 20px;
+    display: flex;
+    justify-content: space-between;
+
+    align-items: center;
+    border-bottom: 1px solid $gray-400;
+    background-color: $white;
+
+    .break-down {
+      &.pos {
+        color: green;
+      }
+      &.neg {
+        color: red;
+      }
+    }
+  }

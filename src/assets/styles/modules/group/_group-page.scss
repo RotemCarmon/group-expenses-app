@@ -7,6 +7,9 @@
   .group-list {
     background-color: $light-bgc;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 
     .search-group {
       padding-inline: 1.25em;
@@ -29,9 +32,24 @@
     }
 
     .group-preview-container {
+      display: grid;
+      grid-template-columns:  1fr auto;
+      align-items: center;
+      gap: 1em;
+      
       font-size: $font-size-medium;
       background-color: $white;
-      padding-inline: 1.25em;
+      margin-inline: 4px;
+      padding: 0.3125em 1.25em;
+      border-radius: 4px;
+      box-shadow: -1px 2px 1px rgba($gray-500, 0.2);
+
+      transition: all 0.3s;
+      &:hover {
+        cursor: pointer;
+        box-shadow: -1px 3px 3px rgba($gray-500, 0.3);
+
+      }
     }
   }
 

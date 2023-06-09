@@ -8,11 +8,6 @@ export const expenseRoutes = [
     component: expensePage,
     children: [
       {
-        path: ':groupId',
-        component: expenseList,
-        name: 'expense-list'
-      },
-      {
         path: 'edit/:groupId/:expenseId?',
         component: expenseEdit,
         name: 'expense-edit'

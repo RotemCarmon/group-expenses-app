@@ -1,9 +1,5 @@
 <template>
   <section class="expense-list-container" v-if="expenses && group">
-    <div class="title container">
-      <h3 class="group-name">{{ group.name }}</h3>
-    </div>
-
     <main class="list-container">
       <div v-if="!expenses || !expenses.length" class="no-expenses no-data">
         <p>You have no expenses yet</p>

@@ -1,5 +1,6 @@
 const groupPage = () => import('../views/group-page.vue')
-import { groupList, groupEdit, groupDetails } from '../cmps'
+const expenseList = () => import('@/modules/expense/cmps/expense-list.vue')
+import { groupList, groupEdit, groupDetails, memberBalanceList } from '../cmps'
 
 
 export const groupRoutes = [
@@ -17,12 +18,28 @@ export const groupRoutes = [
         component: groupEdit,
         name: 'group-edit'
       },
-
-
       {
         path: ':groupId',
         component: groupDetails,
-        name: 'group-details'
+        name: 'group-details',
+        children: [
+          {
+            path: '',
+            redirect: to => {
+              return 'expenses'
+            },
+          },
+          {
+            path: 'expenses',
+            component: expenseList,
+            name: 'expense-list'
+          },
+          {
+            path: 'members',
+            component: memberBalanceList,
+            name: 'member-balance-list'
+          }
+        ]
       }
     ]
   }

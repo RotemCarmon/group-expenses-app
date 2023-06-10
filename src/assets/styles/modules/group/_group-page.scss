@@ -32,6 +32,7 @@
     }
 
     .group-preview-container {
+      position: relative;
       display: grid;
       grid-template-columns:  1fr auto;
       align-items: center;
@@ -43,6 +44,7 @@
       padding: em(8px) 1.25em;
       border-radius: 4px;
       box-shadow: -1px 2px 1px rgba($gray-500, 0.2);
+      overflow: hidden;
       
       transition: all 0.3s;
       
@@ -53,13 +55,20 @@
       }
       .group-member-count span {
         color: $gray-600;
-        // font-weight: bold;
       }
 
       &:hover {
         cursor: pointer;
         box-shadow: -1px 3px 3px rgba($gray-500, 0.3);
+      }
 
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background-color: var(--group-color);
       }
     }
   }

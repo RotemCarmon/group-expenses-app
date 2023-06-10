@@ -1,23 +1,19 @@
 <template>
-  <section class="group-edit-container" v-if="groupToEdit">
+  <section class="group-edit-container">
     <main>
       <div class="page-header container">
-        <div class="header-title">{{ edit ? 'Edit' : 'Add' }} Group</div>
+        <div class="header-title" :style="{ color: groupToEdit.color }">{{ edit ? 'Edit' : 'Create a new' }} group</div>
+        <font-awesome-icon icon="fa-regular fa-xmark" @click="$emit('close')" />
       </div>
       <div class="group-edit-form">
-        <div class="group-form container">
+        <div class="group-form">
           <input class="form-input" type="text" v-model="groupToEdit.name" aria-label="group name" placeholder="Group Name" />
           <textarea class="form-textarea" v-model="groupToEdit.description" aria-label="group description" placeholder="Group Description" />
         </div>
-        <div class="members-list-container">
-          <div class="list-header container">
-            <h3 class="members-title header-title">Members</h3>
-            <button aria-lable="add member" data-testId="add-member" @click="editMember()" class="add-member top-header-btn" title="add member"><font-awesome-icon icon="fa-regular fa-plus" /></button>
-          </div>
-          <div class="member-list-wrapper container">
-            <div class="members-list" aria-label="members-list">
-              <member-preview v-for="member in members" :key="member.id" :member="member" @toggleMenu="toggleMenu" />
-            </div>
+        <div class="color-picker">
+          <div class="title">Pick a color</div>
+          <div class="colors">
+            <div v-for="color in colors" class="color" @click="groupToEdit.color = color" :class="{ selected: color === groupToEdit.color }" :style="{ backgroundColor: color }"></div>
           </div>
         </div>
       </div>
@@ -25,159 +21,53 @@
     <div class="footer container">
       <button @click="saveGroup" class="btn dark bottom-btn create-btn">Save</button>
     </div>
-
-    <!-- MEMBER EDIT -->
-    <transition name="slide-down" mode="out-in">
-      <member-edit v-if="isEditMember" @close="toggleEditMember" @save="saveMember" :member="memberSelected" />
-    </transition>
-
-    <!-- EXPENSE LIST - EDIT MODE -->
-    <transition name="slide-down" mode="out-in">
-      <expense-list-selectable v-if="newMemberEmail" :group="groupToEdit" :memberEmail="newMemberEmail" @close="newMemberEmail = null" @closeAndRemove="closeAndRemoveNewMember" />
-    </transition>
-
-    <!-- OPTION MENU -->
-    <transition name="menu-bottom" mode="out-in">
-      <option-menu v-if="isMenuOpen" :title="memberSelected.name" @remove="removeMember" @close="toggleMenu" :isShowEdit="isEditEnabled" />
-    </transition>
   </section>
 </template>
 
 <script setup>
-import { ref, computed, defineAsyncComponent } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
 
-import { useGroupStore } from '../store/';
+import { useGroupStore } from '../store';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 
 import { groupService } from '../services/group.service.js';
 import { popupService } from '@/modules/common/services/popup.service.js';
 import { memberService } from '@/modules/group/services/member.service.js';
 
-const memberPreview = defineAsyncComponent(() => import('./member-preview.vue'));
-const memberEdit = defineAsyncComponent(() => import('./member-edit.vue'));
-const optionMenu = defineAsyncComponent(() => import('@/modules/common/cmps/option-menu.vue'));
-const expenseList = defineAsyncComponent(() => import('@/modules/expense/cmps/expense-list.vue'));
-const expenseListSelectable = defineAsyncComponent(() => import('@/modules/expense/cmps/expense-list-selectable.vue'));
-
-
 const groupStore = useGroupStore();
 const authStore = useAuthStore();
 
-const route = useRoute();
-const router = useRouter();
+const props = defineProps({
+  group: { type: Object },
+});
+
+const emit = defineEmits(['close']);
 
 const edit = ref(false);
 const groupToEdit = ref(null);
-const isEditMember = ref(false);
-const isMenuOpen = ref(false);
-const memberSelected = ref(null);
 
-const newMemberEmail = ref(null);
+const colors = computed(() => groupService.groupColors);
 
-// COMPUTED
-const members = computed(() => {
-  return Object.values(groupToEdit.value.members).sort((a, b) => {
-    if (a?.isOwner) return -1;
-    if (b?.isOwner) return 1;
-    return b.name > a.name ? -1 : 1;
-  });
-});
-
-const isGroupOwner = computed(() => {
-  return memberSelected.value?.isOwner;
-});
-const isGroupActive = computed(() => {
-  return groupToEdit.value.expenses && groupToEdit.value.expenses.length;
-});
-const isEditEnabled = computed(() => {
-  return !isGroupOwner.value && !isGroupActive.value;
-});
-
-// FUNCTIONS
-function editMember() {
-  if (!memberSelected.value) {
-    memberSelected.value = memberService.createMember();
-  }
-  isEditMember.value = true;
-  isMenuOpen.value = false;
-}
-
-async function saveMember(member) {
-  const isMemeberExist = !!groupToEdit.value.members[member.email];
-  if (isMemeberExist) {
-    popupService.error('Member already exist with this email');
+function setGroupToEdit() {
+  if (!props.group) {
+    edit.value = false;
+    groupToEdit.value = getNewGroup();
   } else {
-    if (isGroupActive.value) {
-      const confirm = await popupService.confirm({ title: 'Add New Member', txt: "In order to add a new member to an active group, you'll need to select which expenses to include them in." });
-      if (!confirm) return closeEditMember();
-
-      newMemberEmail.value = member.email;
-    }
-    memberService.addMember(member, groupToEdit.value);
+    edit.value = true;
+    groupToEdit.value = structuredClone(props.group);
   }
-  closeEditMember();
-}
-
-function closeAndRemoveNewMember(memberEmail) {
-  const member = groupToEdit.value.members[memberEmail];
-  if (!member) return;
-
-  groupToEdit.value = memberService.removeMember(member, groupToEdit.value);
-  newMemberEmail.value = null;
-  closeEditMember();
-}
-
-async function removeMember() {
-  if (isGroupOwner.value) {
-    popupService.warn("Can't remove the group owner");
-    return;
-  }
-
-  const member = memberSelected.value;
-  const isConfirm = await popupService.confirm({ title: 'Remove member?', txt: `Are you sure you want to remove the member ${member.name}?`, approveTxt: 'Yes', cancelTxt: 'No' });
-  if (!isConfirm) return;
-
-  groupToEdit.value = memberService.removeMember(member, groupToEdit.value);
-}
-
-function toggleEditMember() {
-  isEditMember.value = !isEditMember.value;
-  if (!isEditMember.value) {
-    memberSelected.value = null;
-  }
-}
-
-function closeEditMember() {
-  isEditMember.value = false;
-  memberSelected.value = null;
-}
-
-async function getGroup() {
-  const { groupId } = route.params;
-
-  edit.value = !!groupId;
-  if (groupId) {
-    getGroupById(groupId);
-  } else {
-    getNewGroup();
-  }
-}
-
-async function getGroupById(groupId) {
-  const group = await groupStore.getGroupById({ groupId });
-  groupToEdit.value = JSON.parse(JSON.stringify(group));
 }
 
 function getNewGroup() {
   const group = groupService.getEmptyGroup();
+  group.color = colors.value?.[0];
 
   // create a member from the loggedin user
   const { username, email, id } = authStore.loggedInUser;
   const member = memberService.createMember({ username, email, id, isOwner: true });
 
   memberService.addMember(member, group);
-  groupToEdit.value = group;
+  return group;
 }
 
 async function saveGroup() {
@@ -185,15 +75,9 @@ async function saveGroup() {
     popupService.warn('Please enter group name');
     return;
   }
-  const { id } = await groupStore.saveGroup({ group: groupToEdit.value });
-  router.push('/group/' + id);
+  await groupStore.saveGroup({ group: groupToEdit.value });
+  emit('close');
 }
 
-function toggleMenu(member) {
-  memberSelected.value = memberSelected.value ? null : { ...member };
-  isMenuOpen.value = !isMenuOpen.value;
-}
-
-// CREATED
-getGroup();
+setGroupToEdit();
 </script>

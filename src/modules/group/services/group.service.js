@@ -21,12 +21,23 @@ async function removeGroup(groupId) {
   return await firebaseService.remove(COLLECTION_NAME, groupId)
 }
 
+const groupColors = [
+  '#E26463',
+  '#FF914D',
+  '#FFDE5C',
+  '#74C864',
+  '#0079FF',
+  '#A970FA',
+  '#FA7DA2',
+]
+
 export const groupService = {
   getGroups,
   getGroupById,
   getEmptyGroup,
   saveGroup,
   removeGroup,
+  groupColors
 
 }
 
@@ -36,7 +47,8 @@ function getEmptyGroup() {
     description: '',
     members: {},
     expenses: [],
-    memberEmails: []
+    memberEmails: [],
+    color: null
   }
 }
 

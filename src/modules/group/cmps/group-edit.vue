@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, toRaw } from 'vue';
 
 import { useGroupStore } from '../store';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
@@ -54,7 +54,7 @@ function setGroupToEdit() {
     groupToEdit.value = getNewGroup();
   } else {
     edit.value = true;
-    groupToEdit.value = structuredClone(props.group);
+    groupToEdit.value = structuredClone(toRaw(props.group));
   }
 }
 

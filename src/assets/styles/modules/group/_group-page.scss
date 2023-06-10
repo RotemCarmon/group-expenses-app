@@ -35,16 +35,27 @@
       display: grid;
       grid-template-columns:  1fr auto;
       align-items: center;
-      gap: 1em;
+      gap: em(8px);
       
-      font-size: $font-size-medium;
       background-color: $white;
+      font-size: $font-size-medium;
       margin-inline: 4px;
-      padding: 0.3125em 1.25em;
+      padding: em(8px) 1.25em;
       border-radius: 4px;
       box-shadow: -1px 2px 1px rgba($gray-500, 0.2);
-
+      
       transition: all 0.3s;
+      
+      .group-created-at,
+      .group-member-count {
+        font-size: $font-size-small;
+        color: $gray-550
+      }
+      .group-member-count span {
+        color: $gray-600;
+        // font-weight: bold;
+      }
+
       &:hover {
         cursor: pointer;
         box-shadow: -1px 3px 3px rgba($gray-500, 0.3);

@@ -12,12 +12,12 @@
     &::after {
       content: "";
       position: absolute;
-      height: 3px;
+      height: 2px;
       width: 0%;
       display: block;
       left: 0;
-      bottom: -2px;
-      background-color: $orange;
+      bottom: -1px;
+      background-color: $gray-300;
       transition: width 0.3s;
       
     }

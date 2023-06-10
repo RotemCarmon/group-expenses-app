@@ -1,20 +1,23 @@
 <template>
   <section class="group-details-container" data-testid="group-details-container" v-if="group">
     <main>
-      <div class="page-header container">
+      <div class="page-header group-details-header m-b-0 container" :style="{'--group-color': group.color}">
         <h3 class="header-title" data-testid="group-name">{{ group.name }}</h3>
         <div class="ellipsis-icon" @click.stop="toggleMenu" data-testid="group-menu">
           <img src="@/assets/icons/ellipsis.svg" alt="ellipsis" />
         </div>
-      </div>
-      <!-- <group-expense-summary :total="totalSpent" :currency="userCurrency" /> -->
-      <div class="group-expense-summary">
-        Total spent: <span>{{ getSymbolFromCurrency(userCurrency) }}{{ parseFloat(totalSpent.toFixed(2)) }}</span>
+        <div class="group-expense-summary">
+          Total spent: <span>{{ getSymbolFromCurrency(userCurrency) }}{{ parseFloat(totalSpent.toFixed(2)) }}</span>
+        </div>
       </div>
       <tab-nav />
       <router-view :group="group" :currency="userCurrency" :key="userCurrency" />
     </main>
 
+    <!-- GROUP EDIT -->
+    <transition name="slide-down" mode="out-in">
+      <group-edit v-if="isOpenEditGroup" :group="group" @close="isOpenEditGroup = false" />
+    </transition>
     <!-- OPTION MENU -->
     <transition name="menu-bottom" mode="out-in">
       <option-menu v-if="isMenuOpen" @edit="editGroup" @remove="removeGroup" @close="toggleMenu" />
@@ -35,6 +38,7 @@ import { useRemoveGroup, goToEditGroup } from '@/composables/group.composable.js
 
 import optionMenu from '@/modules/common/cmps/option-menu.vue';
 import tabNav from '@/modules/common/cmps/tab-nav.vue';
+import groupEdit from './group-edit.vue';
 
 const authStore = useAuthStore();
 const groupStore = useGroupStore();
@@ -44,7 +48,9 @@ const route = useRoute();
 
 const group = ref(null);
 const totalSpent = ref(0);
+
 const isMenuOpen = ref(false);
+const isOpenEditGroup = ref(false);
 
 const loggedInUser = computed(() => authStore.loggedInUser);
 
@@ -57,7 +63,8 @@ async function getTotalExpenses(userCurrency = authStore.loggedInUser.prefs.curr
 }
 
 function editGroup() {
-  goToEditGroup(group, router);
+  isMenuOpen.value = false
+  isOpenEditGroup.value = true;
 }
 
 async function removeGroup() {

@@ -1,10 +1,10 @@
 .group-details-container {
   position: relative;
+
   .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0;
 
     .title {
       font-weight: normal;
@@ -17,19 +17,29 @@
       padding: 0 12px;
     }
   }
-  .total-spent {
-    background-color: $dark-aqua;
-    color: $white;
-    display: flex;
-    justify-content: space-between;
-    font-size: $font-size-medium;
-    padding: em(20px) em(28px);
+  .group-details-header {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding-inline-start: rem(16px);
+    margin-bottom: 20px;
+
+    .ellipsis-icon {
+      padding: 0;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 7px;
+      height: 100%;
+      background-color: var(--group-color);
+    }
   }
 
   .group-expense-summary {
-    padding-inline-start: rem(20px);
     color: $gray-500;
     font-size: $font-size-x-small;
-    margin-bottom: 20px;
   }
 }

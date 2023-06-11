@@ -24,6 +24,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { popupService } from '@/modules/common/services/popup.service.js';
 
 const props = defineProps({
   member: { type: Object },
@@ -36,6 +37,10 @@ const isEdit = ref(!!memberToEdit.value?.name);
 
 // FUNCTIONS
 function save() {
+  if(!memberToEdit.value.name || !memberToEdit.value.email) {
+    popupService.error('Missing details')
+    return
+  }
   emit('save', memberToEdit.value);
 }
 </script>

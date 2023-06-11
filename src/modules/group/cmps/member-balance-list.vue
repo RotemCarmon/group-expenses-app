@@ -68,8 +68,20 @@ function addMember() {
 }
 
 async function saveMember(_member) {
-  const memberToSave = memberService.createMember({ username: _member.name, email: _member.email });
-  const group = await memberService.addMember(memberToSave, props.group);
+  const isEdit = !!_member.id;
+  let group = props.group;
+
+  if (!isEdit) {
+    const isConfirm = await popupService.confirm({ title: 'Add new member', txt: 'This is an active group.\nThe member will be included in all expenses.' });
+    if (!isConfirm) {
+      member.value = null;
+      return;
+    }
+
+    const memberToSave = memberService.createMember({ username: _member.name, email: _member.email });
+    group = await memberService.addMember(memberToSave, group);
+  }
+
   await groupStore.saveGroup({ group });
 
   getBalances(props.currency);
@@ -79,7 +91,6 @@ async function saveMember(_member) {
 async function getBalances(userCurrency) {
   balances.value = await expenseService.getBalances(props.group, userCurrency);
 }
-
 
 getBalances(props.currency);
 </script>

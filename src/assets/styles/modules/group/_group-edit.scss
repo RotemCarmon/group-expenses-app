@@ -1,10 +1,5 @@
 .group-edit-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  background-color: $white;
-  box-shadow: 0 0 999px 999px rgba(0, 0, 0, 0.4);
-  padding-block: em(16px);
+  @include modal;
 
   .page-header {
     display: flex;    

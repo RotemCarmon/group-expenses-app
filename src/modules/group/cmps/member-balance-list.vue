@@ -1,17 +1,22 @@
 <template>
   <section class="member-balance-list-container">
-    <div class="member" v-for="(amount, member) in balances" :key="member">
-      <div class="avatar-container letter-avatar">
-        <div class="avatar">{{ findNameByEmailInGroup(member, group)?.charAt(0).toUpperCase() }}</div>
+    <main class="list-container">
+      <div class="member-list">
+        <div class="member" v-for="(amount, member) in balances" :key="member" @click="editMember">
+          <div class="avatar-container letter-avatar">
+            <div class="avatar">{{ findNameByEmailInGroup(member, group)?.charAt(0).toUpperCase() }}</div>
+          </div>
+          <div class="name" data-testid="member-name">
+            {{ findNameByEmailInGroup(member, group) }}
+          </div>
+          <div class="break-down" :class="{ pos: amount > 0, neg: amount < 0 }" data-testid="member-amount">
+            {{ getSymbolFromCurrency(currency) }}
+            {{ parseFloat(amount.toFixed(2)) }}
+          </div>
+          <div class="amount-spent">Spent: {{ getSymbolFromCurrency(currency) }}{{ parseFloat(getMemberAmountSpent(member).toFixed(2)) }}</div>
+        </div>
       </div>
-      <div class="name" data-testid="member-name">
-        {{ findNameByEmailInGroup(member, group) }}
-      </div>
-      <div class="break-down" :class="{ pos: amount > 0, neg: amount < 0 }" data-testid="member-amount">
-        {{ getSymbolFromCurrency(currency) }}
-        {{ parseFloat(amount.toFixed(2)) }}
-      </div>
-      <div class="amount-spent">Spent: {{ getSymbolFromCurrency(currency) }}{{ parseFloat(getMemberAmountSpent(member).toFixed(2)) }}</div>
+    </main>
     </div>
   </section>
 </template>

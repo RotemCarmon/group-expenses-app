@@ -1,8 +1,23 @@
 .member-balance-list-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  
   overflow-y: auto;
-  flex: 1 1 0;
-  background-color: $light-bgc;
-  border-block: 2px solid #f2f2f2;
+
+  .list-container {
+    position: relative;
+    overflow-y: auto;
+    flex: 1;
+    border-block: 2px solid $light-gray;
+    background-color: $light-bgc;
+  }
+
+  .member-list {
+    position: absolute;
+    width: 100%;
+  }
+
   .member {
     padding-block: 12px;
     padding-inline: 20px;
@@ -50,6 +65,13 @@
     .avatar {
       font-size: $font-size-small;
       color: $white;
+    }
+  }
+
+  .footer {
+    padding-block: rem(10px);
+    .bottom-btn {
+      margin-bottom: 0;
     }
   }
 }

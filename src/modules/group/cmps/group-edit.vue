@@ -3,7 +3,7 @@
     <main>
       <div class="page-header container">
         <div class="header-title" :style="{ color: groupToEdit.color }">{{ edit ? 'Edit' : 'Create a new' }} group</div>
-        <font-awesome-icon icon="fa-regular fa-xmark" @click="$emit('close')" />
+        <font-awesome-icon icon="fa-regular fa-xmark" @click="$emit('close')" size="xl" />
       </div>
       <div class="group-edit-form">
         <div class="group-form">

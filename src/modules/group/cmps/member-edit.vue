@@ -3,7 +3,7 @@
     <main>
       <div class="page-header container">
         <div class="header-title">{{ isEdit ? 'Edit' : 'Add' }} Member</div>
-        <font-awesome-icon icon="fa-regular fa-xmark" @click="$emit('close')" />
+        <font-awesome-icon icon="fa-regular fa-xmark" @click="$emit('close')" size="xl" />
       </div>
       <div class="form container">
         <div class="input-wrapper form-row">

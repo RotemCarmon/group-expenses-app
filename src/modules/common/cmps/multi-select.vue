@@ -1,7 +1,7 @@
 <template>
-  <section class="multi-select-container" tabindex="0" @blur="handleBlur">
+  <section class="multi-select-container" tabindex="0" @blur="handleBlur" ref="container">
     <div class="box" @click="toggleMenu" ref="elBox">
-      <input v-if="hasSearch" type="search" class="search-input" :placeholder="isMulti ? placeholder : val" v-model="searchTerm" ref="search" tabindex="1" @blur="handleBlur"/>
+      <input v-if="hasSearch" type="search" class="search-input" :placeholder="isMulti ? placeholder : val" v-model="searchTerm" ref="search" tabindex="1" @blur="handleBlur" />
       <span v-else class="placeholder" :class="{ multi: isMulti }">
         {{ isMulti ? (isShowSelectedOpts ? val.join(', ') : placeholder) : val }}
       </span>
@@ -45,6 +45,8 @@ const val = ref([]);
 const searchTerm = ref('');
 const search = ref(null);
 const elBox = ref(null);
+const container = ref(null);
+
 const dropYPos = ref('');
 
 const itemsToShow = computed(() =>
@@ -90,8 +92,13 @@ function setDropdownPosition(e) {
   dropYPos.value = availableSpace < totalDropdown ? -(dropdownHeight + height + dropdownGap) : dropdownGap;
 }
 
-function handleBlur() {
-  isOpen.value = false;
+function handleBlur(e) {
+  // Set parent as container
+  const parent = container.value;
+
+  if (!parent.contains(e.relatedTarget)) {
+    isOpen.value = false;
+  }
 }
 
 function toggleCheck(item) {

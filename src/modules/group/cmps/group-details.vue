@@ -1,7 +1,7 @@
 <template>
   <section class="group-details-container" data-testid="group-details-container" v-if="group">
     <main>
-      <div class="page-header group-details-header m-b-0 container" :style="{'--group-color': group.color}">
+      <div class="page-header group-details-header m-b-0 container" :style="{ '--group-color': group.color }">
         <h3 class="header-title" data-testid="group-name">{{ group.name }}</h3>
         <div class="ellipsis-icon" @click.stop="toggleMenu" data-testid="group-menu">
           <img src="@/assets/icons/ellipsis.svg" alt="ellipsis" />
@@ -63,7 +63,7 @@ async function getTotalExpenses(userCurrency = authStore.loggedInUser.prefs.curr
 }
 
 function editGroup() {
-  isMenuOpen.value = false
+  isMenuOpen.value = false;
   isOpenEditGroup.value = true;
 }
 

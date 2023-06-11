@@ -1,4 +1,4 @@
-import { onMounted, ref, computed } from "vue";
+import { ref, computed } from "vue";
 
 
 export function showPassword() {
@@ -7,12 +7,4 @@ export function showPassword() {
   const eyeImgUrl = computed(() => new URL(`/src/assets/icons/${eyeImg.value}.svg`, import.meta.url).href);
 
   return { eyeImgUrl, isPasswordShowen }
-}
-
-
-export function focusInput() {
-  const input = ref(null);
-  onMounted(() => input.value.focus());
-
-  return { input }
 }

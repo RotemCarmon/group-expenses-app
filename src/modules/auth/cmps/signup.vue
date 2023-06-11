@@ -25,7 +25,7 @@
       </label>
       <label class="form-row password-field">
         <span>Password </span>
-        <img :src="eyeImgUrl" class="toggle-password" @click="isPasswordShowen = !isPasswordShowen" alt="toggle hide/show password"/>
+        <img :src="eyeImgUrl" class="toggle-password" @click="isPasswordShowen = !isPasswordShowen" alt="toggle hide/show password" />
         <div class="input-wrapper">
           <font-awesome-icon icon="fa-thin fa-lock" class="form-icon" />
           <input :type="isPasswordShowen ? 'text' : 'password'" autocomplete="new-password" v-model="creds.password" class="form-input" />
@@ -46,14 +46,15 @@
 <script setup>
 import { onMounted, reactive, ref, computed } from 'vue';
 import { useAuthStore } from '../store/auth.store';
-import { showPassword, focusInput } from '@/composables/auth.composable.js';
+import { showPassword } from '@/composables/auth.composable.js';
+import { focusInput } from '@/composables/input.composable.js';
 
 const authStore = useAuthStore();
 
 const { isPasswordShowen, eyeImgUrl } = showPassword();
 const { input } = focusInput();
 
-const emit = defineEmits(['toggle'])
+const emit = defineEmits(['toggle']);
 
 const creds = reactive({
   username: '',
@@ -61,9 +62,9 @@ const creds = reactive({
   password: '',
 });
 
-const isButtonEnabled = computed(()=> {
-  return creds.username && creds.email && creds.password && creds.password.length >=6
-})
+const isButtonEnabled = computed(() => {
+  return creds.username && creds.email && creds.password && creds.password.length >= 6;
+});
 
 const errors = reactive({
   usernameError: '',

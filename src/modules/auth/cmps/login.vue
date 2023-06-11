@@ -35,7 +35,8 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useAuthStore } from '../store/auth.store';
-import { showPassword, focusInput } from '@/composables/auth.composable.js';
+import { showPassword } from '@/composables/auth.composable.js';
+import { focusInput } from '@/composables/input.composable.js';
 
 const authStore = useAuthStore();
 
@@ -49,9 +50,9 @@ const creds = reactive({
   password: '',
 });
 
-const isButtonEnabled = computed(()=> {
-  return creds.email && creds.password
-})
+const isButtonEnabled = computed(() => {
+  return creds.email && creds.password;
+});
 
 const errors = reactive({
   emailError: '',

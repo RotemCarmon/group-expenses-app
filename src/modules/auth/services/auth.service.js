@@ -42,15 +42,15 @@ export const authService = {
 }
 
 function getLoggedinUser() {
-  return JSON.parse(sessionStorage.getItem(USER_SESSION_KEY));
+  return JSON.parse(localStorage.getItem(USER_SESSION_KEY));
 }
 
 function _saveLocalUser(user) {
   if (!user) return
-  sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify(user));
+  localStorage.setItem(USER_SESSION_KEY, JSON.stringify(user));
   return user;
 }
 
 function clearLoggedUser() {
-  sessionStorage.removeItem(USER_SESSION_KEY);
+  localStorage.removeItem(USER_SESSION_KEY);
 }

@@ -29,7 +29,7 @@ async function ajax(endpoint, method = 'get', data = null, params = {}, headers 
             method,
             data,
             params,
-            headers: { ...headers, 'session-id': sessionStorage.sessionId }
+            headers: { ...headers, 'session-id': localStorage.sessionId }
         })
         return res.data
     } catch (err) {

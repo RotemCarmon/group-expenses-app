@@ -22,7 +22,7 @@ describe('Group List', () => {
   let groupStore
   let authStore
   beforeEach(() => {
-    window.sessionStorage.setItem('loggedInUser', JSON.stringify(member1))
+    window.localStorage.setItem('loggedInUser', JSON.stringify(member1))
 
     setActivePinia(createPinia())
     groupStore = useGroupStore()

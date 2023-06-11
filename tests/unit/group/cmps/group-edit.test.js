@@ -37,7 +37,7 @@ describe('Group Edit', () => {
   let spyOnAddMember
   let spyOnConfirm
   beforeEach(() => {
-    window.sessionStorage.setItem('loggedInUser', JSON.stringify({ ...member1, username: member1.name, prefs: { currency: 'USD' } }))
+    window.localStorage.setItem('loggedInUser', JSON.stringify({ ...member1, username: member1.name, prefs: { currency: 'USD' } }))
 
     setActivePinia(createPinia())
     groupStore = useGroupStore()

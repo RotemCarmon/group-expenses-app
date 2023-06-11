@@ -11,18 +11,17 @@
       </div>
       <div class="expense-container">
         <div class="card-section container">
-          <div class="input-wrapper form-row">
-            <font-awesome-icon icon="fa-thin fa-coins" class="form-icon" />
-            <input type="text" class="form-input" placeholder="Enter Amount" v-model.number="expenseToEdit.amount" />
+          <div class="form-row amount-row">
+            <div class="input-wrapper">
+              <font-awesome-icon icon="fa-thin fa-coins" class="form-icon" />
+              <input type="text" class="form-input" placeholder="Enter Amount" v-model.number="expenseToEdit.amount" />
+            </div>
+            <multi-select :items="currencyCodes" :isMulti="false" :hasSearch="true" :topSelections="['USD', 'EUR']" v-model="expenseToEdit.currency" />
           </div>
-          
+
           <div class="input-wrapper form-row">
             <font-awesome-icon icon="fa-thin fa-message-lines" class="form-icon" />
             <input type="text" class="form-input" placeholder="Enter Description" v-model="expenseToEdit.description" />
-          </div>
-          <div class="currency-select form-row">
-            Currency
-            <multi-select :items="currencyCodes" :isMulti="false" :hasSearch="true" :topSelections="['USD', 'EUR']" v-model="expenseToEdit.currency" />
           </div>
         </div>
         <div class="card-section container">
@@ -83,10 +82,10 @@ async function getExpense() {
   const { spender } = route.query;
 
   if (expenseId && spender) {
-    edit.value = true
+    edit.value = true;
     prepareExpenseToEdit(expenseId, spender);
   } else {
-    edit.value = false
+    edit.value = false;
     expenseToEdit.value = expenseService.getEmptyExpense();
     expenseToEdit.value.currency = userCurrency.value;
   }
@@ -135,10 +134,10 @@ async function saveExpense() {
 }
 async function removeExpense() {
   const expense = expenseToEdit.value;
-  
+
   const isConfirm = await popupService.confirm({ title: 'Delete Expense', txt: `Are you sure you want to delete this expense?\n ${expense.description} ${getSymbolFromCurrency(expense.currency)}${expense.amount}`, approveTxt: 'Yes', cancelTxt: 'No' });
   if (!isConfirm) return;
-  
+
   expenseStore.removeExpense({ expense, group: group.value });
   router.go(-1);
 }

@@ -5,14 +5,11 @@ import { utilService, formatDate, findNameByEmailInGroup } from '@/modules/commo
 
 var gCurrencyData
 
-async function getTotalExpenses(expenses, userCurrency) {
+async function getTotalExpenses(expenses, currency) {
   gCurrencyData = await _getCurrencyRate()
 
-  const sum = expenses.reduce((sum, expense) => {
-    sum += _convertToBase(expense.amount, expense.currency)
-    return sum
-  }, 0)
-  return _convertFromBase(sum, userCurrency)
+  const sum = expenses.reduce((sum, expense) => sum += _convertToBase(expense.amount, expense.currency), 0)
+  return _convertFromBase(sum, currency)
 }
 
 async function getBalances(group, userCurrency) {
@@ -21,7 +18,7 @@ async function getBalances(group, userCurrency) {
   const balances = {}
   // Get the amount each member paid
   for (const member of Object.values(group.members)) {
-    balances[member.email] = member.amountSpent
+    balances[member.email] = await getTotalExpenses(member.expenses)
   }
 
   // For each expense
@@ -93,7 +90,6 @@ async function addExpense(expense, group) {
   const { spender, amount, currency } = expense
   group.expenses.push(expense)
   group.members[spender].expenses.push(expense)
-  group.members[spender].amountSpent += _convertToBase(amount, currency)
 
   return group
 }
@@ -111,8 +107,6 @@ async function removeExpense(expense, group) {
   if (memIdx !== -1) {
     group.members[spender].expenses.splice(memIdx, 1);
   }
-
-  group.members[spender].amountSpent -= _convertToBase(amount, currency)
 
   return group
 }
@@ -136,6 +130,7 @@ function getEmptyExpense() {
     spender: ''
   }
 }
+
 
 function _convertToBase(amount = 0, currency) {
   const rate = gCurrencyData[currency]?.value || 1

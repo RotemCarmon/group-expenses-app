@@ -8,7 +8,7 @@ async function login(userCreds) {
   const { email, password } = userCreds
   const { user } = await signInWithEmailAndPassword(auth, email, password)
   const loggedInUser = await userService.getUserById(user.uid)
-  _saveLocalUser(loggedInUser)
+  saveLocalUser(loggedInUser)
   return loggedInUser
 
 }
@@ -25,7 +25,7 @@ async function signup(creds) {
 
   delete userTosave.password
   const loggedInUser = await userService.updateUser(userTosave)
-  _saveLocalUser(loggedInUser)
+  saveLocalUser(loggedInUser)
   return loggedInUser
 }
 
@@ -38,14 +38,15 @@ export const authService = {
   login,
   signup,
   signout,
-  getLoggedinUser
+  getLoggedinUser,
+  saveLocalUser
 }
 
 function getLoggedinUser() {
   return JSON.parse(localStorage.getItem(USER_SESSION_KEY));
 }
 
-function _saveLocalUser(user) {
+function saveLocalUser(user) {
   if (!user) return
   localStorage.setItem(USER_SESSION_KEY, JSON.stringify(user));
   return user;

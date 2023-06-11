@@ -12,7 +12,7 @@ export const useUserStore = defineStore('user', {
       const authStore = useAuthStore()
       try {
         const savedUser = await userService.updateUser(user)
-        authStore.loggedInUser = savedUser
+        authStore.setloggedInUser(savedUser)
       } catch (err) {
         loggerService.error(err)
       }

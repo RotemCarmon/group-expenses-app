@@ -53,6 +53,10 @@ export const useAuthStore = defineStore('auth', {
       } catch (err) {
         loggerService.error(err)
       }
+    },
+    setloggedInUser(user) {
+      this.loggedInUser = user
+      authService.saveLocalUser(user)
     }
   }
 });

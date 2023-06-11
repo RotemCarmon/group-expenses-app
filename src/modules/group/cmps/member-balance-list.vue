@@ -1,21 +1,11 @@
 <template>
   <section class="member-balance-list-container">
     <main class="list-container">
-      <div class="member-list">
-        <div class="member" v-for="(amount, member) in balances" :key="member" @click="editMember(member)">
-          <div class="avatar-container letter-avatar">
-            <div class="avatar">{{ findNameByEmailInGroup(member, group)?.charAt(0).toUpperCase() }}</div>
-          </div>
-          <div class="name" data-testid="member-name">
-            {{ findNameByEmailInGroup(member, group) }}
-          </div>
-          <div class="break-down" :class="{ pos: amount > 0, neg: amount < 0 }" data-testid="member-amount">
-            {{ getSymbolFromCurrency(currency) }}
-            {{ parseFloat(amount.toFixed(2)) }}
-          </div>
-          <div class="amount-spent">Spent: {{ getSymbolFromCurrency(currency) }}{{ parseFloat(getMemberAmountSpent(member).toFixed(2)) }}</div>
+      <Suspense>
+        <div class="member-list">
+          <member-preview v-for="(amount, memberEmail) in balances" :member="props.group.members[memberEmail]" :amount="amount" :currency="props.currency" :key="memberEmail" @edit="editMember" />
         </div>
-      </div>
+      </Suspense>
     </main>
     <div class="footer container">
       <button @click="addMember" class="btn dark bottom-btn">Add Member</button>
@@ -33,15 +23,14 @@ import { ref } from 'vue';
 import { expenseService } from '@/modules/expense/services/expense.service';
 import { memberService } from '../services/member.service';
 import { popupService } from '@/modules/common/services/popup.service.js';
-import { findNameByEmailInGroup } from '@/modules/common/services/util.service.js';
 
 import { useIsGroupOwner } from '@/composables/group.composable.js';
-import getSymbolFromCurrency from 'currency-symbol-map';
 
 import { useGroupStore } from '../store/';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 
 import memberEdit from './member-edit.vue';
+import memberPreview from './member-preview.vue';
 
 const props = defineProps({
   group: { type: Object },
@@ -59,12 +48,12 @@ const member = ref(null);
 // FUNCTIONS
 function editMember(memberEmail) {
   // only owner and member can edit
-  const isGroupOwner = useIsGroupOwner(ref(props.group))
-  const loggedInUser = authStore.loggedInUser
+  const isGroupOwner = useIsGroupOwner(ref(props.group));
+  const loggedInUser = authStore.loggedInUser;
 
-  if(!isGroupOwner && memberEmail !== loggedInUser.email) {
-    popupService.warn('You don\'t have permission to edit')
-    return
+  if (!isGroupOwner && memberEmail !== loggedInUser.email) {
+    popupService.warn("You don't have permission to edit");
+    return;
   }
 
   member.value = getMemberByEmail(memberEmail);
@@ -91,9 +80,6 @@ async function getBalances(userCurrency) {
   balances.value = await expenseService.getBalances(props.group, userCurrency);
 }
 
-function getMemberAmountSpent(memberEmail) {
-  return props.group.members[memberEmail]?.amountSpent;
-}
 
 getBalances(props.currency);
 </script>

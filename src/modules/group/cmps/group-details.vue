@@ -69,7 +69,7 @@ function editGroup() {
 
 async function removeGroup() {
   const isRemoved = await useRemoveGroup(group);
-  if (isRemoved) router.push('/group/');
+  if (isRemoved) router.push('/group');
 }
 
 function toggleMenu() {

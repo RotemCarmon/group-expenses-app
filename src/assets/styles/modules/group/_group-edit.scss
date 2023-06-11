@@ -44,55 +44,8 @@
     }
   }
 
-  //   .members-list-container {
-  //     display: flex;
-  //     flex-direction: column;
-  //     flex: 1;
-  //     background-color: $white;
-  //     padding-top: 20px;
-
-  //     .member-preview-container {
-  //       border-bottom: 1px solid $gray-400;
-  //       .group-owner {
-  //         font-size: $font-size-x-small;
-  //         color: $gray-500;
-  //         padding-left: 20px;
-  //       }
-
-  //       .member-icon {
-  //         margin-inline-end: 10px;
-  //       }
-  //     }
-  //     .member-list-wrapper {
-  //       position: relative;
-  //       display: flex;
-  //       overflow: auto;
-  //       flex: 1;
-  //     }
-  //     .members-list {
-  //       width: 100%;
-  //       position: absolute;
-  //       flex: 1;
-  //       margin-bottom: rem(35px);
-  //     }
-  //   }
+ 
 }
-
-// .member-edit-container {
-//   padding-top: 30px;
-//   height: 100vh;
-//   height: $vh;
-//   position: fixed;
-//   inset: 0;
-//   background-color: white;
-
-//   input:not(:last-child) {
-//     margin-bottom: 20px;
-//   }
-//   .close-btn {
-//     top: 30px;
-//   }
-// }
 
 .list-header {
   padding-bottom: 10px;

@@ -1,0 +1,14 @@
+.member-edit-container {
+  @include modal;
+
+  input:not(:last-child) {
+    margin-bottom: 20px;
+  }
+  
+  .footer {
+    padding-block: 0;
+    .bottom-btn {
+      margin-bottom: 0;
+    }
+  }
+}
